@@ -8,6 +8,7 @@ const routes: RouteRecordRaw[] = [
       icon: 'carbon:shopping-catalog',
       order: 2000,
       title: '基础信息',
+      hideInMenu: true,
     },
     name: 'baseInfo',
     path: '/baseInfo',

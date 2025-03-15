@@ -52,7 +52,7 @@ const defaultPreferences: Preferences = {
   },
   logo: {
     enable: true,
-    source: logo,
+    source: '',
   },
   navigation: {
     accordion: true,
