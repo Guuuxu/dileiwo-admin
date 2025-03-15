@@ -42,6 +42,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   title: '详情',
 });
+// 输入确认
+const handleEnterInput = () => {
+  console.log('handleEnterInput','确认了')
+}
 </script>
 <template>
   <Drawer>

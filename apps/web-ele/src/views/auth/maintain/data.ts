@@ -4,6 +4,11 @@ import type { VbenFormSchema } from '#/adapter/form';
 
 import { $t } from '#/locales';
 
+
+// 输入确认
+const handleEnterInput = () => {
+  console.log('handleEnterInput','确认了')
+}
 /**
  * 获取编辑表单的字段配置。如果没有使用多语言，可以直接export一个数组常量
  */
@@ -13,38 +18,14 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
-      },
-      fieldName: 'category',
-      label: '型号',
-      rules: 'required',
-    },
-    
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
-      fieldName: 'amount',
-      label: '数量',
-      rules: 'required',
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
+        onKeyup(e:any){
+          if (e.key === 'Enter') {
+            handleEnterInput();
+          }
+        }
       },
       fieldName: 'codeRange',
-      label: '编码范围',
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-        type: 'textarea',
-        rows: 4
-      },
-      fieldName: 'remark',
-      label: '备注',
+      label: '请扫描包装编码',
     },
   ];
 }

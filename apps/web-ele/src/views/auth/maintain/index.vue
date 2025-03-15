@@ -66,9 +66,9 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'category', title: '型号' },
-    { field: 'codeRange', title: '编码范围', },
+    { field: 'codeRange', title: '编码范围' },
     { field: 'user', title: '使用者（最近一次）' },
-    { field: 'remark', title: '备注', },
+    { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -111,8 +111,6 @@ const formOptions: VbenFormProps = {
       fieldName: 'category',
       label: '型号',
     },
-    
-
   ],
   // 控制表单是否显示折叠按钮
   showCollapseButton: true,
@@ -146,48 +144,47 @@ const loadList = (size = 200) => {
 
 // 新增
 const handleAdd = () => {
-  handleSetData({},'新增');
+  handleSetData({}, '新增');
 };
 // 编辑
 function handleEditRow(row: RowType) {
-  handleSetData(row,'编辑');
+  handleSetData(row, '编辑');
 }
 // 详情
 const handleViewRow = (row: RowType) => {
-  handleSetData(row,'详情');
+  handleSetData(row, '详情');
 };
 
 const handleSetData = (row: RowType, title: string) => {
   drawerApi
     .setData({
       values: { ...row },
-    }).setState({
-      title
+    })
+    .setState({
+      title,
     })
     .open();
 };
 
 import { ElMessageBox } from 'element-plus';
 const handleDeleteRow = (row: RowType) => {
-  ElMessageBox.confirm(
-    '此操作将永久删除该条记录, 是否继续?',
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(() => {
-    // Perform delete operation here
-    // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
-    // if (index !== -1) {
-    //   dataList.value.splice(index, 1);
-    //   ElMessage.success('删除成功');
-    // }
-    ElMessage.success('删除成功');
-  }).catch(() => {
-    ElMessage.info('已取消删除');
-  });
+  ElMessageBox.confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      // Perform delete operation here
+      // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
+      // if (index !== -1) {
+      //   dataList.value.splice(index, 1);
+      //   ElMessage.success('删除成功');
+      // }
+      ElMessage.success('删除成功');
+    })
+    .catch(() => {
+      ElMessage.info('已取消删除');
+    });
 };
 
 onMounted(() => {
@@ -196,18 +193,13 @@ onMounted(() => {
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
-    <template #extra>
-      <ElButton type="primary" @click="handleAdd()"> 新增 </ElButton>
-      <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
-    </template>
     <Grid>
-
-            <template #action="{ row }">
-              <ElButton type="primary" link @click="handleEditRow(row)">
-                编辑
-              </ElButton>
-            </template>
-          </Grid>
+      <template #action="{ row }">
+        <ElButton type="primary" link @click="handleEditRow(row)">
+          编辑
+        </ElButton>
+      </template>
+    </Grid>
 
     <Drawer />
   </Page>

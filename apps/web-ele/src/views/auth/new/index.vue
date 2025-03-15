@@ -146,13 +146,9 @@ const loadList = (size = 200) => {
   }
 };
 
-// 新增
-const handleAdd = () => {
-  handleSetData({},'新增');
-};
 // 编辑
 function handleEditRow(row: RowType) {
-  handleSetData(row,'编辑');
+  handleSetData(row,'认证');
 }
 // 详情
 const handleViewRow = (row: RowType) => {
@@ -204,7 +200,7 @@ onMounted(() => {
     <Grid>
             <template #action="{ row }">
               <ElButton type="primary" link @click="handleEditRow(row)">
-                编辑
+                认证
               </ElButton>
             </template>
           </Grid>

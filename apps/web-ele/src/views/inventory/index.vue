@@ -7,9 +7,8 @@ import { useRouter } from 'vue-router';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
+import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 
-import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
 
@@ -36,10 +35,10 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
     { field: 'package', title: '包装' },
-    { field: 'createTime', title: '出货日期', },
-    { field: 'customer', title: '出货客户', },
-    { field: 'contact', title: '联络人', },
-    { field: 'address', title: '地址', },
+    { field: 'createTime', title: '出货日期' },
+    { field: 'customer', title: '出货客户' },
+    { field: 'contact', title: '联络人' },
+    { field: 'address', title: '地址' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -91,16 +90,15 @@ const formOptions: VbenFormProps = {
       component: 'Select',
       fieldName: 'type',
       label: '出货类型',
-      componentProps:{
+      componentProps: {
         options: [
           { label: '租赁', value: '1' },
           { label: '购买', value: '2' },
           { label: '出库', value: '3' },
           { label: '回收', value: '4' },
         ],
-      }
+      },
     },
-
   ],
   // 控制表单是否显示折叠按钮
   showCollapseButton: true,
@@ -119,7 +117,7 @@ const loadList = (size = 200) => {
       dataList.value.push({
         id: 10_000 + i,
         createTime: '2025-01-03',
-        category: '00002' + i,
+        category: `00002${i}`,
         package: 'DR200',
         customer: '张三',
         contact: '李四',
@@ -135,45 +133,44 @@ const loadList = (size = 200) => {
 
 // 新增
 const handleAdd = () => {
-  handleSetData({},'新增');
+  handleSetData({}, '新增');
 };
-// 编辑
-function handleEditRow(row: RowType) {
-  ElMessage.warning('功能待开发！')
+// 明细
+function handleViewRow(row: RowType) {
+  handleSetData(row, '明细');
 }
-
+function handleExportRow(row: RowType) {
+  ElMessage.warning('功能待开发！');
+}
 
 const handleSetData = (row: RowType, title: string) => {
   drawerApi
     .setData({
       values: { ...row },
-    }).setState({
-      title
+    })
+    .setState({
+      title,
     })
     .open();
 };
-
-import { ElMessageBox } from 'element-plus';
 const handleDeleteRow = (row: RowType) => {
-  ElMessageBox.confirm(
-    '此操作将永久删除该条记录, 是否继续?',
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(() => {
-    // Perform delete operation here
-    // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
-    // if (index !== -1) {
-    //   dataList.value.splice(index, 1);
-    //   ElMessage.success('删除成功');
-    // }
-    ElMessage.success('删除成功');
-  }).catch(() => {
-    ElMessage.info('已取消删除');
-  });
+  ElMessageBox.confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      // Perform delete operation here
+      // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
+      // if (index !== -1) {
+      //   dataList.value.splice(index, 1);
+      //   ElMessage.success('删除成功');
+      // }
+      ElMessage.success('删除成功');
+    })
+    .catch(() => {
+      ElMessage.info('已取消删除');
+    });
 };
 
 onMounted(() => {
@@ -183,24 +180,19 @@ onMounted(() => {
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
     <template #extra>
-      <ElButton type="primary" @click="handleAdd()"> 新增 </ElButton>
+      <!-- <ElButton type="primary" @click="handleAdd()"> 新增 </ElButton> -->
       <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
     </template>
     <Grid>
-            <template #status="{ row }">
-              <ElTag :type="row.status ? 'success' : 'danger'">
-                {{ row.status ? '已启用' : '已禁用' }}
-              </ElTag>
-            </template>
-            <template #action="{ row }">
-              <ElButton type="primary" link @click="handleEditRow(row)">
-                导出
-              </ElButton>
-              <!-- <ElButton type="danger" link @click="handleDeleteRow(row)">
-                删除
-              </ElButton> -->
-            </template>
-          </Grid>
+      <template #action="{ row }">
+        <ElButton type="primary" link @click="handleViewRow(row)">
+          明细
+        </ElButton>
+        <ElButton type="primary" link @click="handleExportRow(row)">
+          导出
+        </ElButton>
+      </template>
+    </Grid>
 
     <Drawer />
   </Page>

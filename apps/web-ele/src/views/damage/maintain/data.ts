@@ -1,6 +1,7 @@
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 
 import type { VbenFormSchema } from '#/adapter/form';
+import { damageReasons} from '#/views/dict'
 
 import { $t } from '#/locales';
 
@@ -16,10 +17,45 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'category',
       label: '请扫码损坏品包装编码',
+      labelWidth: 150, // 设置label宽度
       rules: 'required',
     },
-    
-   
+
+  ];
+}
+
+export function useSchemaReason(): VbenFormSchema[] {
+  return [
+    {
+      component: 'Select',
+      formItemClass: 'pb-0',
+      componentProps: {
+        placeholder: '请选择',
+        options: damageReasons,
+      },
+      fieldName: 'reason',
+      label: '请选择损坏原因',
+      labelWidth: 150, // 设置label宽度
+      rules: 'required',
+    },
+    {
+      component:'Input',
+      fieldName: 'remark',
+      
+      componentProps:{
+        type: 'textarea',
+        rows: '3',
+        placeholder: '请输入损坏情况'
+      },
+      label: '',
+      dependencies: {
+        if(values) {
+          return values.reason == '7'; // 通过Dom控制销毁
+        },
+        // 只有指定的字段改变时，才会触发
+        triggerFields: ['reason'],
+      },
+    }
   ];
 }
 

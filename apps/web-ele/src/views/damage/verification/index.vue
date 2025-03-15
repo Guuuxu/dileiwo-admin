@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -10,7 +11,6 @@ import { Page, useVbenDrawer } from '@vben/common-ui';
 import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
-import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
 
 import Edit from './edit.vue';
@@ -118,7 +118,7 @@ const handleAdd = () => {
 };
 // 编辑
 function handleEditRow(row: RowType) {
-  // handleSetData(row,'验证');
+  handleSetData(row,'验证');
 }
 // 详情
 const handleViewRow = (row: RowType) => {
