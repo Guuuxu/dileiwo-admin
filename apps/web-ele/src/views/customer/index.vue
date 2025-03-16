@@ -26,7 +26,7 @@ interface RowType {
   id: number;
   createTime: string;
   package: string;
-  customer: string;
+  person: string;
   contact: string;
   address: string;
 }
@@ -35,9 +35,9 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
-    { field: 'name', title: '客户名称' },
-    { field: 'createTime', title: '登记注册号', },
-    { field: 'customer', title: '法定代表人', },
+    { field: 'customer', title: '客户名称' },
+    { field: 'code', title: '登记注册号', },
+    { field: 'person', title: '法定代表人', },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -79,23 +79,8 @@ const formOptions: VbenFormProps = {
       component: 'Input',
       fieldName: 'customer',
       label: '客户',
-    },
-    {
-      component: 'Input',
-      fieldName: 'customer',
-      label: '出库单号',
-    },
-    {
-      component: 'Select',
-      fieldName: 'type',
-      label: '出货类型',
-      componentProps:{
-        options: [
-          { label: '租赁', value: '1' },
-          { label: '购买', value: '2' },
-          { label: '出库', value: '3' },
-          { label: '回收', value: '4' },
-        ],
+      componentProps: {
+        placeholder: '请输入客户名称、客户编号'
       }
     },
 
@@ -117,11 +102,17 @@ const loadList = (size = 200) => {
       dataList.value.push({
         id: 10_000 + i,
         createTime: '2025-01-03',
-        category: '00002' + i,
-        package: 'DR200',
-        name: '张三',
-        customer: '李四',
+        customer:'长吉有限公司',
+        code: '00002' + i,
+        tel: '020-99290029',
+        phone: '13500000000',
+        contact: '张三',
+        person: '李四',
         address: '江苏',
+        contactAddress: '中山路1号',
+        consignee: '刘京东',
+        consigneePhone:'13899999999',
+        consigneeAddress: '钟楼'
       });
     }
     // gridApi.setGridOptions({ data: dataList });
@@ -158,8 +149,8 @@ const handleSetData = (row: RowType, title: string) => {
 import { ElMessageBox } from 'element-plus';
 const handleDeleteRow = (row: RowType) => {
   ElMessageBox.confirm(
-    '此操作将永久删除该条记录, 是否继续?',
-    '提示',
+    '请注意，若删除后，该客户数据将一并从系统内删除',
+    '请确认是否删除此客户',
     {
       confirmButtonText: '确定',
       cancelButtonText: '取消',

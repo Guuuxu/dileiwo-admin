@@ -18,18 +18,94 @@ export function useSchema(): VbenFormSchema[] {
       label: '客户',
       rules: 'required',
     },
-    
     {
-      component: 'Select',
+      component: 'Input',
       componentProps: {
-        placeholder: '请选择',
-        options: [
-          { label: '租赁', value: '1' },
-          { label: '购买', value: '2' },
-        ],
+        placeholder: '请输入',
       },
-      fieldName: 'type',
-      label: '出货类型',
+      fieldName: 'code',
+      label: '登记注册号',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'person',
+      label: '法定代表人',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'tel',
+      label: '公司电话',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'contact',
+      label: '联络人',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'phone',
+      label: '联络手机',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'address',
+      label: '注册地址',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'contactAddress',
+      label: '联络地址',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'consignee',
+      label: '收货人',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'consigneePhone',
+      label: '收货手机',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'consigneeAddress',
+      label: '收货地址',
       rules: 'required',
     },
   ];

@@ -1,14 +1,9 @@
-import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
-
 import type { VbenFormSchema } from '#/adapter/form';
-
-import { $t } from '#/locales';
-
 
 // 输入确认
 const handleEnterInput = () => {
-  console.log('handleEnterInput','确认了')
-}
+  console.log('handleEnterInput', '确认了');
+};
 /**
  * 获取编辑表单的字段配置。如果没有使用多语言，可以直接export一个数组常量
  */
@@ -18,11 +13,11 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
-        onKeyup(e:any){
+        onKeyup(e: any) {
           if (e.key === 'Enter') {
             handleEnterInput();
           }
-        }
+        },
       },
       fieldName: 'codeRange',
       label: '请扫描包装编码',

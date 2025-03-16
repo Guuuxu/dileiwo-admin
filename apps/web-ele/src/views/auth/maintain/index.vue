@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
+import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -129,7 +129,7 @@ const loadList = (size = 200) => {
       dataList.value.push({
         id: 10_000 + i,
         createTime: '2025-01-03',
-        category: '00002' + i,
+        category: `00002${i}`,
         user: '张三',
         codeRange: '1 - 10002',
         remark: '备注一下',
@@ -165,8 +165,6 @@ const handleSetData = (row: RowType, title: string) => {
     })
     .open();
 };
-
-import { ElMessageBox } from 'element-plus';
 const handleDeleteRow = (row: RowType) => {
   ElMessageBox.confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
     confirmButtonText: '确定',

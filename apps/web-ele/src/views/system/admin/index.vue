@@ -88,25 +88,9 @@ const [Form, formApi] = useVbenForm({
       label: '角色',
       componentProps: {
         options: [
-          { label: '全部', value: 0 },
-          { label: '超级管理员', value: 1 },
-          { label: '考核官', value: 2 },
-          { label: '财务', value: 3 },
-          { label: '客服', value: 4 },
-        ],
-      },
-    },
-    {
-      component: 'Select',
-      fieldName: 'status',
-      label: '状态',
-      componentProps: {
-        placeholder: '请选择',
-        clearable: true,
-        options: [
-          { label: '全部', value: 0 },
-          { label: '已启用', value: 1 },
-          { label: '已禁用', value: 2 },
+        { label: '管理员', value: 1 },
+          { label: '操作员', value: 2 },
+          { label: '代工厂', value: 3 },
         ],
       },
     },
@@ -126,6 +110,8 @@ interface RowType extends AdminInfo {
   id: number;
   creatTime: string;
   status: number;
+  name: string;
+  phone: string;
   role: string;
 }
 const dataList: any = ref([]);
@@ -133,10 +119,9 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'id', title: 'ID' },
-    { field: 'realName', title: '昵称' },
+    { field: 'name', title: '姓名' },
     { field: 'role', title: '角色' },
     { field: 'phone', title: '手机号' },
-    { field: 'email', title: '邮箱' },
     { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -179,11 +164,10 @@ const loadList = (size = 200) => {
       dataList.value.push({
         id: 10_000 + i,
         createTime: '2025-01-03',
-        realName: '张三',
+        name: '张三',
         role: '超级管理员',
         status: 1,
         phone: '13800138000',
-        email: '55556@game.com',
         remark: '备注一下',
       });
     }

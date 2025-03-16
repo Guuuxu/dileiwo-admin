@@ -1,9 +1,6 @@
-import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
-
 import type { VbenFormSchema } from '#/adapter/form';
-import { damageReasons} from '#/views/dict'
 
-import { $t } from '#/locales';
+import { damageReasons } from '#/views/dict';
 
 /**
  * 获取编辑表单的字段配置。如果没有使用多语言，可以直接export一个数组常量
@@ -20,7 +17,6 @@ export function useSchema(): VbenFormSchema[] {
       labelWidth: 150, // 设置label宽度
       rules: 'required',
     },
-
   ];
 }
 
@@ -39,13 +35,13 @@ export function useSchemaReason(): VbenFormSchema[] {
       rules: 'required',
     },
     {
-      component:'Input',
+      component: 'Input',
       fieldName: 'remark',
-      
-      componentProps:{
+
+      componentProps: {
         type: 'textarea',
         rows: '3',
-        placeholder: '请输入损坏情况'
+        placeholder: '请输入损坏情况',
       },
       label: '',
       dependencies: {
@@ -55,7 +51,7 @@ export function useSchemaReason(): VbenFormSchema[] {
         // 只有指定的字段改变时，才会触发
         triggerFields: ['reason'],
       },
-    }
+    },
   ];
 }
 

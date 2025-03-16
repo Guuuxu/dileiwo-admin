@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { ElTabs, ElTabPane, ElCard, ElRow, ElCol } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
+
+import { useSchema } from './data';
 
 defineOptions({
   name: 'FormDrawer',
@@ -13,8 +13,6 @@ const [BaseForm, BaseFormApi] = useVbenForm({
   schema: useSchema(),
   showDefaultActions: false,
 });
-
-import { useSchema } from './data';
 
 const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
@@ -44,8 +42,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
 });
 // 输入确认
 const handleEnterInput = () => {
-  console.log('handleEnterInput','确认了')
-}
+  console.log('handleEnterInput', '确认了');
+};
 </script>
 <template>
   <Drawer>

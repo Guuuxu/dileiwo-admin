@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import { useVbenDrawer } from '@vben/common-ui';
+import { useVbenDrawer, VbenButton } from '@vben/common-ui';
 
-import { ElTabs, ElTabPane, ElCard, ElRow, ElCol } from 'element-plus';
+import { ElInput } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 
 defineOptions({
@@ -36,10 +36,24 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   title: '详情',
 });
+const handleSend = ()=>{
+
+}
 </script>
 <template>
   <Drawer>
-    <BaseForm />
+    <BaseForm>
+      
+      <template #phone="slotProps">
+            <ElInput v-bind="slotProps">
+              <template #append>
+                <span class="cursor-pointer" @click="handleSend">发送</span>
+
+      </template>
+            </ElInput>
+            
+          </template>
+    </BaseForm>
   </Drawer>
 </template>
 <style lang="scss" scoped>

@@ -21,6 +21,7 @@ const [BaseForm, BaseFormApi] = useVbenForm({
 
 const [Drawer, drawerApi] = useVbenDrawer({
   class: 'w-[700px]',
+  confirmText:'导出',
   onCancel() {
     drawerApi.close();
   },
@@ -34,12 +35,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
       if (values) {
         BaseFormApi.setValues({
           ...values,
-          itemIcon: [
-            {
-              name: 'logo-custom.png',
-              url: 'https://egclub.nyc3.digitaloceanspaces.com/production/images/services/gift.png',
-            },
-          ],
         });
       }
     }

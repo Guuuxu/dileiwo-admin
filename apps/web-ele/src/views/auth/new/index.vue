@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
+import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -60,7 +60,7 @@ interface RowType {
   totalNum: string;
   status: number;
   codeRange: string;
-  remark: string
+  remark: string;
 }
 const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
@@ -69,8 +69,8 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'authNum', title: '已认证' },
     { field: 'totalNum', title: '总数量' },
     { field: 'createTime', title: '最新认证日期' },
-    { field: 'codeRange', title: '编码范围', },
-    { field: 'remark', title: '备注', },
+    { field: 'codeRange', title: '编码范围' },
+    { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -113,8 +113,6 @@ const formOptions: VbenFormProps = {
       fieldName: 'category',
       label: '型号',
     },
-    
-
   ],
   // 控制表单是否显示折叠按钮
   showCollapseButton: true,
@@ -148,44 +146,41 @@ const loadList = (size = 200) => {
 
 // 编辑
 function handleEditRow(row: RowType) {
-  handleSetData(row,'认证');
+  handleSetData(row, '认证');
 }
 // 详情
 const handleViewRow = (row: RowType) => {
-  handleSetData(row,'详情');
+  handleSetData(row, '详情');
 };
 
 const handleSetData = (row: RowType, title: string) => {
   drawerApi
     .setData({
       values: { ...row },
-    }).setState({
-      title
+    })
+    .setState({
+      title,
     })
     .open();
 };
-
-import { ElMessageBox } from 'element-plus';
 const handleDeleteRow = (row: RowType) => {
-  ElMessageBox.confirm(
-    '此操作将永久删除该条记录, 是否继续?',
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(() => {
-    // Perform delete operation here
-    // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
-    // if (index !== -1) {
-    //   dataList.value.splice(index, 1);
-    //   ElMessage.success('删除成功');
-    // }
-    ElMessage.success('删除成功');
-  }).catch(() => {
-    ElMessage.info('已取消删除');
-  });
+  ElMessageBox.confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      // Perform delete operation here
+      // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
+      // if (index !== -1) {
+      //   dataList.value.splice(index, 1);
+      //   ElMessage.success('删除成功');
+      // }
+      ElMessage.success('删除成功');
+    })
+    .catch(() => {
+      ElMessage.info('已取消删除');
+    });
 };
 
 onMounted(() => {
@@ -198,12 +193,12 @@ onMounted(() => {
       <!-- <ElButton type="primary" @click="handleAdd()"> 新增 </ElButton> -->
     </template>
     <Grid>
-            <template #action="{ row }">
-              <ElButton type="primary" link @click="handleEditRow(row)">
-                认证
-              </ElButton>
-            </template>
-          </Grid>
+      <template #action="{ row }">
+        <ElButton type="primary" link @click="handleEditRow(row)">
+          认证
+        </ElButton>
+      </template>
+    </Grid>
 
     <Drawer />
   </Page>
