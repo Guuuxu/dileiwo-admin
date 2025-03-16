@@ -1,7 +1,5 @@
 ```bash
-cd vue-vben-admin
-
-corepack enable
+cd deleiwo-admin
 
 pnpm install
 ```

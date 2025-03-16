@@ -79,7 +79,7 @@ const [Form, formApi] = useVbenForm({
       fieldName: 'name',
       label: '用户',
       componentProps: {
-        placeholder: '请输入用户ID/昵称/手机号/邮箱',
+        placeholder: '请输入用户ID/昵称/手机号',
       },
     },
     {
