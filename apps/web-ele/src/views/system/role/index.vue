@@ -6,6 +6,7 @@
     </template>
     <ElCard>
       <template #default>
+        <ElInput ref="inputRef" placeholder="自动聚焦的输入框" />
         <Form>
           <template #reset-before>
             <ElButton type="primary" @click="handleSearch">搜索</ElButton>
@@ -35,10 +36,12 @@ const [Drawer, drawerApi] = useVbenDrawer({
   connectedComponent: Edit,
 });
 
-import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
+import { ElButton, ElCard, ElMessage, ElTag,ElInput } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { $t } from '#/locales';
+// 创建 ref 引用
+const inputRef = ref(null);
 
 const router = useRouter();
 const [Form, formApi] = useVbenForm({
@@ -171,5 +174,8 @@ const handleDeleteRow = (row?: {}) => {
 
 onMounted(() => {
   loadList(2);
+  if (inputRef.value) {
+    inputRef.value.focus();
+  }
 });
 </script>

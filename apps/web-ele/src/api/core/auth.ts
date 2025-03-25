@@ -49,3 +49,15 @@ export async function logoutApi() {
 export async function getAccessCodesApi() {
   return requestClient.get<string[]>('/auth/codes');
 }
+
+/**
+ * 获取认证列表
+ * @param params 查询参数
+ */
+export async function getAuthListApi(params: Record<string, any>) {
+  return requestClient.get<string[]>('/auth/list', { params });
+}
+
+export async function handleScan(data: any) {
+  return requestClient.post<any>('/admin/bound/inbound/scan', data);
+}
