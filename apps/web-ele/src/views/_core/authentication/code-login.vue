@@ -5,9 +5,11 @@ import type { Recordable } from '@vben/types';
 import { computed, ref } from 'vue';
 
 import { AuthenticationCodeLogin, z } from '@vben/common-ui';
+import { useAuthStore } from '#/store';
 import { $t } from '@vben/locales';
 
 defineOptions({ name: 'CodeLogin' });
+const authStore = useAuthStore();
 
 const loading = ref(false);
 const CODE_LENGTH = 6;
@@ -21,6 +23,7 @@ const formSchema = computed((): VbenFormSchema[] => {
       },
       fieldName: 'phoneNumber',
       label: $t('authentication.mobile'),
+      defaultValue: '13800138000',
       rules: z
         .string()
         .min(1, { message: $t('authentication.mobileTip') })
@@ -57,13 +60,14 @@ const formSchema = computed((): VbenFormSchema[] => {
 async function handleLogin(values: Recordable<any>) {
   // eslint-disable-next-line no-console
   console.log(values);
+
 }
 </script>
 
 <template>
   <AuthenticationCodeLogin
     :form-schema="formSchema"
-    :loading="loading"
-    @submit="handleLogin"
+    :loading="authStore.loginLoading"
+    @submit="authStore.authLogin"
   />
 </template>

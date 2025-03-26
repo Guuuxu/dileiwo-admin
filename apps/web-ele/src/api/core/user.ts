@@ -8,3 +8,31 @@ import { requestClient } from '#/api/request';
 export async function getUserInfoApi() {
   return requestClient.get<UserInfo>('/user/info');
 }
+
+/**
+ * 获取管理员用户列表
+ */
+export async function getAdminUserListApi() {
+  return requestClient.get<UserInfo[]>('/admin/system');
+}
+
+/**
+ * 获取管理员详情
+ */
+export async function getAdminUserDetailApi(userId: string) {
+  return requestClient.get<UserInfo>(`/admin/system/${userId}`);
+}
+
+/**
+ * 新增管理员用户
+ */
+export async function addAdminUserApi(userData: Partial<UserInfo>) {
+  return requestClient.post('/admin/system', userData);
+}
+
+/**
+ * 删除管理员用户
+ */
+export async function deleteAdminUserApi(userId: string) {
+  return requestClient.post(`/admin/system/${userId}/delete`);
+}

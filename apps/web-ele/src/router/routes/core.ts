@@ -48,19 +48,19 @@ const coreRoutes: RouteRecordRaw[] = [
     redirect: LOGIN_PATH,
     children: [
       {
-        name: 'Login',
-        path: 'login',
-        component: Login,
-        meta: {
-          title: $t('page.auth.login'),
-        },
-      },
-      {
         name: 'CodeLogin',
         path: 'code-login',
         component: () => import('#/views/_core/authentication/code-login.vue'),
         meta: {
           title: $t('page.auth.codeLogin'),
+        },
+      },
+      {
+        name: 'Login',
+        path: 'login',
+        component: Login,
+        meta: {
+          title: $t('page.auth.login'),
         },
       },
       {
