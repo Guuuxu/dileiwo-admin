@@ -7,6 +7,7 @@ import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
 import { useSchema, useSchemaReason } from './data';
+import { scanRepair,updateRepair } from '#/api';
 
 defineOptions({
   name: 'FormDrawer',
@@ -23,16 +24,29 @@ const [BaseForm2, BaseFormApi2] = useVbenForm({
   layout: 'vertical',
   showDefaultActions: false,
 });
-
+const detail = ref({})
 const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
     drawerApi.close();
   },
   onConfirm: async () => {
     if (step.value === '0') {
-      await BaseFormApi.submitForm();
+      const {valid} = await BaseFormApi.validate();
+      if (valid) {
+        const values = await BaseFormApi.getValues();
+        console.log(values)
+         const res = await scanRepair(values)
+         detail.value = res.data
+      }
+      
       step.value = '1';
     } else {
+      const values = await BaseFormApi2.getValues();
+      updateRepair({
+        model_detail_id: detail.value.id,
+        broken_reason: values.reason,
+        reason: values.remark,
+      })
       drawerApi.close();
     }
   },
@@ -81,7 +95,7 @@ const gridOptions: VxeGridProps<RowType> = {
   //     query: async ({ page }) => {
   //       return await getExampleTableApi({
   //         page: page.currentPage,
-  //         pageSize: page.pageSize,
+  //         per_page: page.pageSize,
   //       });
   //     },
   //   },

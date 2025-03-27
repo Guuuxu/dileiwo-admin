@@ -12,7 +12,7 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-
+import { getInventoryList,deleteDelivery,exportData } from '#/api';
 import Edit from './edit.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -92,16 +92,17 @@ const gridOptions: VxeGridProps<RowType> = {
     trigger: 'click',
   },
   pagerConfig: {},
-  // proxyConfig: {
-  //   ajax: {
-  //     query: async ({ page }) => {
-  //       return await getExampleTableApi({
-  //         page: page.currentPage,
-  //         pageSize: page.pageSize,
-  //       });
-  //     },
-  //   },
-  // },
+  proxyConfig: {
+    ajax: {
+      query: async ({ page },formValues) => {
+        return await getInventoryList({
+          page: page.currentPage,
+          per_page: page.pageSize,
+          ...formValues,
+        });
+      },
+    },
+  },
 };
 const formOptions: VbenFormProps = {
   // 默认展开
@@ -140,27 +141,6 @@ const formOptions: VbenFormProps = {
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        createTime: '2025-01-03',
-        category: '00002' + i,
-        amount: '200',
-        days: '30',
-        times: '5',
-        remark: '备注一下',
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
-};
 
 // 新增
 const handleAdd = () => {
@@ -193,21 +173,25 @@ const handleDeleteRow = (row: RowType) => {
       type: 'warning',
     }
   ).then(() => {
-    // Perform delete operation here
-    // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
-    // if (index !== -1) {
-    //   dataList.value.splice(index, 1);
-    //   ElMessage.success('删除成功');
-    // }
-    ElMessage.success('删除成功');
+    deleteDelivery(row.id).then((res) => {
+      const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
+      if (index !== -1) {
+        dataList.value.splice(index, 1);
+        ElMessage.success('删除成功');
+      }
+    })
+    
   }).catch(() => {
     ElMessage.info('已取消删除');
   });
 };
+const handleExport = async (row: RowType) => {
+  await exportData(row.id).then((res) => {
+    ElMessage.success('导出成功');
+  })
+}
 
-onMounted(() => {
-  loadList(6);
-});
+
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
@@ -222,7 +206,7 @@ onMounted(() => {
               </ElTag>
             </template>
             <template #action="{ row }">
-              <ElButton type="primary" link @click="handleEditRow(row)">
+              <ElButton type="primary" link @click="handleExport(row)">
                 下载
               </ElButton>
               <ElButton type="danger" link @click="handleDeleteRow(row)">

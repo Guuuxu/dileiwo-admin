@@ -12,7 +12,7 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-
+import { getRepairList,sendRepair } from '#/api';
 import Edit from './edit.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -90,16 +90,18 @@ const gridOptions: VxeGridProps<RowType> = {
     trigger: 'click',
   },
   pagerConfig: {},
-  // proxyConfig: {
-  //   ajax: {
-  //     query: async ({ page }) => {
-  //       return await getExampleTableApi({
-  //         page: page.currentPage,
-  //         pageSize: page.pageSize,
-  //       });
-  //     },
-  //   },
-  // },
+  proxyConfig: {
+    ajax: {
+      query: async ({ page },formValues) => {
+        return await getRepairList({
+          page: page.currentPage,
+          per_page: page.pageSize,
+          ...formValues,
+          
+        });
+      },
+    },
+  },
 };
 const formOptions: VbenFormProps = {
   // 默认展开

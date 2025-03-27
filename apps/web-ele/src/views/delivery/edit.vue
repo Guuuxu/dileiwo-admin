@@ -2,8 +2,9 @@
 import { ref, onMounted } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { ElTabs, ElTabPane, ElCard, ElRow, ElCol } from 'element-plus';
+import {  ElMessage } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
+import {updateDelivery, } from '#/api';
 
 defineOptions({
   name: 'FormDrawer',
@@ -13,29 +14,33 @@ const [BaseForm, BaseFormApi] = useVbenForm({
   schema: useSchema(),
   showDefaultActions: false,
 });
-
+// 定义自定义事件
+const emits = defineEmits(['onUpdated']);
 import { useSchema } from './data';
-
+const id = ref('')
 const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
     drawerApi.close();
   },
   onConfirm: async () => {
-    await BaseFormApi.submitForm();
-    drawerApi.close();
+    const {valid} = await BaseFormApi.validate();
+    if(valid){
+      const params = await BaseFormApi.getValues();
+      params.id = id.value;
+      const res = await updateDelivery(params);
+      ElMessage.success('操作成功');
+      // 触发自定义事件通知父组件
+      emits('onUpdated', params);
+      drawerApi.close();
+    }
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
       const { values } = drawerApi.getData<Record<string, any>>();
       if (values) {
+        id.value = values.id;
         BaseFormApi.setValues({
           ...values,
-          itemIcon: [
-            {
-              name: 'logo-custom.png',
-              url: 'https://egclub.nyc3.digitaloceanspaces.com/production/images/services/gift.png',
-            },
-          ],
         });
       }
     }

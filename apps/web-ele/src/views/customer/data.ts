@@ -14,7 +14,7 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'customer',
+      fieldName: 'name',
       label: '客户',
       rules: 'required',
     },
@@ -32,7 +32,7 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'person',
+      fieldName: 'law_person',
       label: '法定代表人',
       rules: 'required',
     },
@@ -41,62 +41,77 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'tel',
-      label: '公司电话',
-      rules: 'required',
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
-      fieldName: 'contact',
-      label: '联络人',
-      rules: 'required',
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
       fieldName: 'phone',
+      label: '公司电话',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'link_person',
+      label: '联络人',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'link_phone',
       label: '联络手机',
-      rules: 'required',
     },
     {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'address',
+      fieldName: 'register_address',
       label: '注册地址',
-      rules: 'required',
     },
     {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'contactAddress',
+      fieldName: 'link_address',
       label: '联络地址',
-      rules: 'required',
     },
     {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'consignee',
+      fieldName: 'receive_person',
       label: '收货人',
-      rules: 'required',
     },
     {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'consigneePhone',
+      fieldName: 'receive_phone',
       label: '收货手机',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'receive_address',
+      label: '收货地址',
+    },
+  ];
+}
+
+export function metricCol(): VbenFormSchema[] {
+  return [
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'name',
+      label: '型号',
       rules: 'required',
     },
     {
@@ -104,8 +119,34 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'consigneeAddress',
-      label: '收货地址',
+      fieldName: 'code',
+      label: '数量',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'law_person',
+      label: '累计循环次数',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'law_person',
+      label: '累计循环比率',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'law_person',
+      label: '循环次数调整次量',
       rules: 'required',
     },
   ];

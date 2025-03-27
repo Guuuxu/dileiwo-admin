@@ -8,10 +8,10 @@ import { useRouter } from 'vue-router';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
 import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
-
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
+import { getProductList,deleteProduct } from '#/api';
 
 import Edit from './edit.vue';
 
@@ -65,9 +65,9 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'category', title: '型号' },
+    { field: 'type_name', title: '规格名称' },
     { field: 'amount', title: '数量' },
-    { field: 'codeRange', title: '编码范围', },
+    { field: 'start_no', title: '编码范围', },
     { field: 'remark', title: '备注', },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
@@ -90,16 +90,18 @@ const gridOptions: VxeGridProps<RowType> = {
     trigger: 'click',
   },
   pagerConfig: {},
-  // proxyConfig: {
-  //   ajax: {
-  //     query: async ({ page }) => {
-  //       return await getExampleTableApi({
-  //         page: page.currentPage,
-  //         pageSize: page.pageSize,
-  //       });
-  //     },
-  //   },
-  // },
+  proxyConfig: {
+    ajax: {
+      query: async ({ page },formValues) => {
+        const res = await getProductList({
+          page: page.currentPage,
+          per_page: page.pageSize,
+          ...formValues
+        });
+        return res
+      },
+    },
+  },
 };
 const formOptions: VbenFormProps = {
   // 默认展开
@@ -123,25 +125,8 @@ const formOptions: VbenFormProps = {
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        createTime: '2025-01-03',
-        category: '00002' + i,
-        amount: (i +1) * 5,
-        codeRange: '1 - 10002',
-        remark: '备注一下',
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
+const handleProductUpdated = (values: any) => {
+  gridApi.reload();
 };
 
 // 新增
@@ -178,21 +163,21 @@ const handleDeleteRow = (row: RowType) => {
       type: 'warning',
     }
   ).then(() => {
-    // Perform delete operation here
-    // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
-    // if (index !== -1) {
-    //   dataList.value.splice(index, 1);
-    //   ElMessage.success('删除成功');
-    // }
-    ElMessage.success('删除成功');
+    
+    deleteProduct(row.id).then((res) => {
+      const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
+    if (index !== -1) {
+      dataList.value.splice(index, 1);
+      ElMessage.success('删除成功');
+    }
+    })
+    
   }).catch(() => {
     ElMessage.info('已取消删除');
   });
 };
 
-onMounted(() => {
-  loadList(6);
-});
+
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
@@ -216,6 +201,6 @@ onMounted(() => {
             </template>
           </Grid>
 
-    <Drawer />
+    <Drawer @productUpdated="handleProductUpdated"/>
   </Page>
 </template>

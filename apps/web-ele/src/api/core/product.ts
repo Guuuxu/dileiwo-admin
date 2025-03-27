@@ -1,4 +1,5 @@
 import { baseRequestClient, requestClient } from '#/api/request';
+import type { RequestClientConfig } from '@vben/request';
 interface ProductInfo {
   data: {
     id: number;
@@ -10,6 +11,10 @@ interface ProductInfo {
   };
   msg: string;
   status: number;
+}
+interface page {
+  page: number;
+  per_page: number;
 }
 /**
  * 新增、编辑产品
@@ -24,8 +29,8 @@ export async function updateProduct(data: ProductInfo['data']) {
  * 获取产品列表
  * @returns
  */
-export async function getProductList() {
-  return requestClient.get<ProductInfo[]>('/admin/model/list');
+export async function getProductList(params: RequestClientConfig | undefined) {
+  return requestClient.get<ProductInfo[]>('/admin/model/list',params);
 }
 
 /**
@@ -42,6 +47,6 @@ export async function getProductDetail(model: number) {
  * @param id
  * @returns
  */
-export async function deleteProduct(data: { id: number }) {
-  return requestClient.post(`/admin/model/delete/`, data);
+export async function deleteProduct(id: number) {
+  return requestClient.post(`/admin/model/${id}/delete/`,);
 }

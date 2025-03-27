@@ -47,7 +47,8 @@ export async function logoutApi() {
  * 获取用户权限码
  */
 export async function getAccessCodesApi() {
-  return requestClient.get<string[]>('/auth/codes');
+  // return requestClient.get<string[]>('/auth/codes');
+  return []
 }
 
 /**
@@ -55,7 +56,7 @@ export async function getAccessCodesApi() {
  * @param params 查询参数
  */
 export async function getAuthListApi(params: Record<string, any>) {
-  return requestClient.get<string[]>('/auth/list', { params });
+  return requestClient.get<string[]>('/admin/bound/inbound', { params });
 }
 
 export async function handleScan(data: any) {

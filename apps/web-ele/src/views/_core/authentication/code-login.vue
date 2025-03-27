@@ -21,9 +21,9 @@ const formSchema = computed((): VbenFormSchema[] => {
       componentProps: {
         placeholder: $t('authentication.mobile'),
       },
-      fieldName: 'phoneNumber',
+      fieldName: 'phone',
       label: $t('authentication.mobile'),
-      defaultValue: '13800138000',
+      defaultValue: '13800000000',
       rules: z
         .string()
         .min(1, { message: $t('authentication.mobileTip') })
@@ -42,6 +42,18 @@ const formSchema = computed((): VbenFormSchema[] => {
               : $t('authentication.sendCode');
           return text;
         },
+        handleSendCode: async () => {
+          // 模拟发送验证码
+          // Simulate sending verification code
+          loading.value = true;
+          await new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(true);
+            }, 2000);
+          });
+          loading.value = false;
+        },
+        defaultValue: '123456',
         placeholder: $t('authentication.code'),
       },
       fieldName: 'code',

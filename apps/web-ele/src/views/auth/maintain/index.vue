@@ -12,6 +12,7 @@ import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
+import { getAuthListApi } from '#/api';
 
 import Edit from './edit.vue';
 
@@ -90,16 +91,18 @@ const gridOptions: VxeGridProps<RowType> = {
     trigger: 'click',
   },
   pagerConfig: {},
-  // proxyConfig: {
-  //   ajax: {
-  //     query: async ({ page }) => {
-  //       return await getExampleTableApi({
-  //         page: page.currentPage,
-  //         pageSize: page.pageSize,
-  //       });
-  //     },
-  //   },
-  // },
+  proxyConfig: {
+    ajax: {
+      query: async ({ page },formValues) => {
+         const {new_list} = await getAuthListApi({
+          page: page.currentPage,
+          per_page: page.pageSize,
+          ...formValues,
+        });
+        return new_list
+      },
+    },
+  },
 };
 const formOptions: VbenFormProps = {
   // 默认展开
@@ -186,7 +189,7 @@ const handleDeleteRow = (row: RowType) => {
 };
 
 onMounted(() => {
-  loadList(6);
+  // loadList(6);
 });
 </script>
 <template>

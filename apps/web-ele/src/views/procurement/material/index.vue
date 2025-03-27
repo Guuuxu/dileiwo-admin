@@ -62,7 +62,7 @@ const gridOptions: VxeGridProps<RowType> = {
       query: async ({ page }, formValues) => {
         return await getExampleTableApi({
           page: page.currentPage,
-          pageSize: page.pageSize,
+          per_page: page.pageSize,
           ...formValues,
         });
       },

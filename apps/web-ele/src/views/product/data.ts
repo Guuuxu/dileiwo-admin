@@ -1,7 +1,7 @@
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 
 import type { VbenFormSchema } from '#/adapter/form';
-
+import {  z } from '#/adapter/form';
 import { $t } from '#/locales';
 
 /**
@@ -14,8 +14,8 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'category',
-      label: '型号',
+      fieldName: 'type_name',
+      label: '规格名称',
       rules: 'required',
     },
     
@@ -23,6 +23,7 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
+        type: 'number',
       },
       fieldName: 'amount',
       label: '数量',
@@ -32,9 +33,21 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
+        type: 'number',
+        min: 0,
       },
-      fieldName: 'codeRange',
-      label: '编码范围',
+      fieldName: 'start_no',
+      label: '起始编号',
+      rules: z.string().max(8, { message: '最多输入8位' })
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'month_limit',
+      label: '每月数量',
+      rules: 'required',
     },
     {
       component: 'Input',

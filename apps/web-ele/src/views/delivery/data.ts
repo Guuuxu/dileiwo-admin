@@ -14,7 +14,7 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'customer',
+      fieldName: 'client_id',
       label: '客户',
       rules: 'required',
     },
@@ -32,6 +32,29 @@ export function useSchema(): VbenFormSchema[] {
       label: '出货类型',
       rules: 'required',
     },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'during',
+      rules: 'required',
+      label: '租赁天数',
+      dependencies:{
+        show(values) {
+          return values.type == '1';
+        },
+        triggerFields: ['type'],
+      }
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+      },
+      fieldName: 'remark',
+      label: '备注',
+    }
   ];
 }
 

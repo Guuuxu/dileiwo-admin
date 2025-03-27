@@ -35,7 +35,7 @@ export function getDeliveryDetails(outbound: string) {
  * @returns 
  */
 export function deleteDelivery(id: number) {
-  return requestClient.delete(`/admin/bound/outbound/delete/${id}`);
+  return requestClient.post(`/admin/bound/outbound/delete/`,{ id});
 }
 
 /**

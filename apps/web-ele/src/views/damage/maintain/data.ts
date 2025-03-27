@@ -12,7 +12,7 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'category',
+      fieldName: 'detail_no',
       label: '请扫描损坏品包装编码',
       labelWidth: 150, // 设置label宽度
       rules: 'required',

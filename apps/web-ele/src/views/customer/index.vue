@@ -11,13 +11,18 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { getCustomerList,deleteCustomer } from '#/api';
 import { $t } from '#/locales';
 
 import Edit from './edit.vue';
+import metric from './metric.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
   connectedComponent: Edit,
 });
+const [Metric, metricApi] = useVbenDrawer({
+  connectedComponent: metric,
+})
 
 const router = useRouter();
 
@@ -25,8 +30,8 @@ const router = useRouter();
 interface RowType {
   id: number;
   createTime: string;
-  package: string;
-  person: string;
+  name: string;
+  law_person: string;
   contact: string;
   address: string;
 }
@@ -35,9 +40,9 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
-    { field: 'customer', title: '客户名称' },
+    { field: 'name', title: '客户名称' },
     { field: 'code', title: '登记注册号', },
-    { field: 'person', title: '法定代表人', },
+    { field: 'law_person', title: '法定代表人', },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -59,16 +64,17 @@ const gridOptions: VxeGridProps<RowType> = {
     trigger: 'click',
   },
   pagerConfig: {},
-  // proxyConfig: {
-  //   ajax: {
-  //     query: async ({ page }) => {
-  //       return await getExampleTableApi({
-  //         page: page.currentPage,
-  //         pageSize: page.pageSize,
-  //       });
-  //     },
-  //   },
-  // },
+  proxyConfig: {
+    ajax: {
+      query: async ({ page },formValues) => {
+        return await getCustomerList({
+          page: page.currentPage,
+          per_page: page.pageSize,
+          ...formValues,
+        });
+      },
+    },
+  },
 };
 const formOptions: VbenFormProps = {
   // 默认展开
@@ -156,22 +162,27 @@ const handleDeleteRow = (row: RowType) => {
       cancelButtonText: '取消',
       type: 'warning',
     }
-  ).then(() => {
+  ).then(async() => {
     // Perform delete operation here
-    // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
-    // if (index !== -1) {
-    //   dataList.value.splice(index, 1);
-    //   ElMessage.success('删除成功');
-    // }
+    await deleteCustomer(row.id)
     ElMessage.success('删除成功');
-  }).catch(() => {
-    ElMessage.info('已取消删除');
-  });
+    gridApi.query()
+    
+  })
 };
+const handleMetricRow = (row: RowType)=>{
+  metricApi
+  .setData({
+     values: {...row },
+   }).setState({
+     title: '指标'
+   }).open()
+}
+const handleUpdate = ()=>{
+  gridApi.reload();
+}
 
-onMounted(() => {
-  loadList(6);
-});
+
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
@@ -189,8 +200,8 @@ onMounted(() => {
               <ElButton type="primary" link @click="handleEditRow(row)">
                 编辑
               </ElButton>
-              <ElButton type="primary" link @click="handleExportRow(row)">
-                明细
+              <ElButton type="primary" link @click="handleMetricRow(row)">
+                指标
               </ElButton>
               <ElButton type="primary" link @click="handleExportRow(row)">
                 导出
@@ -201,6 +212,7 @@ onMounted(() => {
             </template>
           </Grid>
 
-    <Drawer />
+    <Drawer @onUpdated="handleUpdate"/>
+    <Metric/>
   </Page>
 </template>

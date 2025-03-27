@@ -8,6 +8,7 @@ import { baseRequestClient, requestClient } from '#/api/request';
 /** 登录接口返回值 */
  interface LoginResult {
   data:{
+    accessToken: string;
     token: string;
     user: {
       id: string;
@@ -33,4 +34,11 @@ export async function handleLogin(data: LoginParams) {
  */
 export async function sendSmsApi(phone: string) {
   return baseRequestClient.post<{ msg: string; code: number }>('/admin/send-sms', { phone });
+}
+
+/**
+ * 获取用户信息
+ */
+export async function getUserInfo() {
+  return requestClient.get<LoginResult['data']['user']>('/admin/user');
 }

@@ -9,7 +9,7 @@ import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { ElNotification } from 'element-plus';
 import { defineStore } from 'pinia';
 
-import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi,handleLogin } from '#/api';
+import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi,handleLogin,getUserInfo } from '#/api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -32,8 +32,8 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const { accessToken } = await handleLogin(params);
-
+      console.log('params',params)
+      const {accessToken} = await handleLogin(params);
       // 如果成功获取到 accessToken
       if (accessToken) {
         // 将 accessToken 存储到 accessStore 中
@@ -97,7 +97,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchUserInfo() {
     let userInfo: null | UserInfo = null;
-    userInfo = await getUserInfoApi();
+    userInfo = await getUserInfo();
     userStore.setUserInfo(userInfo);
     return userInfo;
   }
