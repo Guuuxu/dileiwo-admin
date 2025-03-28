@@ -30,7 +30,7 @@ export function updateCustomer(customerData: any) {
  * @param {string} customerId - 客户的唯一标识符
  * @returns 
  */
-export function getCustomerMetrics(customerId: number) {
+export function getCustomerMetrics(customerId: number | string) {
   return requestClient.get(`/admin/client/${customerId}/metric`);
 }
 

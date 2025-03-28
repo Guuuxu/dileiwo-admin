@@ -12,7 +12,7 @@ import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getAuthListApi } from '#/api';
+import { getAuthRepairListApi } from '#/api';
 
 import Edit from './edit.vue';
 
@@ -56,7 +56,7 @@ function handleReset() {
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   name: string;
   itemIcon: string;
   status: number;
@@ -94,12 +94,13 @@ const gridOptions: VxeGridProps<RowType> = {
   proxyConfig: {
     ajax: {
       query: async ({ page },formValues) => {
-         const {new_list} = await getAuthListApi({
+         const res = await getAuthRepairListApi({
           page: page.currentPage,
           per_page: page.pageSize,
           ...formValues,
         });
-        return new_list
+        console.log(res);
+        return res
       },
     },
   },
@@ -131,7 +132,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-01-03',
+        created_at: '2025-01-03',
         category: `00002${i}`,
         user: '张三',
         codeRange: '1 - 10002',

@@ -20,7 +20,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '签订日期',
       rules: 'required',
     },
@@ -29,7 +29,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '合同号',
       rules: 'required',
     },
@@ -38,7 +38,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '合同附件编号',
       rules: 'required',
     },
@@ -47,7 +47,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '合同名称',
       rules: 'required',
     },
@@ -56,7 +56,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '客户名称',
       rules: 'required',
     },
@@ -65,7 +65,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '合同金额',
       rules: 'required',
     },
@@ -74,7 +74,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '签约人',
       rules: 'required',
     },
@@ -83,7 +83,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '交货日期',
       rules: 'required',
     },
@@ -92,7 +92,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '合同到期日',
       rules: 'required',
     },
@@ -101,7 +101,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '备注',
       rules: 'required',
     },

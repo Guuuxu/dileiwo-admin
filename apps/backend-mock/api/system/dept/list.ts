@@ -21,7 +21,7 @@ function generateMockDataList(count: number) {
       pid: 0,
       name: faker.commerce.department(),
       status: faker.helpers.arrayElement([0, 1]),
-      createTime: formatterCN.format(
+      created_at: formatterCN.format(
         faker.date.between({ from: '2021-01-01', to: '2022-12-31' }),
       ),
       remark: faker.lorem.sentence(),
@@ -34,7 +34,7 @@ function generateMockDataList(count: number) {
           pid: dataItem.id,
           name: faker.commerce.department(),
           status: faker.helpers.arrayElement([0, 1]),
-          createTime: formatterCN.format(
+          created_at: formatterCN.format(
             faker.date.between({ from: '2023-01-01', to: '2023-12-31' }),
           ),
           remark: faker.lorem.sentence(),

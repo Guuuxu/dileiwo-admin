@@ -11,6 +11,7 @@ import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
+import { getInventoryList, exportInventory } from '#/api';
 
 import Edit from './edit.vue';
 
@@ -23,7 +24,7 @@ const router = useRouter();
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   package: string;
   customer: string;
   contact: string;
@@ -35,7 +36,7 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
     { field: 'package', title: '包装' },
-    { field: 'createTime', title: '出货日期' },
+    { field: 'created_at', title: '出货日期' },
     { field: 'customer', title: '出货客户' },
     { field: 'contact', title: '联络人' },
     { field: 'address', title: '地址' },
@@ -60,16 +61,17 @@ const gridOptions: VxeGridProps<RowType> = {
     trigger: 'click',
   },
   pagerConfig: {},
-  // proxyConfig: {
-  //   ajax: {
-  //     query: async ({ page }) => {
-  //       return await getExampleTableApi({
-  //         page: page.currentPage,
-  //         per_page: page.pageSize,
-  //       });
-  //     },
-  //   },
-  // },
+  proxyConfig: {
+    ajax: {
+      query: async ({ page }, formValues) => {
+        return await getInventoryList({
+          page: page.currentPage,
+          per_page: page.pageSize,
+          ...formValues,
+        });
+      },
+    },
+  },
 };
 const formOptions: VbenFormProps = {
   // 默认展开
@@ -78,7 +80,7 @@ const formOptions: VbenFormProps = {
   schema: [
     {
       component: 'Input',
-      fieldName: 'customer',
+      fieldName: 'client',
       label: '客户',
     },
     {
@@ -88,7 +90,7 @@ const formOptions: VbenFormProps = {
     },
     {
       component: 'Select',
-      fieldName: 'type',
+      fieldName: 'type_name',
       label: '出货类型',
       componentProps: {
         options: [
@@ -116,7 +118,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-01-03',
+        created_at: '2025-01-03',
         category: `00002${i}`,
         package: 'DR200',
         customer: '张三',
@@ -139,7 +141,8 @@ const handleAdd = () => {
 function handleViewRow(row: RowType) {
   handleSetData(row, '明细');
 }
-function handleExportRow(row: RowType) {
+async function handleExportRow(row: RowType) {
+  await exportInventory(row.id);
   ElMessage.warning('功能待开发！');
 }
 

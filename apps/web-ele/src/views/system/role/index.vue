@@ -92,7 +92,7 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'permission', title: '角色描述' },
 
     // { field: 'status', title: '状态', slots: { default: 'status' } },
-    { field: 'createTime', title: '更新时间' },
+    { field: 'created_at', title: '更新时间' },
     {
       field: 'action',
       fixed: 'right',
@@ -133,7 +133,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-01-03',
+        created_at: '2025-01-03',
         name: '管理员',
         permission: 'admin',
         status: 1,

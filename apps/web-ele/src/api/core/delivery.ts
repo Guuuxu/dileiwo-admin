@@ -1,5 +1,9 @@
 import { requestClient } from '#/api/request';
 
+export function getOutboundList(params: Record<string, any>) {
+  return requestClient.get(`/admin/bound/outbound`, {params});
+}
+
 
 /**
  * 新增/编辑包装出库
@@ -8,15 +12,6 @@ import { requestClient } from '#/api/request';
  */
 export function updateDelivery(data: any) {
   return requestClient.post('/admin/bound/outbound/store', data);
-}
-
-/**
- * 获取库存列表
- * @param data - 包含查询条件的对象，类型为任意类型
- * @returns 
- */
-export function getInventoryList(data: any) {
-  return requestClient.get('/admin/bound/inventory', { params: data });
 }
 
 
@@ -35,7 +30,7 @@ export function getDeliveryDetails(outbound: string) {
  * @returns 
  */
 export function deleteDelivery(id: number) {
-  return requestClient.post(`/admin/bound/outbound/delete/`,{ id});
+  return requestClient.post(`/admin/bound/outbound/${id}/delete/`);
 }
 
 /**
@@ -43,8 +38,8 @@ export function deleteDelivery(id: number) {
  * @param barcode - 扫描的条形码
  * @returns 
  */
-export function scanOutboundBarcode(barcode: string) {
-  return requestClient.post('/admin/bound/outbound/scan', { barcode });
+export function scanOutboundBarcode(outbound: number, detail_no: string) {
+  return requestClient.post(`/admin/bound/outbound/${outbound}/scan`, { detail_no });
 }
 
 /**

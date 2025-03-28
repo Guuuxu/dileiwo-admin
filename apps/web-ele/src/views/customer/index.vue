@@ -29,7 +29,7 @@ const router = useRouter();
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   name: string;
   law_person: string;
   contact: string;
@@ -107,7 +107,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-01-03',
+        created_at: '2025-01-03',
         customer:'长吉有限公司',
         code: '00002' + i,
         tel: '020-99290029',

@@ -12,14 +12,12 @@ const emits = defineEmits(['onUpdated']);
 defineOptions({
   name: 'FormDrawer',
 });
-const id = ref(null)
+const id = ref('')
 
-
-import { metricCol } from './data';
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   name: string;
   law_person: string;
   contact: string;
@@ -30,11 +28,11 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
-    { field: 'name', title: '型号' },
-    { field: 'code', title: '数量', },
-    { field: 'law_person', title: '累计循环次数', },
-    { field: 'law_person', title: '累计循环比率', },
-    { field: 'law_person', title: '循环次数调整次量', },
+    { field: 'type_name', title: '型号' },
+    { field: 'amount', title: '数量', },
+    { field: 'times_count', title: '累计循环次数', },
+    { field: 'cycle_rate', title: '累计循环比率', },
+    { field: 'cycle_modify', title: '循环次数调整次量', },
 
   ],
   data: dataList.value,
@@ -64,6 +62,8 @@ const [Grid, gridApi] = useVbenVxeGrid({ gridOptions });
 
 
 const [Drawer, drawerApi] = useVbenDrawer({
+  showConfirmButton: false,
+  cancelText: '关闭',
   onCancel() {
     drawerApi.close();
   },
@@ -77,13 +77,16 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const { values } = drawerApi.getData<Record<string, any>>();
       if (values) {
         id.value = values.id;
-        const res = await getCustomerMetrics(values.id);
-        dataList.value = res.list
+        const res = await getCustomerMetrics(id.value);
+        console.log(res);
+        gridApi.setGridOptions({ data: res });
       }
     }
   },
   title: '详情',
 });
+
+
 </script>
 <template>
   <Drawer>

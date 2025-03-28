@@ -24,7 +24,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '收款日期',
     },
     {

@@ -77,7 +77,7 @@ function handleReset() {
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   month: string;
   amount: string;
   amount2: string;
@@ -123,7 +123,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-1-3',
+        created_at: '2025-1-3',
         name: `消防排风${i}`,
         month: i + 1,
         amount: 15 * i,

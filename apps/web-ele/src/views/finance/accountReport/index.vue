@@ -60,7 +60,7 @@ const [Form, formApi] = useVbenForm({
   schema: [
     {
       component: 'DatePicker',
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '日期',
       formItemClass: 'col-span-2',
       componentProps: {
@@ -162,7 +162,7 @@ const loadList = (size = 200) => {
       dataList.value.push({
         id: 10_000 + i,
         title1: '本月收入',
-        createTime: '2025-1-3',
+        created_at: '2025-1-3',
         code: `WK000-${i}`,
         amountMonth: '1000.00',
         amountYear: '12000.00',

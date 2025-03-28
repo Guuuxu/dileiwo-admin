@@ -77,7 +77,7 @@ function onSubmit(values: Record<string, any>) {
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   contractNo: string;
   code: string;
   name: string;
@@ -86,7 +86,7 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { type: 'seq', width: 50 },
-    { field: 'createTime', title: '日期' },
+    { field: 'created_at', title: '日期' },
     { field: 'name', title: '单据号' },
     { field: 'customer', title: '类别' },
     { field: 'quantity', title: '数量' },
@@ -120,7 +120,7 @@ const loadList = (size = 20) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-1-3',
+        created_at: '2025-1-3',
         name: `消防排风${i}`,
         contractNo: `h000-${i}`,
         code: `000-${i}`,

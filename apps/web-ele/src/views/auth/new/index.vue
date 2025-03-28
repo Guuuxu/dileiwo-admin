@@ -12,7 +12,7 @@ import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getAuthListApi } from '#/api';
+import { getAuthNewListApi } from '#/api';
 import Edit from './edit.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -20,56 +20,27 @@ const [Drawer, drawerApi] = useVbenDrawer({
 });
 
 const router = useRouter();
-const [Form, formApi] = useVbenForm({
-  commonConfig: {
-    // 所有表单项
-    componentProps: {
-      class: 'w-full',
-    },
-  },
-  layout: 'horizontal',
-  resetButtonOptions: { show: false },
-  submitButtonOptions: { show: false },
-  // 大屏一行显示3个，中屏一行显示2个，小屏一行显示1个
-  wrapperClass: 'grid-cols-1 md:grid-cols-3 lg:grid-cols-4',
-  handleSubmit: (values) => {
-    ElMessage.success(`表单数据：${JSON.stringify(values)}`);
-  },
-  schema: [
-    {
-      component: 'Input',
-      fieldName: 'name',
-      label: '项目名称',
-      componentProps: {},
-    },
-  ],
-});
-
-function handleSearch() {
-  formApi.getValues();
-}
-function handleReset() {
-  formApi.resetForm();
-}
-
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
-  authNum: string;
-  totalNum: string;
+  latest_verify: string;
+  verified_count: string;
+  total_count: string;
   status: number;
-  codeRange: string;
+  start_no: string;
+  end_no: string;
   remark: string;
 }
 const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'authNum', title: '已认证' },
-    { field: 'totalNum', title: '总数量' },
-    { field: 'createTime', title: '最新认证日期' },
-    { field: 'codeRange', title: '编码范围' },
+    { field: 'verified_count', title: '已认证',width: 100  },
+    { field: 'total_count', title: '总数量',width: 100 },
+    { field: 'latest_verify', title: '最新认证日期' },
+    { field: 'codeRange', title: '编码范围', slots: { default: ({ row }) => {
+      return `${row.start_no}-${row.end_no}`
+    } } },
     { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
@@ -95,13 +66,13 @@ const gridOptions: VxeGridProps<RowType> = {
   proxyConfig: {
     ajax: {
       query: async ({ page },formValues) => {
-         const {new_list} = await getAuthListApi({
+        return await getAuthNewListApi({
           page: page.currentPage,
           per_page: page.pageSize,
           ...formValues,
           
         });
-        return new_list
+        
       },
     },
   },
@@ -133,7 +104,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-01-03',
+        created_at: '2025-01-03',
         authNum: '100',
         totalNum: '1000',
         codeRange: '1 - 10002',

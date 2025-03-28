@@ -127,7 +127,7 @@ export function metricCol(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'law_person',
+      fieldName: 'times_count',
       label: '累计循环次数',
       rules: 'required',
     },
@@ -136,7 +136,7 @@ export function metricCol(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'law_person',
+      fieldName: 'cycle_rate',
       label: '累计循环比率',
       rules: 'required',
     },
@@ -145,7 +145,7 @@ export function metricCol(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'law_person',
+      fieldName: 'cycle_modify',
       label: '循环次数调整次量',
       rules: 'required',
     },

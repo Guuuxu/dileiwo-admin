@@ -9,6 +9,7 @@ import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
 import { useSchema } from './data';
+import {getInventoryDetail} from '#/api'
 
 defineOptions({
   name: 'FormDrawer',
@@ -29,13 +30,14 @@ const [Drawer, drawerApi] = useVbenDrawer({
     await BaseFormApi.submitForm();
     drawerApi.close();
   },
-  onOpenChange(isOpen: boolean) {
+  async onOpenChange(isOpen: boolean) {
     if (isOpen) {
       const { values } = drawerApi.getData<Record<string, any>>();
       if (values) {
-        BaseFormApi.setValues({
-          ...values,
-        });
+        const res = await getInventoryDetail(values.id)
+        gridApi.setGridOptions({
+          data: res.data,
+        })
       }
     }
   },
@@ -45,7 +47,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   package: string;
   customer: string;
   contact: string;
@@ -57,11 +59,11 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
     { field: 'packageCode', title: '包装编码' },
-    { field: 'createTime', title: '总循环次数' },
+    { field: 'created_at', title: '总循环次数' },
     { field: 'customer', title: '单月已用' },
     { field: 'customer', title: '单月剩余用量' },
     { field: 'status', title: '状态', slots: { default: 'status' } },
-    { field: 'createTime', title: '租赁到期日' },
+    { field: 'created_at', title: '租赁到期日' },
     { field: 'customer', title: '客户' },
     { field: 'address', title: '收件人地址' },
   ],
@@ -90,31 +92,7 @@ const gridOptions: VxeGridProps<RowType> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({ gridOptions });
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        createTime: '2025-01-03',
-        category: `00002${i}`,
-        package: 'DR200',
-        customer: '张三',
-        contact: '李四',
-        address: '江苏',
-        status: 1,
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
-};
-onMounted(() => {
-  loadList(6);
-});
+
 </script>
 <template>
   <Drawer>

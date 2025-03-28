@@ -70,7 +70,7 @@ const [Form, formApi] = useVbenForm({
   schema: [
     {
       component: 'DatePicker',
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '开票日期',
       formItemClass: 'col-span-2',
       componentProps: {
@@ -123,7 +123,7 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { type: 'seq', width: 60 },
-    { field: 'createTime', title: '开票日期' },
+    { field: 'created_at', title: '开票日期' },
     { field: 'code', title: '合同号' },
     { field: 'name', title: '合同名称' },
     { field: 'customer', title: '客户名称' },
@@ -172,7 +172,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-1-3',
+        created_at: '2025-1-3',
         code: `WK000-${i}`,
         customer: '万科',
         name: '合同名称',

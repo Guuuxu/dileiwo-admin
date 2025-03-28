@@ -1,4 +1,5 @@
 import { requestClient } from '#/api/request';
+import type { RequestClientConfig } from '@vben/request';
 
 
 interface data {
@@ -18,8 +19,17 @@ export function updateRepair(data: any) {
  * @param data - 包含查询条件的对象，类型为任意类型
  * @returns 
  */
+export function getVerifyList(data: data) {
+  return requestClient.get('/admin/repair/verify', { params: data });
+}
+
+/**
+ * 获取损坏列表
+ * @param data - 包含查询条件的对象，类型为任意类型
+ * @returns 
+ */
 export function getRepairList(data: data) {
-  return requestClient.get('/admin/repair', { params: data });
+  return requestClient.get('/admin/repair/send', { params: data });
 }
 
 /**
@@ -58,3 +68,4 @@ export function sendRepair(data: any) {
 export function scanRepair(data: { code: string }) {
   return requestClient.post(`/admin/repair/scan`, data);
 }
+

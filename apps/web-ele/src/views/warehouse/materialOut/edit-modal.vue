@@ -56,7 +56,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'createTime',
+      fieldName: 'created_at',
       label: '出库日期',
       rules: 'required',
     },
@@ -172,7 +172,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-1-3',
+        created_at: '2025-1-3',
         name: `消防排风${i}`,
         contractNo: `h000-${i}`,
         code: `000-${i}`,

@@ -164,7 +164,7 @@ const gridOptions: VxeGridProps<RowType> = {
     { type: 'seq', width: 60 },
     {
       editRender: { name: 'input' },
-      field: 'createTime',
+      field: 'created_at',
       title: '签订日期',
     },
     { editRender: { name: 'input' }, field: 'contractNo', title: '合同号' },
@@ -213,7 +213,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-1-3',
+        created_at: '2025-1-3',
         name: `合同${i}`,
         contractNo: `h000-${i}`,
         code: `000-${i}`,

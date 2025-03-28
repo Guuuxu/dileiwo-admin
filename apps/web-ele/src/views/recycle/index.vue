@@ -50,7 +50,7 @@ function handleReset() {
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   category: string;
   days: string;
   times: string;
@@ -64,7 +64,7 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'amount', title: '数量' },
     { field: 'days', title: '租赁天数', },
     { field: 'times', title: '单月循环次数', },
-    { field: 'createTime', title: '出货日期', },
+    { field: 'created_at', title: '出货日期', },
     { field: 'remark', title: '备注', },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
@@ -142,7 +142,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-01-03',
+        created_at: '2025-01-03',
         category: '00002' + i,
         amount: '200',
         days: '30',

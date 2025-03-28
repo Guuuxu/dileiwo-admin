@@ -24,7 +24,7 @@ const router = useRouter();
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   category: string;
   user: string;
   codeRange: string;
@@ -35,7 +35,7 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'category', title: '型号' },
     { field: 'codeRange', title: '包装编码' },
-    { field: 'createTime', title: '最新入库日期' },
+    { field: 'created_at', title: '最新入库日期' },
     { field: 'user', title: '最新使用者' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
@@ -136,9 +136,9 @@ const handleDeleteRow = (row: RowType) => {
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
-    <template #extra>
+    <!-- <template #extra>
       <ElButton type="primary" @click="handleAdd()"> 新增 </ElButton>
-    </template>
+    </template> -->
     <Grid>
       <template #action="{ row }">
         <ElButton type="primary" link @click="handleEditRow(row)">

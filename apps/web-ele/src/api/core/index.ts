@@ -6,3 +6,4 @@ export * from './customer';
 export * from './delivery';
 export * from './product';
 export * from './repair';
+export * from './inventory';

@@ -5,9 +5,11 @@ import { useVbenDrawer } from '@vben/common-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 
 import { useSchema, useSchemaReason } from './data';
-import { scanRepair,updateRepair } from '#/api';
+import { scanRepair,updateRepair } from '#/api';// 定义自定义事件
+const emits = defineEmits(['onUpdated']);
 
 defineOptions({
   name: 'FormDrawer',
@@ -34,19 +36,22 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const {valid} = await BaseFormApi.validate();
       if (valid) {
         const values = await BaseFormApi.getValues();
-        console.log(values)
          const res = await scanRepair(values)
-         detail.value = res.data
+         detail.value = res
       }
       
       step.value = '1';
     } else {
       const values = await BaseFormApi2.getValues();
-      updateRepair({
+      console.log(values)
+      const reasonArray = Object.values(values.reason).map(Number);
+      await updateRepair({
         model_detail_id: detail.value.id,
-        broken_reason: values.reason,
+        broken_reason: Number(values.reason),
         reason: values.remark,
       })
+      ElMessage.success('提交成功')
+      emits('onUpdated');
       drawerApi.close();
     }
   },
@@ -66,7 +71,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   category: string;
   user: string;
   codeRange: string;
@@ -77,7 +82,7 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'category', title: '型号' },
     { field: 'codeRange', title: '包装编码' },
-    { field: 'createTime', title: '最新入库日期' },
+    { field: 'created_at', title: '最新入库日期' },
     { field: 'user', title: '最新使用者' },
   ],
   data: dataList.value,
@@ -110,7 +115,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-01-03',
+        created_at: '2025-01-03',
         category: '100',
         user: '张三',
         codeRange: '1 - 10002',

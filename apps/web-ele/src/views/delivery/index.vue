@@ -12,7 +12,7 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getInventoryList,deleteDelivery,exportData } from '#/api';
+import { getOutboundList,deleteDelivery,exportData } from '#/api';
 import Edit from './edit.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -55,9 +55,9 @@ function handleReset() {
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   category: string;
-  days: string;
+  during: string;
   times: string;
   remark: string;
 }
@@ -65,11 +65,11 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'category', title: '型号' },
+    { field: 'type_name', title: '型号' },
     { field: 'amount', title: '数量' },
-    { field: 'days', title: '租赁天数', },
-    { field: 'times', title: '单月循环次数', },
-    { field: 'createTime', title: '出货日期', },
+    { field: 'during', title: '租赁天数', },
+    { field: 'month_limit', title: '单月循环次数', },
+    { field: 'created_at', title: '出货日期', },
     { field: 'remark', title: '备注', },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
@@ -95,7 +95,7 @@ const gridOptions: VxeGridProps<RowType> = {
   proxyConfig: {
     ajax: {
       query: async ({ page },formValues) => {
-        return await getInventoryList({
+        return await getOutboundList({
           page: page.currentPage,
           per_page: page.pageSize,
           ...formValues,
@@ -111,17 +111,17 @@ const formOptions: VbenFormProps = {
   schema: [
     {
       component: 'Input',
-      fieldName: 'customer',
+      fieldName: 'client',
       label: '客户',
     },
-    {
-      component: 'Input',
-      fieldName: 'customer',
-      label: '出库单号',
-    },
+    // {
+    //   component: 'Input',
+    //   fieldName: 'customer',
+    //   label: '出库单号',
+    // },
     {
       component: 'Select',
-      fieldName: 'type',
+      fieldName: 'type_name',
       label: '出货类型',
       componentProps:{
         options: [
@@ -174,11 +174,8 @@ const handleDeleteRow = (row: RowType) => {
     }
   ).then(() => {
     deleteDelivery(row.id).then((res) => {
-      const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
-      if (index !== -1) {
-        dataList.value.splice(index, 1);
-        ElMessage.success('删除成功');
-      }
+      ElMessage.success('删除成功');
+      gridApi.query();
     })
     
   }).catch(() => {
@@ -190,7 +187,9 @@ const handleExport = async (row: RowType) => {
     ElMessage.success('导出成功');
   })
 }
-
+const handleUpdate = ()=>{
+  gridApi.reload();
+}
 
 </script>
 <template>
@@ -215,6 +214,6 @@ const handleExport = async (row: RowType) => {
             </template>
           </Grid>
 
-    <Drawer />
+    <Drawer  @onUpdated="handleUpdate"/>
   </Page>
 </template>

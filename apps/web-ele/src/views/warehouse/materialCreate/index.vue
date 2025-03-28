@@ -130,7 +130,7 @@ function handleReset() {
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   contractNo: string;
   code: string;
   name: string;
@@ -146,7 +146,7 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { type: 'seq', width: 60 },
-    { field: 'createTime', title: '物料编号' },
+    { field: 'created_at', title: '物料编号' },
     { field: 'category', title: '类别' },
     { field: 'name', title: '名称' },
     { field: 'customer', title: '规格型号' },
@@ -189,7 +189,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-1-3',
+        created_at: '2025-1-3',
         name: `消防排风${i}`,
         category: `h000-${i}`,
         code: `000-${i}`,

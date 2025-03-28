@@ -52,13 +52,26 @@ export async function getAccessCodesApi() {
 }
 
 /**
- * 获取认证列表
+ * 获取新品认证列表
  * @param params 查询参数
  */
-export async function getAuthListApi(params: Record<string, any>) {
-  return requestClient.get<string[]>('/admin/bound/inbound', { params });
+export async function getAuthNewListApi(params: Record<string, any>) {
+  return requestClient.get<string[]>('/admin/bound/inbound/new', { params });
 }
 
-export async function handleScan(data: any) {
+/**
+ * 获取维修品认证列表
+ * @param params 查询参数
+ */
+export async function getAuthRepairListApi(params: Record<string, any>) {
+  return requestClient.get<string[]>('/admin/bound/inbound/repair', { params });
+}
+interface scanType {
+  id: number; //初始认证id 新品id/维修id/回收时不传
+  type: number; //认证类型 1新品 2维修 3回收
+  detail_no: string; //详情编码
+}
+
+export async function handleScan(data: scanType) {
   return requestClient.post<any>('/admin/bound/inbound/scan', data);
 }

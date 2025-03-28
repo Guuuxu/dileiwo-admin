@@ -4,41 +4,75 @@ import { useVbenDrawer } from '@vben/common-ui';
 
 import {  ElMessage } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
-import {updateDelivery, } from '#/api';
+import {updateDelivery,scanOutboundBarcode } from '#/api';
 
 defineOptions({
   name: 'FormDrawer',
 });
-
+const row = ref({})
+const step = ref('0');
 const [BaseForm, BaseFormApi] = useVbenForm({
   schema: useSchema(),
   showDefaultActions: false,
 });
+const [BaseForm2, BaseFormApi2] = useVbenForm({
+  schema: [
+  {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+        onKeyup(e: any) {
+          console.log(e);
+          if (e.key === 'Enter') {
+            handleEnterInput();
+          }
+        },
+      },
+      fieldName: 'code',
+      label: '请扫描包装编码',
+    },
+  ],
+  layout: 'vertical',
+  showDefaultActions: false,
+});
+
 // 定义自定义事件
 const emits = defineEmits(['onUpdated']);
 import { useSchema } from './data';
 const id = ref('')
+const boundData = ref({})
 const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
     drawerApi.close();
   },
   onConfirm: async () => {
     const {valid} = await BaseFormApi.validate();
-    if(valid){
+    if (step.value === '0') {
+
+      if(valid){
       const params = await BaseFormApi.getValues();
-      params.id = id.value;
-      const res = await updateDelivery(params);
-      ElMessage.success('操作成功');
-      // 触发自定义事件通知父组件
-      emits('onUpdated', params);
+        params.id = id.value;
+        const res = await updateDelivery(params);
+        boundData.value = res;
+        ElMessage.success('操作成功');
+        // 触发自定义事件通知父组件
+        emits('onUpdated', params);
+        step.value = '1';
+      }
+    
+      
+      
+    } else {
       drawerApi.close();
     }
+    
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
       const { values } = drawerApi.getData<Record<string, any>>();
       if (values) {
         id.value = values.id;
+        row.value = values
         BaseFormApi.setValues({
           ...values,
         });
@@ -47,10 +81,21 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   title: '详情',
 });
+// 输入确认
+const handleEnterInput = async () => {
+  const formValues = await BaseFormApi2.getValues()
+  console.log('handleEnterInput',formValues );
+
+
+  const res = await scanOutboundBarcode(boundData.value.id,formValues.code)
+    ElMessage.success('操作完成！')
+};
 </script>
 <template>
   <Drawer>
-    <BaseForm />
+    <BaseForm v-if="step === '0'" />
+    <BaseForm2 v-if="step === '1'" />
+    
   </Drawer>
 </template>
 <style lang="scss" scoped>

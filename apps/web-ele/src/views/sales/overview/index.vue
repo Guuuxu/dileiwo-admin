@@ -126,7 +126,7 @@ function handleReset() {
 // 表格配置
 interface RowType {
   id: number;
-  createTime: string;
+  created_at: string;
   contractNo: string;
   code: string;
   name: string;
@@ -143,7 +143,7 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { align: 'left', title: '', type: 'checkbox', width: 40 },
     { type: 'seq', width: 60 },
-    { field: 'createTime', title: '签订日期' },
+    { field: 'created_at', title: '签订日期' },
     { field: 'contractNo', title: '合同号' },
     { field: 'name', title: '合同名称' },
     { field: 'customer', title: '客户名称' },
@@ -186,7 +186,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10_000 + i,
-        createTime: '2025-1-3',
+        created_at: '2025-1-3',
         name: `消防排风${i}`,
         contractNo: `h000-${i}`,
         code: `000-${i}`,

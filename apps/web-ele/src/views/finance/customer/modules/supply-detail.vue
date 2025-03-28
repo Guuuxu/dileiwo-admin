@@ -28,8 +28,8 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { type: 'seq', width: 60 },
-    { field: 'createTime', title: '供货日期' },
-    { field: 'createTime', title: '合同编码' },
+    { field: 'created_at', title: '供货日期' },
+    { field: 'created_at', title: '合同编码' },
     { field: 'name', title: '合同名称' },
     { field: 'customer', title: '出库单号' },
     { field: 'amount', title: '已供货金额' },
@@ -65,7 +65,7 @@ const loadList = (size = 200) => {
     for (let i = 0; i < size; i++) {
       dataList.value.push({
         id: 10 + i,
-        createTime: '2025-1-3',
+        created_at: '2025-1-3',
         code: `WK000-${i}`,
         customer: '万科',
         name: '合同名称',
