@@ -12,7 +12,7 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getRepairList,sendRepair } from '#/api';
+import { getRepairList, sendRepair } from '#/api';
 import Edit from './edit.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -66,9 +66,9 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'category', title: '型号' },
-    { field: 'codeRange', title: '编码范围', },
+    { field: 'codeRange', title: '编码范围' },
     { field: 'user', title: '使用者（最近一次）' },
-    { field: 'remark', title: '备注', },
+    { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -92,12 +92,11 @@ const gridOptions: VxeGridProps<RowType> = {
   pagerConfig: {},
   proxyConfig: {
     ajax: {
-      query: async ({ page },formValues) => {
+      query: async ({ page }, formValues) => {
         return await getRepairList({
           page: page.currentPage,
           per_page: page.pageSize,
           ...formValues,
-          
         });
       },
     },
@@ -113,8 +112,6 @@ const formOptions: VbenFormProps = {
       fieldName: 'category',
       label: '型号',
     },
-    
-
   ],
   // 控制表单是否显示折叠按钮
   showCollapseButton: true,
@@ -148,26 +145,25 @@ const loadList = (size = 200) => {
 
 // 新增
 const handleAdd = () => {
-  handleSetData({},'新增');
+  handleSetData({}, '新增');
 };
 // 编辑
 function handleEditRow(row: RowType) {
-  ElMessage.success('操作成功')
+  ElMessage.success('操作成功');
 }
-
 
 const handleSetData = (row: RowType, title: string) => {
   drawerApi
     .setData({
       values: { ...row },
-    }).setState({
-      title
+    })
+    .setState({
+      title,
     })
     .open();
 };
 
 import { ElMessageBox } from 'element-plus';
-
 
 onMounted(() => {
   loadList(6);
@@ -180,13 +176,12 @@ onMounted(() => {
       <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
     </template>
     <Grid>
-
-            <template #action="{ row }">
-              <ElButton type="primary" link @click="handleEditRow(row)">
-                寄出
-              </ElButton>
-            </template>
-          </Grid>
+      <template #action="{ row }">
+        <ElButton type="primary" link @click="handleEditRow(row)">
+          寄出
+        </ElButton>
+      </template>
+    </Grid>
 
     <Drawer />
   </Page>

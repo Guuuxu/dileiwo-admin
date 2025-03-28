@@ -93,14 +93,14 @@ const gridOptions: VxeGridProps<RowType> = {
   pagerConfig: {},
   proxyConfig: {
     ajax: {
-      query: async ({ page },formValues) => {
-         const res = await getAuthRepairListApi({
+      query: async ({ page }, formValues) => {
+        const res = await getAuthRepairListApi({
           page: page.currentPage,
           per_page: page.pageSize,
           ...formValues,
         });
         console.log(res);
-        return res
+        return res;
       },
     },
   },

@@ -9,7 +9,7 @@ import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
 import { useSchema } from './data';
-import {getInventoryDetail} from '#/api'
+import { getInventoryDetail } from '#/api';
 
 defineOptions({
   name: 'FormDrawer',
@@ -22,7 +22,7 @@ const [BaseForm, BaseFormApi] = useVbenForm({
 
 const [Drawer, drawerApi] = useVbenDrawer({
   class: 'w-[700px]',
-  confirmText:'导出',
+  confirmText: '导出',
   onCancel() {
     drawerApi.close();
   },
@@ -34,10 +34,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       const { values } = drawerApi.getData<Record<string, any>>();
       if (values) {
-        const res = await getInventoryDetail(values.id)
+        const res = await getInventoryDetail(values.id);
         gridApi.setGridOptions({
           data: res.data,
-        })
+        });
       }
     }
   },
@@ -92,7 +92,6 @@ const gridOptions: VxeGridProps<RowType> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({ gridOptions });
-
 </script>
 <template>
   <Drawer>

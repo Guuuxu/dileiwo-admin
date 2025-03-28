@@ -117,7 +117,7 @@ export const errorMessageResponseInterceptor = (
       if (axios.isCancel(error)) {
         return Promise.reject(error);
       }
-      console.log(120,error);
+      console.log(120, error);
       const err: string = error?.toString?.() ?? '';
       let errMsg = '';
       if (err?.includes('Network Error')) {

@@ -2,7 +2,14 @@
 import { ref, onMounted } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { ElTabs, ElTabPane, ElCard, ElRow, ElCol,ElMessage } from 'element-plus';
+import {
+  ElTabs,
+  ElTabPane,
+  ElCard,
+  ElRow,
+  ElCol,
+  ElMessage,
+} from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import type { VxeGridProps } from '#/adapter/vxe-table';
@@ -12,7 +19,7 @@ const emits = defineEmits(['onUpdated']);
 defineOptions({
   name: 'FormDrawer',
 });
-const id = ref('')
+const id = ref('');
 
 // 表格配置
 interface RowType {
@@ -29,11 +36,10 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
     { field: 'type_name', title: '型号' },
-    { field: 'amount', title: '数量', },
-    { field: 'times_count', title: '累计循环次数', },
-    { field: 'cycle_rate', title: '累计循环比率', },
-    { field: 'cycle_modify', title: '循环次数调整次量', },
-
+    { field: 'amount', title: '数量' },
+    { field: 'times_count', title: '累计循环次数' },
+    { field: 'cycle_rate', title: '累计循环比率' },
+    { field: 'cycle_modify', title: '循环次数调整次量' },
   ],
   data: dataList.value,
   height: 'auto',
@@ -60,18 +66,13 @@ const gridOptions: VxeGridProps<RowType> = {
 
 const [Grid, gridApi] = useVbenVxeGrid({ gridOptions });
 
-
 const [Drawer, drawerApi] = useVbenDrawer({
   showConfirmButton: false,
   cancelText: '关闭',
   onCancel() {
     drawerApi.close();
   },
-  onConfirm: async () => {
-    
-    
-    
-  },
+  onConfirm: async () => {},
   async onOpenChange(isOpen: boolean) {
     if (isOpen) {
       const { values } = drawerApi.getData<Record<string, any>>();
@@ -85,8 +86,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   title: '详情',
 });
-
-
 </script>
 <template>
   <Drawer>

@@ -35,12 +35,18 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'verified_count', title: '已认证',width: 100  },
-    { field: 'total_count', title: '总数量',width: 100 },
+    { field: 'verified_count', title: '已认证', width: 100 },
+    { field: 'total_count', title: '总数量', width: 100 },
     { field: 'latest_verify', title: '最新认证日期' },
-    { field: 'codeRange', title: '编码范围', slots: { default: ({ row }) => {
-      return `${row.start_no}-${row.end_no}`
-    } } },
+    {
+      field: 'codeRange',
+      title: '编码范围',
+      slots: {
+        default: ({ row }) => {
+          return `${row.start_no}-${row.end_no}`;
+        },
+      },
+    },
     { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
@@ -65,14 +71,12 @@ const gridOptions: VxeGridProps<RowType> = {
   pagerConfig: {},
   proxyConfig: {
     ajax: {
-      query: async ({ page },formValues) => {
+      query: async ({ page }, formValues) => {
         return await getAuthNewListApi({
           page: page.currentPage,
           per_page: page.pageSize,
           ...formValues,
-          
         });
-        
       },
     },
   },

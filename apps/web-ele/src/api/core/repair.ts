@@ -1,14 +1,13 @@
 import { requestClient } from '#/api/request';
 import type { RequestClientConfig } from '@vben/request';
 
-
 interface data {
   order_no: string;
 }
 /**
  * 新增/编辑损坏记录
  * @param data - 包含损坏信息的对象，类型为任意类型
- * @returns 
+ * @returns
  */
 export function updateRepair(data: any) {
   return requestClient.post('/admin/repair/store', data);
@@ -17,7 +16,7 @@ export function updateRepair(data: any) {
 /**
  * 获取损坏列表
  * @param data - 包含查询条件的对象，类型为任意类型
- * @returns 
+ * @returns
  */
 export function getVerifyList(data: data) {
   return requestClient.get('/admin/repair/verify', { params: data });
@@ -26,7 +25,7 @@ export function getVerifyList(data: data) {
 /**
  * 获取损坏列表
  * @param data - 包含查询条件的对象，类型为任意类型
- * @returns 
+ * @returns
  */
 export function getRepairList(data: data) {
   return requestClient.get('/admin/repair/send', { params: data });
@@ -35,7 +34,7 @@ export function getRepairList(data: data) {
 /**
  * 获取损坏详情
  * @param id - 损坏记录的唯一标识
- * @returns 
+ * @returns
  */
 export function getRepairDetail(id: string) {
   return requestClient.get(`/admin/repair/${id}`);
@@ -45,7 +44,7 @@ export function getRepairDetail(id: string) {
  * 损坏认证
  * @param id - 损坏记录的唯一标识
  * @param data - 包含认证信息的对象
- * @returns 
+ * @returns
  */
 export function certifyRepair(id: string, data: any) {
   return requestClient.post(`/admin/repair/certify/${id}`, data);
@@ -54,7 +53,7 @@ export function certifyRepair(id: string, data: any) {
 /**
  * 寄出损坏记录
  * @param id - 损坏记录的唯一标识
- * @returns 
+ * @returns
  */
 export function sendRepair(data: any) {
   return requestClient.post(`/admin/repair/send`, data);
@@ -63,9 +62,8 @@ export function sendRepair(data: any) {
 /**
  * 扫码获取损坏记录
  * @param code - 扫码的唯一标识码
- * @returns 
+ * @returns
  */
 export function scanRepair(data: { code: string }) {
   return requestClient.post(`/admin/repair/scan`, data);
 }
-

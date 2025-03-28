@@ -8,7 +8,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 
 import { useSchema, useSchemaReason } from './data';
-import { scanRepair,updateRepair } from '#/api';// 定义自定义事件
+import { scanRepair, updateRepair } from '#/api'; // 定义自定义事件
 const emits = defineEmits(['onUpdated']);
 
 defineOptions({
@@ -26,31 +26,31 @@ const [BaseForm2, BaseFormApi2] = useVbenForm({
   layout: 'vertical',
   showDefaultActions: false,
 });
-const detail = ref({})
+const detail = ref({});
 const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
     drawerApi.close();
   },
   onConfirm: async () => {
     if (step.value === '0') {
-      const {valid} = await BaseFormApi.validate();
+      const { valid } = await BaseFormApi.validate();
       if (valid) {
         const values = await BaseFormApi.getValues();
-         const res = await scanRepair(values)
-         detail.value = res
+        const res = await scanRepair(values);
+        detail.value = res;
       }
-      
+
       step.value = '1';
     } else {
       const values = await BaseFormApi2.getValues();
-      console.log(values)
+      console.log(values);
       const reasonArray = Object.values(values.reason).map(Number);
       await updateRepair({
         model_detail_id: detail.value.id,
         broken_reason: Number(values.reason),
         reason: values.remark,
-      })
-      ElMessage.success('提交成功')
+      });
+      ElMessage.success('提交成功');
       emits('onUpdated');
       drawerApi.close();
     }

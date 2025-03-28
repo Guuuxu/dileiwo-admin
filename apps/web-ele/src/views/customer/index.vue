@@ -11,7 +11,7 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getCustomerList,deleteCustomer } from '#/api';
+import { getCustomerList, deleteCustomer } from '#/api';
 import { $t } from '#/locales';
 
 import Edit from './edit.vue';
@@ -22,7 +22,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 });
 const [Metric, metricApi] = useVbenDrawer({
   connectedComponent: metric,
-})
+});
 
 const router = useRouter();
 
@@ -41,8 +41,8 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
     { field: 'name', title: '客户名称' },
-    { field: 'code', title: '登记注册号', },
-    { field: 'law_person', title: '法定代表人', },
+    { field: 'code', title: '登记注册号' },
+    { field: 'law_person', title: '法定代表人' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -66,7 +66,7 @@ const gridOptions: VxeGridProps<RowType> = {
   pagerConfig: {},
   proxyConfig: {
     ajax: {
-      query: async ({ page },formValues) => {
+      query: async ({ page }, formValues) => {
         return await getCustomerList({
           page: page.currentPage,
           per_page: page.pageSize,
@@ -86,10 +86,9 @@ const formOptions: VbenFormProps = {
       fieldName: 'customer',
       label: '客户',
       componentProps: {
-        placeholder: '请输入客户名称、客户编号'
-      }
+        placeholder: '请输入客户名称、客户编号',
+      },
     },
-
   ],
   // 控制表单是否显示折叠按钮
   showCollapseButton: true,
@@ -108,7 +107,7 @@ const loadList = (size = 200) => {
       dataList.value.push({
         id: 10_000 + i,
         created_at: '2025-01-03',
-        customer:'长吉有限公司',
+        customer: '长吉有限公司',
         code: '00002' + i,
         tel: '020-99290029',
         phone: '13500000000',
@@ -117,8 +116,8 @@ const loadList = (size = 200) => {
         address: '江苏',
         contactAddress: '中山路1号',
         consignee: '刘京东',
-        consigneePhone:'13899999999',
-        consigneeAddress: '钟楼'
+        consigneePhone: '13899999999',
+        consigneeAddress: '钟楼',
       });
     }
     // gridApi.setGridOptions({ data: dataList });
@@ -130,24 +129,24 @@ const loadList = (size = 200) => {
 
 // 新增
 const handleAdd = () => {
-  handleSetData({},'新增');
+  handleSetData({}, '新增');
 };
 // 编辑
-const handleEditRow = (row: RowType)=>{
-  handleSetData(row,'编辑')
-}
+const handleEditRow = (row: RowType) => {
+  handleSetData(row, '编辑');
+};
 
 function handleExportRow(row: RowType) {
-  ElMessage.warning('功能待开发！')
+  ElMessage.warning('功能待开发！');
 }
-
 
 const handleSetData = (row: RowType, title: string) => {
   drawerApi
     .setData({
       values: { ...row },
-    }).setState({
-      title
+    })
+    .setState({
+      title,
     })
     .open();
 };
@@ -161,28 +160,27 @@ const handleDeleteRow = (row: RowType) => {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning',
-    }
-  ).then(async() => {
+    },
+  ).then(async () => {
     // Perform delete operation here
-    await deleteCustomer(row.id)
+    await deleteCustomer(row.id);
     ElMessage.success('删除成功');
-    gridApi.query()
-    
-  })
+    gridApi.query();
+  });
 };
-const handleMetricRow = (row: RowType)=>{
+const handleMetricRow = (row: RowType) => {
   metricApi
-  .setData({
-     values: {...row },
-   }).setState({
-     title: '指标'
-   }).open()
-}
-const handleUpdate = ()=>{
+    .setData({
+      values: { ...row },
+    })
+    .setState({
+      title: '指标',
+    })
+    .open();
+};
+const handleUpdate = () => {
   gridApi.reload();
-}
-
-
+};
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
@@ -191,28 +189,28 @@ const handleUpdate = ()=>{
       <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
     </template>
     <Grid>
-            <template #status="{ row }">
-              <ElTag :type="row.status ? 'success' : 'danger'">
-                {{ row.status ? '已启用' : '已禁用' }}
-              </ElTag>
-            </template>
-            <template #action="{ row }">
-              <ElButton type="primary" link @click="handleEditRow(row)">
-                编辑
-              </ElButton>
-              <ElButton type="primary" link @click="handleMetricRow(row)">
-                指标
-              </ElButton>
-              <ElButton type="primary" link @click="handleExportRow(row)">
-                导出
-              </ElButton>
-              <ElButton type="danger" link @click="handleDeleteRow(row)">
-                删除
-              </ElButton>
-            </template>
-          </Grid>
+      <template #status="{ row }">
+        <ElTag :type="row.status ? 'success' : 'danger'">
+          {{ row.status ? '已启用' : '已禁用' }}
+        </ElTag>
+      </template>
+      <template #action="{ row }">
+        <ElButton type="primary" link @click="handleEditRow(row)">
+          编辑
+        </ElButton>
+        <ElButton type="primary" link @click="handleMetricRow(row)">
+          指标
+        </ElButton>
+        <ElButton type="primary" link @click="handleExportRow(row)">
+          导出
+        </ElButton>
+        <ElButton type="danger" link @click="handleDeleteRow(row)">
+          删除
+        </ElButton>
+      </template>
+    </Grid>
 
-    <Drawer @onUpdated="handleUpdate"/>
-    <Metric/>
+    <Drawer @onUpdated="handleUpdate" />
+    <Metric />
   </Page>
 </template>

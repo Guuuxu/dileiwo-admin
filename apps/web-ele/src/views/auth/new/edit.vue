@@ -5,16 +5,16 @@ import { ref } from 'vue';
 import { useVbenForm } from '#/adapter/form';
 
 import { useSchema } from './data';
-import { handleScan} from '#/api'
+import { handleScan } from '#/api';
 import { ElMessage } from 'element-plus';
 
 defineOptions({
   name: 'FormDrawer',
 });
-const row = ref({})
+const row = ref({});
 const [BaseForm, BaseFormApi] = useVbenForm({
   schema: [
-  {
+    {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
@@ -32,8 +32,8 @@ const [BaseForm, BaseFormApi] = useVbenForm({
 });
 
 const [Drawer, drawerApi] = useVbenDrawer({
-  showConfirmButton:false,
-  cancelText:'完成',
+  showConfirmButton: false,
+  cancelText: '完成',
   onCancel() {
     drawerApi.close();
   },
@@ -45,7 +45,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       const { values } = drawerApi.getData<Record<string, any>>();
       if (values) {
-        row.value = values
+        row.value = values;
       }
     }
   },
@@ -53,16 +53,16 @@ const [Drawer, drawerApi] = useVbenDrawer({
 });
 // 输入确认
 const handleEnterInput = async () => {
-  const formValues = await BaseFormApi.getValues()
-  console.log('handleEnterInput',formValues );
+  const formValues = await BaseFormApi.getValues();
+  console.log('handleEnterInput', formValues);
   const data = {
     id: row.value.id,
     type: 1,
-    detail_no: formValues.code
-  }
+    detail_no: formValues.code,
+  };
   console.log('handleEnterInput', data);
-  const res = await handleScan(data)
-    ElMessage.success('认证完成！')
+  const res = await handleScan(data);
+  ElMessage.success('认证完成！');
 };
 </script>
 <template>
