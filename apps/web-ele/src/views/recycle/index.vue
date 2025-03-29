@@ -12,6 +12,7 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
+import { handleScan } from '#/api';
 
 
 const router = useRouter();
@@ -26,26 +27,38 @@ const [Form, formApi] = useVbenForm({
   resetButtonOptions: { show: false },
   submitButtonOptions: { show: false },
   // 大屏一行显示3个，中屏一行显示2个，小屏一行显示1个
-  wrapperClass: 'grid-cols-1 md:grid-cols-3 lg:grid-cols-4',
+  wrapperClass: 'grid-cols-2',
   handleSubmit: (values) => {
     ElMessage.success(`表单数据：${JSON.stringify(values)}`);
   },
   schema: [
     {
       component: 'Input',
-      fieldName: 'code',
+      fieldName: 'detail_no',
       label: '回收包装编码',
-      componentProps: {},
+      componentProps: {
+        placeholder: '请输入',
+        onKeyup(e: any) {
+          if (e.key === 'Enter') {
+            handleEnterInput();
+          }
+        },
+      },
     },
   ],
 });
-
-function handleSearch() {
-  formApi.getValues();
-}
-function handleReset() {
-  formApi.resetForm();
-}
+// 输入确认
+const handleEnterInput = async () => {
+  const formValues = await formApi.getValues();
+  console.log('handleEnterInput', formValues);
+  const data = {
+    type: 1,
+    detail_no: formValues.detail_no,
+  };
+  console.log('handleEnterInput', data);
+  const res = await handleScan(data);
+  ElMessage.success('回收完成！');
+};
 
 // 表格配置
 interface RowType {
@@ -135,28 +148,6 @@ const formOptions: VbenFormProps = {
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        created_at: '2025-01-03',
-        category: '00002' + i,
-        amount: '200',
-        days: '30',
-        times: '5',
-        remark: '备注一下',
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
-};
-
 // 新增
 const handleAdd = () => {
   handleSetData({},'新增');
@@ -200,9 +191,7 @@ const handleDeleteRow = (row: RowType) => {
   });
 };
 
-onMounted(() => {
-  loadList(6);
-});
+
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">

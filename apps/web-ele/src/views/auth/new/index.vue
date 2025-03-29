@@ -101,26 +101,6 @@ const formOptions: VbenFormProps = {
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        created_at: '2025-01-03',
-        authNum: '100',
-        totalNum: '1000',
-        codeRange: '1 - 10002',
-        remark: '备注一下',
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
-};
 
 // 编辑
 function handleEditRow(row: RowType) {
@@ -160,10 +140,10 @@ const handleDeleteRow = (row: RowType) => {
       ElMessage.info('已取消删除');
     });
 };
+const handleUpdate = () => {
+  gridApi.reload();
+};
 
-onMounted(() => {
-  loadList(6);
-});
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
@@ -178,6 +158,6 @@ onMounted(() => {
       </template>
     </Grid>
 
-    <Drawer />
+    <Drawer @onUpdated="handleUpdate" />
   </Page>
 </template>

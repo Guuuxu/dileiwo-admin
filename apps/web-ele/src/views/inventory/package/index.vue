@@ -35,11 +35,11 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
-    { field: 'package', title: '包装' },
+    { field: 'detail_no', title: '包装' },
     { field: 'created_at', title: '出货日期' },
-    { field: 'customer', title: '出货客户' },
-    { field: 'contact', title: '联络人' },
-    { field: 'address', title: '地址' },
+    { field: 'name', title: '出货客户' },
+    { field: 'link_person', title: '联络人' },
+    { field: 'register_address', title: '地址' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -84,20 +84,14 @@ const formOptions: VbenFormProps = {
       label: '客户',
     },
     {
-      component: 'Input',
-      fieldName: 'customer',
-      label: '出库单号',
-    },
-    {
       component: 'Select',
       fieldName: 'type_name',
-      label: '出货类型',
+      label: '类型',
       componentProps: {
+        clearable: true,
         options: [
-          { label: '租赁', value: '1' },
-          { label: '购买', value: '2' },
-          { label: '出库', value: '3' },
-          { label: '回收', value: '4' },
+          { label: '出库', value: '出库' },
+          { label: '回收', value: '回收' },
         ],
       },
     },
@@ -137,13 +131,10 @@ const loadList = (size = 200) => {
 const handleAdd = () => {
   handleSetData({}, '新增');
 };
-// 明细
-function handleViewRow(row: RowType) {
-  handleSetData(row, '明细');
-}
+
 async function handleExportRow(row: RowType) {
   await exportInventory(row.id);
-  ElMessage.warning('功能待开发！');
+  // ElMessage.warning('功能待开发！');
 }
 
 const handleSetData = (row: RowType, title: string) => {
@@ -188,9 +179,7 @@ onMounted(() => {
     </template>
     <Grid>
       <template #action="{ row }">
-        <ElButton type="primary" link @click="handleViewRow(row)">
-          明细
-        </ElButton>
+
         <ElButton type="primary" link @click="handleExportRow(row)">
           导出
         </ElButton>

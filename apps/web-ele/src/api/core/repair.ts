@@ -46,8 +46,8 @@ export function getRepairDetail(id: string) {
  * @param data - 包含认证信息的对象
  * @returns
  */
-export function certifyRepair(id: string, data: any) {
-  return requestClient.post(`/admin/repair/certify/${id}`, data);
+export function certifyRepair(id: number) {
+  return requestClient.post(`/admin/repair/${id}/certify`);
 }
 
 /**
@@ -55,7 +55,7 @@ export function certifyRepair(id: string, data: any) {
  * @param id - 损坏记录的唯一标识
  * @returns
  */
-export function sendRepair(data: any) {
+export function sendRepair(data: {ids: string[]}) {
   return requestClient.post(`/admin/repair/send`, data);
 }
 

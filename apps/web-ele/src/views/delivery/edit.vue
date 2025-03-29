@@ -42,27 +42,28 @@ import { useSchema } from './data';
 const id = ref('')
 const boundData = ref({})
 const [Drawer, drawerApi] = useVbenDrawer({
+  confirmText: '下一步',
   onCancel() {
     drawerApi.close();
   },
   onConfirm: async () => {
-    const {valid} = await BaseFormApi.validate();
-    if (step.value === '0') {
+    console.log(step.value)
+    if (step.value == '0') {
+      const {valid} = await BaseFormApi.validate();
 
       if(valid){
       const params = await BaseFormApi.getValues();
         params.id = id.value;
         const res = await updateDelivery(params);
         boundData.value = res;
-        ElMessage.success('操作成功');
-        // 触发自定义事件通知父组件
-        emits('onUpdated', params);
+        ElMessage.success('操作成功');        
         step.value = '1';
+        drawerApi.setState({ confirmText: '完成' }); // 更新 drawer 的状态
+
       }
-    
-      
       
     } else {
+      console.log(step.value)
       drawerApi.close();
     }
     
@@ -89,11 +90,15 @@ const handleEnterInput = async () => {
 
   const res = await scanOutboundBarcode(boundData.value.id,formValues.code)
     ElMessage.success('操作完成！')
+    // 触发自定义事件通知父组件
+    emits('onUpdated', params);
 };
 </script>
 <template>
   <Drawer>
-    <BaseForm v-if="step === '0'" />
+    <BaseForm v-if="step === '0'" >
+      
+    </BaseForm>
     <BaseForm2 v-if="step === '1'" />
     
   </Drawer>
