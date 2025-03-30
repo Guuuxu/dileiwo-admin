@@ -62,15 +62,6 @@ const dashboardMenus = [
     redirect: '/dashboard',
     children: [
       {
-        name: 'Analytics',
-        path: '/analytics',
-        component: '/dashboard/analytics/index',
-        meta: {
-          affixTab: true,
-          title: 'page.dashboard.analytics',
-        },
-      },
-      {
         name: 'Workspace',
         path: '/workspace',
         component: '/dashboard/workspace/index',

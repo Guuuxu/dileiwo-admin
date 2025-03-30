@@ -30,9 +30,9 @@ const [BaseForm2, BaseFormApi2] = useVbenForm({
       },
       fieldName: 'code',
       label: '请扫描包装编码',
-        suffix: () => h('span', { class: 'text-[12px]'}, '点击发送移转⼿机APP端扫码'),
-        renderComponentContent: () => ({
-        append: () => h(ElButton, { 
+      suffix: () => h('span', { class: 'text-[12px]'}, '点击发送移转⼿机APP端扫码'),
+      renderComponentContent: () => ({
+      append: () => h(ElButton, { 
           class: 'text-[12px]', 
           onClick: () => {
             console.log('Append 被点击');
