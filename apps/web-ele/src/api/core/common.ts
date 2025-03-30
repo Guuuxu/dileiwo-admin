@@ -30,10 +30,17 @@ export async function handleLogin(data: LoginParams) {
 }
 
 /**
+ * 退出登录
+ */
+export async function handleLogout() {
+  return requestClient.post<LoginResult>('/admin/logout');
+}
+
+/**
  * 发送短信验证码
  */
 export async function sendSmsApi(phone: string) {
-  return baseRequestClient.post<{ msg: string; code: number }>('/admin/send-sms', { phone });
+  return baseRequestClient.post<{ msg: string; code: number }>('/admin/sendSMS', { phone });
 }
 
 /**

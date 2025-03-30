@@ -10,15 +10,6 @@ export function getInventoryList(data: any) {
 }
 
 /**
- * 获取库存明细
- * @param id - 库存项的唯一标识符
- * @returns
- */
-export function getInventoryDetail(id: string) {
-  return requestClient.get(`/admin/bound/inventory/${id}`);
-}
-
-/**
  * 导出库存数据
  * @param data
  * @returns
@@ -47,8 +38,8 @@ export function getInventoryOutList(data: any) {
  * @param id - 库存项的唯一标识符
  * @returns
  */
-export function getInventoryOutDetail(id: number) {
-  return requestClient.get(`/admin/bound/inventoryOutbound/${id}`);
+export function getInventoryOutDetail(id: number,params:any) {
+  return requestClient.get(`/admin/bound/inventoryOutbound/${id}`,{params});
 }
 
 /**

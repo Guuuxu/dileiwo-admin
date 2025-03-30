@@ -9,7 +9,6 @@ import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
 import { useSchema } from './data';
-import { getInventoryDetail } from '#/api';
 
 defineOptions({
   name: 'FormDrawer',

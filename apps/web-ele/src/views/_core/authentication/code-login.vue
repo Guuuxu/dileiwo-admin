@@ -6,7 +6,9 @@ import { computed, ref } from 'vue';
 
 import { AuthenticationCodeLogin, z } from '@vben/common-ui';
 import { useAuthStore } from '#/store';
+import { sendSmsApi } from '#/api';
 import { $t } from '@vben/locales';
+import { ElMessage } from 'element-plus';
 
 defineOptions({ name: 'CodeLogin' });
 const authStore = useAuthStore();
@@ -46,12 +48,16 @@ const formSchema = computed((): VbenFormSchema[] => {
           // 模拟发送验证码
           // Simulate sending verification code
           loading.value = true;
-          await new Promise((resolve) => {
-            setTimeout(() => {
-              resolve(true);
-            }, 2000);
-          });
-          loading.value = false;
+          const phone = formSchema.value.find((item) => item.fieldName === 'phone')?.defaultValue;
+          console.log('Current phone number:', phone);
+          try {
+            await sendSmsApi(phone)
+            ElMessage.success('已发送');
+            loading.value = false;
+          }catch (error) {
+            loading.value = false;
+            console.error('Error sending verification code:', error);
+          }
         },
         defaultValue: '123456',
         placeholder: $t('authentication.code'),

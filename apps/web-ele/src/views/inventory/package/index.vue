@@ -34,13 +34,18 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    // { field: 'category', title: '型号' },
-    { field: 'detail_no', title: '包装' },
-    { field: 'created_at', title: '出货日期' },
-    { field: 'name', title: '出货客户' },
-    { field: 'link_person', title: '联络人' },
-    { field: 'register_address', title: '地址' },
-    // { field: 'status', title: '状态', slots: { default: 'status' } },
+    { field: 'detail_no', title: '包装编码' },
+    { field: 'limit_count', title: '总循环次数' },
+    { field: 'month_limit', title: '单月已用' },
+    { field: 'remain_count', title: '单月剩余用量' },
+    { field: 'status', title: '状态', slots: { 
+      default: ({ row }) => {
+        return row.status == '1' ? '出库' : '回收';
+      }
+     } },
+    { field: 'rent_deadline', title: '租赁到期日' },
+    { field: 'client_name', title: '客户' },
+    { field: 'register_address', title: '收件人地址' },
     {
       field: 'action',
       fixed: 'right',

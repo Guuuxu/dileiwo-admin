@@ -14,7 +14,7 @@ import { getInventoryOutDetail,exportInventoryOut } from '#/api';
 defineOptions({
   name: 'FormDrawer',
 });
-
+const row = ref({});
 const [BaseForm, BaseFormApi] = useVbenForm({
   schema: useSchema(),
   showDefaultActions: false,
@@ -27,7 +27,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     drawerApi.close();
   },
   onConfirm: async () => {
-    await exportInventoryOut();
+    await exportInventoryOut(row.value.id);
     drawerApi.close();
   },
   async onOpenChange(isOpen: boolean) {
@@ -35,10 +35,15 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const { values } = drawerApi.getData<Record<string, any>>();
       if (values) {
         console.log('values', values);
-        const res = await getInventoryOutDetail(values.id);
-        gridApi.setGridOptions({
-          data: res.data,
-        });
+        row.value = values;
+        // const res = await getInventoryOutDetail(values.id,{
+        //   page: 1,
+        //   per_page: 20,
+        // });
+        // console.log('res', res);
+        // gridApi.setGridOptions({
+        //   data: res.list,
+        // });
       }
     }
   },
@@ -59,13 +64,13 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
-    { field: 'packageCode', title: '包装编码' },
-    { field: 'created_at', title: '总循环次数' },
-    { field: 'customer', title: '单月已用' },
-    { field: 'customer', title: '单月剩余用量' },
+    { field: 'detail_no', title: '包装编码' },
+    { field: 'recycle_count', title: '总循环次数' },
+    { field: 'month_count', title: '单月已用' },
+    { field: 'remain_times', title: '单月剩余用量' },
     { field: 'status', title: '状态', slots: { default: 'status' } },
-    { field: 'created_at', title: '租赁到期日' },
-    { field: 'customer', title: '客户' },
+    { field: 'rent_deadline', title: '租赁到期日' },
+    { field: 'client_name', title: '客户' },
     { field: 'address', title: '收件人地址' },
   ],
   data: dataList.value,
@@ -80,16 +85,16 @@ const gridOptions: VxeGridProps<RowType> = {
     trigger: 'click',
   },
   pagerConfig: {},
-  // proxyConfig: {
-  //   ajax: {
-  //     query: async ({ page }) => {
-  //       return await getExampleTableApi({
-  //         page: page.currentPage,
-  //         per_page: page.pageSize,
-  //       });
-  //     },
-  //   },
-  // },
+  proxyConfig: {
+    ajax: {
+      query: async ({ page }) => {
+        return await getInventoryOutDetail(row.value.id,{
+          page: page.currentPage,
+          per_page: page.pageSize,
+        });
+      },
+    },
+  },
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({ gridOptions });

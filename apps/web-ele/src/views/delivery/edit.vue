@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
-import { useVbenDrawer } from '@vben/common-ui';
+import { ref, onMounted, h } from 'vue';
+import { useVbenDrawer, VbenButton } from '@vben/common-ui';
 
-import {  ElMessage } from 'element-plus';
+import { ElButton, ElMessage } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
-import {updateDelivery,scanOutboundBarcode } from '#/api';
+import {updateDelivery,scanOutboundBarcode,sendPhoneMessage } from '#/api';
 
 defineOptions({
   name: 'FormDrawer',
 });
 const row = ref({})
-const step = ref('0');
+const step = ref('1');
 const [BaseForm, BaseFormApi] = useVbenForm({
   schema: useSchema(),
   showDefaultActions: false,
@@ -30,6 +30,20 @@ const [BaseForm2, BaseFormApi2] = useVbenForm({
       },
       fieldName: 'code',
       label: '请扫描包装编码',
+        suffix: () => h('span', { class: 'text-[12px]'}, '点击发送移转⼿机APP端扫码'),
+        renderComponentContent: () => ({
+        append: () => h(ElButton, { 
+          class: 'text-[12px]', 
+          onClick: () => {
+            console.log('Append 被点击');
+            // 可以根据需要调用相应的处理函数
+            sendPhoneMessage(boundData.value.id).then((res)=>{
+              console.log(res);
+              ElMessage.success('操作成功');
+            })
+          } 
+        }, '发送'),
+      }),
     },
   ],
   layout: 'vertical',
@@ -64,6 +78,9 @@ const [Drawer, drawerApi] = useVbenDrawer({
       
     } else {
       console.log(step.value)
+      BaseFormApi.resetForm();
+      BaseFormApi2.resetForm();
+      step.value = '0';
       drawerApi.close();
     }
     
