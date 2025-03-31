@@ -165,6 +165,19 @@ const handleSetData = (row: RowType, title: string) => {
 
 import { ElMessageBox } from 'element-plus';
 
+const handleSend = (row: RowType) => {
+  ElMessageBox.confirm('是否确定寄出？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(() => {
+    sendRepair({ id: row.id }).then(() => {
+      ElMessage.success('寄出成功');
+      gridApi.reload();
+    });
+  });
+}
+
 onMounted(() => {
   loadList(6);
 });
@@ -177,7 +190,7 @@ onMounted(() => {
     </template>
     <Grid>
       <template #action="{ row }">
-        <ElButton type="primary" link @click="handleEditRow(row)">
+        <ElButton type="primary" link @click="handleSend(row)">
           寄出
         </ElButton>
       </template>
