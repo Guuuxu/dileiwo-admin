@@ -5,15 +5,15 @@ interface data {
 }
 
 export function getCustomerList(params: Record<string, any>) {
-  return requestClient.get('/admin/client', params);
+  return requestClient.get('/admin/client', {params});
 }
 
 export function getCustomerDetails(customerId: number) {
   return requestClient.get(`/admin/client/${customerId}`);
 }
 
-export function updateCustomer(customerData: any) {
-  return requestClient.post('/admin/client/store', customerData);
+export function updateCustomer(data: any) {
+  return requestClient.post('/admin/client/store', {data});
 }
 
 /**

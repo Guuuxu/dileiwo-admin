@@ -12,8 +12,8 @@ export async function getUserInfoApi() {
 /**
  * 获取管理员用户列表
  */
-export async function getAdminUserListApi() {
-  return requestClient.get<UserInfo[]>('/admin/system');
+export async function getAdminUserListApi(params:any) {
+  return requestClient.get<UserInfo[]>('/admin/system',{params});
 }
 
 /**
@@ -27,7 +27,7 @@ export async function getAdminUserDetailApi(userId: string) {
  * 新增管理员用户
  */
 export async function addAdminUserApi(userData: Partial<UserInfo>) {
-  return requestClient.post('/admin/system', userData);
+  return requestClient.post('/admin/system/store', userData);
 }
 
 /**

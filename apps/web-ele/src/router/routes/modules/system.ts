@@ -21,24 +21,7 @@ const routes: RouteRecordRaw[] = [
           title: $t('page.system.administrator'),
         },
       },
-      {
-        name: 'system.user',
-        path: '/system/user',
-        component: () => import('#/views/system/user/index.vue'),
-        meta: {
-          icon: 'lucide:user-round',
-          title: $t('page.system.user'),
-        },
-      },
-      {
-        name: 'system.role',
-        path: '/system/role',
-        component: () => import('#/views/system/role/index.vue'),
-        meta: {
-          icon: 'mdi:user-tie',
-          title: $t('page.system.role'),
-        },
-      },
+      
     ],
   },
 ];

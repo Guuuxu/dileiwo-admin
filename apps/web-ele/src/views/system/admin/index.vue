@@ -6,14 +6,7 @@
     </template>
     <ElCard>
       <template #default>
-        <Form>
-          <template #reset-before>
-            <ElButton type="primary" @click="handleSearch">搜索</ElButton>
-          </template>
-          <template #submit-before>
-            <ElButton @click="handleReset">清空</ElButton>
-          </template>
-        </Form>
+       
         <div class="vp-raw h-[500px] w-full">
           <Grid>
             <template #status="{ row }">
@@ -25,9 +18,9 @@
               <ElButton type="primary" link @click="handleEditRow(row)"
                 >编辑
               </ElButton>
-              <ElButton type="primary" link @click="handleDisabled(row)"
+              <!-- <ElButton type="primary" link @click="handleDisabled(row)"
                 >{{ row.status ? '禁用' : '启用' }}
-              </ElButton>
+              </ElButton> -->
               <ElButton type="danger" link @click="handleDeleteRow(row)"
                 >删除
               </ElButton>
@@ -37,14 +30,17 @@
       </template>
     </ElCard>
 
-    <Drawer />
+    <Drawer @onUpdated="handleUpdate"/>
   </Page>
 </template>
 <script lang="ts" setup>
 import { ref, onMounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import type { VxeGridProps } from '#/adapter/vxe-table';
+import type { VbenFormProps } from '#/adapter/form';
+
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import {getAdminUserListApi,deleteAdminUserApi} from '#/api'
 
 import { Page, useVbenDrawer, VbenButton } from '@vben/common-ui';
 import Edit from './edit.vue';
@@ -52,57 +48,14 @@ const [Drawer, drawerApi] = useVbenDrawer({
   connectedComponent: Edit,
 });
 
-import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
+import { ElButton, ElCard, ElMessage, ElTag,ElMessageBox } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { $t } from '#/locales';
 
 const router = useRouter();
-const [Form, formApi] = useVbenForm({
-  commonConfig: {
-    // 所有表单项
-    componentProps: {
-      class: 'w-full',
-    },
-  },
-  layout: 'horizontal',
-  resetButtonOptions: { show: false },
-  submitButtonOptions: { show: false },
-  // 大屏一行显示3个，中屏一行显示2个，小屏一行显示1个
-  wrapperClass: 'grid-cols-1 md:grid-cols-3 lg:grid-cols-4',
-  handleSubmit: (values) => {
-    ElMessage.success(`表单数据：${JSON.stringify(values)}`);
-  },
-  schema: [
-    {
-      component: 'Input',
-      fieldName: 'name',
-      label: '用户',
-      componentProps: {
-        placeholder: '请输入用户ID/昵称/手机号',
-      },
-    },
-    {
-      component: 'Select',
-      fieldName: 'role',
-      label: '角色',
-      componentProps: {
-        options: [
-        { label: '管理员', value: 1 },
-          { label: '操作员', value: 2 },
-          { label: '代工厂', value: 3 },
-        ],
-      },
-    },
-  ],
-});
 
-function handleSearch() {
-  formApi.getValues();
-}
-function handleReset() {
-  formApi.resetForm();
-}
+
 
 // 表格配置
 import type { AdminInfo } from '@vben/types';
@@ -120,9 +73,18 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'id', title: 'ID' },
     { field: 'name', title: '姓名' },
-    { field: 'role', title: '角色' },
+    { field: 'type', title: '角色', cellRender:{
+      name: 'CellSelectLabel',
+      props: {
+        options: [
+          { label: '管理员', value: 1 },
+          { label: '操作员', value: 2 },
+          { label: '代工厂', value: 3 },
+        ],
+      },
+    } },
     { field: 'phone', title: '手机号' },
-    { field: 'status', title: '状态', slots: { default: 'status' } },
+    // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
       fixed: 'right',
@@ -143,40 +105,53 @@ const gridOptions: VxeGridProps<RowType> = {
     trigger: 'click',
   },
   pagerConfig: {},
-  // proxyConfig: {
-  //   ajax: {
-  //     query: async ({ page }) => {
-  //       return await getExampleTableApi({
-  //         page: page.currentPage,
-  //         per_page: page.pageSize,
-  //       });
-  //     },
-  //   },
-  // },
+  proxyConfig: {
+    ajax: {
+      query: async ({ page },formValues) => {
+        return await getAdminUserListApi({
+          page: page.currentPage,
+          per_page: page.pageSize,
+          ...formValues
+        });
+      },
+    },
+  },
 };
-const [Grid, gridApi] = useVbenVxeGrid({ gridOptions });
+const formOptions: VbenFormProps = {
+  // 默认展开
+  collapsed: false,
+  schema: [
+  {
+      component: 'Input',
+      fieldName: 'name',
+      label: '用户',
+      componentProps: {
+        placeholder: '请输入用户ID/昵称/手机号',
+      },
+    },
+    {
+      component: 'Select',
+      fieldName: 'type',
+      label: '角色',
+      componentProps: {
+        options: [
+        { label: '管理员', value: 1 },
+          { label: '操作员', value: 2 },
+          { label: '代工厂', value: 3 },
+        ],
+      },
+    },
+    
 
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        created_at: '2025-01-03',
-        name: '张三',
-        role: '超级管理员',
-        status: 1,
-        phone: '13800138000',
-        remark: '备注一下',
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
+  ],
+  // 控制表单是否显示折叠按钮
+  showCollapseButton: true,
+  // 是否在字段值改变时提交表单
+  submitOnChange: true,
+  // 按下回车时是否提交表单
+  submitOnEnter: false,
 };
+const [Grid, gridApi] = useVbenVxeGrid({ formOptions,gridOptions });
 
 // 新增
 const handleAdd = () => {
@@ -204,15 +179,28 @@ const handleSetData = (row: RowType, pageType: string) => {
   drawerApi
     .setData({
       values: { ...row, pageType },
+    }).setState({
+      title: pageType === 'add'? '新增' : pageType === 'edit'? '编辑' : '查看',
     })
     .open();
 };
 
 const handleDeleteRow = (row?: {}) => {
   console.log(`🚀 ~  ~ row:`, row);
+  ElMessageBox.confirm('确认删除此用户吗?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(async () => {
+    await deleteAdminUserApi(row.id);
+    gridApi.reload();
+    ElMessage.success('删除成功');
+  })
 };
 
-onMounted(() => {
-  loadList(2);
-});
+const handleUpdate = () => {
+  gridApi.reload();
+};
+
+
 </script>

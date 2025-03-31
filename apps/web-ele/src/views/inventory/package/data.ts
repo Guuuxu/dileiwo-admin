@@ -1,7 +1,6 @@
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
-import { ElMessage } from 'element-plus';
+
 import type { VbenFormSchema } from '#/adapter/form';
-import { globalShareState } from '@vben/common-ui';
 
 import { $t } from '#/locales';
 
@@ -15,41 +14,22 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'name',
-      label: '姓名',
+      fieldName: 'customer',
+      label: '客户',
       rules: 'required',
     },
+    
     {
       component: 'Select',
       componentProps: {
         placeholder: '请选择',
         options: [
-          { label: '管理员', value: 1 },
-          { label: '操作员', value: 2 },
-          { label: '代工厂', value: 3 },
+          { label: '租赁', value: '1' },
+          { label: '购买', value: '2' },
         ],
       },
       fieldName: 'type',
-      label: '角色',
-      rules: 'required',
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
-      fieldName: 'phone',
-      label: '手机号',
-      rules: 'required',
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-        type: 'number'
-      },
-      fieldName: 'code',
-      label: '验证码',
+      label: '出货类型',
       rules: 'required',
     },
   ];

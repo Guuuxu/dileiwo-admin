@@ -33,9 +33,9 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'category', title: '型号' },
-    { field: 'codeRange', title: '包装编码' },
-    { field: 'created_at', title: '最新入库日期' },
+    { field: 'order_no', title: '型号' },
+    { field: 'detail_no', title: '包装编码' },
+    { field: 'last_inbound', title: '最新入库日期' },
     { field: 'user', title: '最新使用者' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {

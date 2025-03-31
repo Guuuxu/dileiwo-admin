@@ -66,9 +66,9 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'category', title: '型号' },
-    { field: 'codeRange', title: '编码范围' },
-    { field: 'user', title: '使用者（最近一次）' },
+    { field: 'type_name', title: '型号' },
+    { field: 'detail_no', title: '编码范围' },
+    { field: 'latest_user', title: '使用者（最近一次）' },
     { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {

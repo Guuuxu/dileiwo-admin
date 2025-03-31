@@ -9,19 +9,7 @@ const handleEnterInput = () => {
  */
 export function useSchema(): VbenFormSchema[] {
   return [
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-        onKeyup(e: any) {
-          if (e.key === 'Enter') {
-            handleEnterInput();
-          }
-        },
-      },
-      fieldName: 'codeRange',
-      label: '请扫描包装编码',
-    },
+    
   ];
 }
 

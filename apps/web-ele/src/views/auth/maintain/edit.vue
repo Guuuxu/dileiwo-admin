@@ -4,17 +4,44 @@ import { useVbenDrawer } from '@vben/common-ui';
 
 import { ElTabs, ElTabPane, ElCard, ElRow, ElCol } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
+import { handleScan } from '#/api';
 
 defineOptions({
   name: 'FormDrawer',
 });
 
 const [BaseForm, BaseFormApi] = useVbenForm({
-  schema: useSchema(),
+  schema: [
+  {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+        onKeyup(e: any) {
+          if (e.key === 'Enter') {
+            handleEnterInput();
+          }
+        },
+      },
+      fieldName: 'detail_no',
+      label: '请扫描包装编码',
+    },
+  ],
   showDefaultActions: false,
 });
+const row = ref({});
+// 输入确认
+const handleEnterInput = async () => {
+  const formValues = await BaseFormApi.getValues()
+  console.log('handleEnterInput',formValues );
+  const data = {
+    id: row.value.id,
+    type: 2,
+    detail_no: formValues.detail_no,
+  };
 
-import { useSchema } from './data';
+  const res = await handleScan(data)
+    ElMessage.success('操作完成！')
+};
 
 const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
@@ -28,20 +55,14 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       const { values } = drawerApi.getData<Record<string, any>>();
       if (values) {
-        BaseFormApi.setValues({
-          ...values,
-          itemIcon: [
-            {
-              name: 'logo-custom.png',
-              url: 'https://egclub.nyc3.digitaloceanspaces.com/production/images/services/gift.png',
-            },
-          ],
-        });
+        row.value = values;
       }
     }
   },
   title: '详情',
 });
+
+
 </script>
 <template>
   <Drawer>

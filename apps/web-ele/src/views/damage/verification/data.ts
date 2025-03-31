@@ -15,53 +15,61 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
         options: damageReasons,
+        disabled: true,
       },
-      fieldName: 'reason',
+      fieldName: 'broken_reason',
       label: '损坏原因',
-      rules: 'required',
     },
     {
-      component: 'Upload',
+      component: 'Image',
       componentProps: {
-        placeholder: '请上传文件',
-        class: 'avatar-uploader',
-        action: 'https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15',
-        accept: 'image/*',
-        listType: 'picture-card',
-        multiple: true,
-        showUploadList: false,
-        beforeUpload: (file: File) => {
-          console.log(file);
-          const isJPG = file.type === 'image/jpeg';
-          const isPNG = file.type === 'image/png';
-          const isGIF = file.type === 'image/gif';
-
-          if (!isJPG && !isPNG && !isGIF) {
-            ElMessage.error({
-              message: $t('ui.formRules.fileTypeError'),
-            });
-          }
-          return isJPG || isPNG || isGIF;
-        },
-        handleAvatarSuccess: (res: any, file: File) => {
-          console.log(res, file);
-          if (res.code === 0) {
-            // globalShareState.set('avatarUrl', res.data.url);
-          } else {
-            ElMessage.error({
-              message: $t('ui.formRules.fileUploadError'),
-            });
-          }
-        },
+        placeholder: '请输入',
       },
-      fieldName: 'photo',
+      fieldName:'main_img',
       label: '损坏照片',
-      renderComponentContent: () => {
-        return {
-          default: () => '+',
-        };
-      },
-    },
+    }
+    // {
+    //   component: 'Upload',
+    //   componentProps: {
+    //     placeholder: '请上传文件',
+    //     class: 'avatar-uploader',
+    //     action: 'https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15',
+    //     accept: 'image/*',
+    //     listType: 'picture-card',
+    //     multiple: true,
+    //     showUploadList: false,
+    //     beforeUpload: (file: File) => {
+    //       console.log(file);
+    //       const isJPG = file.type === 'image/jpeg';
+    //       const isPNG = file.type === 'image/png';
+    //       const isGIF = file.type === 'image/gif';
+
+    //       if (!isJPG && !isPNG && !isGIF) {
+    //         ElMessage.error({
+    //           message: $t('ui.formRules.fileTypeError'),
+    //         });
+    //       }
+    //       return isJPG || isPNG || isGIF;
+    //     },
+    //     handleAvatarSuccess: (res: any, file: File) => {
+    //       console.log(res, file);
+    //       if (res.code === 0) {
+    //         // globalShareState.set('avatarUrl', res.data.url);
+    //       } else {
+    //         ElMessage.error({
+    //           message: $t('ui.formRules.fileUploadError'),
+    //         });
+    //       }
+    //     },
+    //   },
+    //   fieldName: 'photo',
+    //   label: '损坏照片',
+    //   renderComponentContent: () => {
+    //     return {
+    //       default: () => '+',
+    //     };
+    //   },
+    // },
   ];
 }
 

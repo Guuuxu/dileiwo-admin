@@ -11,7 +11,7 @@ import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getInventoryList, exportInventory } from '#/api';
+import { getInventoryOutList, exportInventoryOut } from '#/api';
 
 import Edit from './edit.vue';
 
@@ -37,9 +37,9 @@ const gridOptions: VxeGridProps<RowType> = {
     // { field: 'category', title: '型号' },
     { field: 'package', title: '包装' },
     { field: 'created_at', title: '出货日期' },
-    { field: 'customer', title: '出货客户' },
-    { field: 'contact', title: '联络人' },
-    { field: 'address', title: '地址' },
+    { field: 'name', title: '出货客户' },
+    { field: 'link_person', title: '联络人' },
+    { field: 'register_address', title: '地址' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -64,7 +64,7 @@ const gridOptions: VxeGridProps<RowType> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await getInventoryList({
+        return await getInventoryOutList({
           page: page.currentPage,
           per_page: page.pageSize,
           ...formValues,
@@ -84,20 +84,14 @@ const formOptions: VbenFormProps = {
       label: '客户',
     },
     {
-      component: 'Input',
-      fieldName: 'customer',
-      label: '出库单号',
-    },
-    {
       component: 'Select',
       fieldName: 'type_name',
-      label: '出货类型',
+      label: '类型',
       componentProps: {
+        clearable: true,
         options: [
-          { label: '租赁', value: '1' },
-          { label: '购买', value: '2' },
-          { label: '出库', value: '3' },
-          { label: '回收', value: '4' },
+          { label: '租赁', value: '租赁' },
+          { label: '购买', value: '购买' },
         ],
       },
     },

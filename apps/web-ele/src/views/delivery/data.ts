@@ -3,6 +3,8 @@ import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 import type { VbenFormSchema } from '#/adapter/form';
 
 import { $t } from '#/locales';
+import {getCustomerList} from '#/api'
+
 
 /**
  * 获取编辑表单的字段配置。如果没有使用多语言，可以直接export一个数组常量
@@ -10,9 +12,19 @@ import { $t } from '#/locales';
 export function useSchema(): VbenFormSchema[] {
   return [
     {
-      component: 'Input',
+      component: 'ApiSelect',
+      // 对应组件的参数
       componentProps: {
-        placeholder: '请输入',
+        // 客户接口转options格式
+        afterFetch: (data: { list: any[]; }) => {
+          console.log(data)
+          return data.list.map((item: any) => ({
+            label: item.name,
+            value: item.id,
+          }));
+        },
+        // 客户接口
+        api: getCustomerList,
       },
       fieldName: 'client_id',
       label: '客户',
@@ -36,6 +48,7 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
+        type: 'number'
       },
       fieldName: 'during',
       rules: 'required',

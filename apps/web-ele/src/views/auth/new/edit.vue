@@ -30,15 +30,12 @@ const [BaseForm, BaseFormApi] = useVbenForm({
   ],
   showDefaultActions: false,
 });
-
+// 定义自定义事件
+const emits = defineEmits(['onUpdated']);
 const [Drawer, drawerApi] = useVbenDrawer({
   showConfirmButton: false,
   cancelText: '完成',
   onCancel() {
-    drawerApi.close();
-  },
-  onConfirm: async () => {
-    await BaseFormApi.submitForm();
     drawerApi.close();
   },
   onOpenChange(isOpen: boolean) {
@@ -62,6 +59,7 @@ const handleEnterInput = async () => {
   };
   console.log('handleEnterInput', data);
   const res = await handleScan(data);
+  emits('onUpdated');
   ElMessage.success('认证完成！');
 };
 </script>
