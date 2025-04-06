@@ -48,7 +48,7 @@ export function scanOutboundBarcode(outbound: number, detail_no: string) {
  * @returns
  */
 export function sendPhoneMessage(id: number) {
-  return requestClient.post('/admin/bound/outbound/send', { id });
+  return requestClient.post(`/admin/bound/outbound/${id}/send`);
 }
 
 /**
