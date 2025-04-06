@@ -10,7 +10,7 @@ defineOptions({
   name: 'FormDrawer',
 });
 const row = ref({})
-const step = ref('1');
+const step = ref('0');
 const [BaseForm, BaseFormApi] = useVbenForm({
   schema: useSchema(),
   showDefaultActions: false,
