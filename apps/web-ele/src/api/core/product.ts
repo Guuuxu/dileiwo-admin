@@ -30,7 +30,7 @@ export async function updateProduct(data: ProductInfo['data']) {
  * @returns
  */
 export async function getProductList(params: RequestClientConfig | undefined) {
-  return requestClient.get<ProductInfo[]>('/admin/model/list',params);
+  return requestClient.get<ProductInfo[]>('/admin/model/list', { params });
 }
 
 /**
@@ -48,5 +48,5 @@ export async function getProductDetail(model: number) {
  * @returns
  */
 export async function deleteProduct(id: number) {
-  return requestClient.post(`/admin/model/${id}/delete/`,);
+  return requestClient.post(`/admin/model/${id}/delete/`);
 }

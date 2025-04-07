@@ -4,43 +4,48 @@ import { useVbenDrawer } from '@vben/common-ui';
 
 import { ElTabs, ElTabPane, ElCard, ElRow, ElMessage } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
-import { updateProduct, } from '#/api';
+import { updateProduct } from '#/api';
 
 defineOptions({
   name: 'FormDrawer',
 });
+const title = ref(''); // 用于 Drawer 的标题
 // 定义自定义事件
 const emits = defineEmits(['productUpdated']);
-const [BaseForm, BaseFormApi] = useVbenForm({
-  schema: useSchema(),
-  showDefaultActions: false,
-});
 
-import { useSchema } from './data';
-const id = ref('')
 const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
     drawerApi.close();
   },
   onConfirm: async () => {
-    const {valid} = await BaseFormApi.validate();
-    if(valid){
-      const params = await BaseFormApi.getValues();
-      params.id = id.value;
-      const res = await updateProduct(params);
-      ElMessage.success('操作成功');
-      // 触发自定义事件通知父组件
-      emits('productUpdated', params);
-      drawerApi.close();
+    if (title.value === '新增') {
+      const { valid } = await BaseFormApi.validate();
+      if (valid) {
+        const params = await BaseFormApi.getValues();
+        params.id = id.value;
+        const res = await updateProduct(params);
+      }
+    } else {
+      const { valid } = await EditFormApi.validate();
+      if (valid) {
+        const params = await EditFormApi.getValues();
+        params.id = id.value;
+        const res = await updateProduct(params);
+      }
     }
-    
+    ElMessage.success('操作成功');
+    // 触发自定义事件通知父组件
+    emits('productUpdated');
+    drawerApi.close();
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
       const { values } = drawerApi.getData<Record<string, any>>();
-      id.value = values.id;
+      console.log(drawerApi);
+      title.value = values.title; // 设置标题为编辑
+      id.value = values?.id;
       if (values) {
-        BaseFormApi.setValues({
+        EditFormApi.setValues({
           ...values,
         });
       }
@@ -48,10 +53,23 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   title: '详情',
 });
+
+import { useSchema, useSchemaEdit } from './data';
+const [BaseForm, BaseFormApi] = useVbenForm({
+  schema: useSchema(),
+  showDefaultActions: false,
+});
+const [BaseForm2, EditFormApi] = useVbenForm({
+  schema: useSchemaEdit(),
+  showDefaultActions: false,
+});
+
+const id = ref('');
 </script>
 <template>
   <Drawer>
-    <BaseForm />
+    <BaseForm v-if="title === '新增'" />
+    <BaseForm2 v-else />
   </Drawer>
 </template>
 <style lang="scss" scoped>

@@ -11,7 +11,7 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getProductList,deleteProduct } from '#/api';
+import { getProductList, deleteProduct } from '#/api';
 
 import Edit from './edit.vue';
 
@@ -20,37 +20,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
 });
 
 const router = useRouter();
-const [Form, formApi] = useVbenForm({
-  commonConfig: {
-    // 所有表单项
-    componentProps: {
-      class: 'w-full',
-    },
-  },
-  layout: 'horizontal',
-  resetButtonOptions: { show: false },
-  submitButtonOptions: { show: false },
-  // 大屏一行显示3个，中屏一行显示2个，小屏一行显示1个
-  wrapperClass: 'grid-cols-1 md:grid-cols-3 lg:grid-cols-4',
-  handleSubmit: (values) => {
-    ElMessage.success(`表单数据：${JSON.stringify(values)}`);
-  },
-  schema: [
-    {
-      component: 'Input',
-      fieldName: 'name',
-      label: '项目名称',
-      componentProps: {},
-    },
-  ],
-});
-
-function handleSearch() {
-  formApi.getValues();
-}
-function handleReset() {
-  formApi.resetForm();
-}
 
 // 表格配置
 interface RowType {
@@ -65,10 +34,10 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'type_name', title: '规格名称' },
+    { field: 'type_name', title: '型号' },
     { field: 'amount', title: '数量' },
-    { field: 'start_no', title: '编码范围', },
-    { field: 'remark', title: '备注', },
+    { field: 'start_no', title: '编码范围' },
+    { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -92,13 +61,13 @@ const gridOptions: VxeGridProps<RowType> = {
   pagerConfig: {},
   proxyConfig: {
     ajax: {
-      query: async ({ page },formValues) => {
+      query: async ({ page }, formValues) => {
         const res = await getProductList({
           page: page.currentPage,
           per_page: page.pageSize,
-          ...formValues
+          ...formValues,
         });
-        return res
+        return res;
       },
     },
   },
@@ -110,11 +79,9 @@ const formOptions: VbenFormProps = {
   schema: [
     {
       component: 'Input',
-      fieldName: 'category',
+      fieldName: 'type_name',
       label: '型号',
     },
-    
-
   ],
   // 控制表单是否显示折叠按钮
   showCollapseButton: true,
@@ -131,53 +98,41 @@ const handleProductUpdated = (values: any) => {
 
 // 新增
 const handleAdd = () => {
-  handleSetData({},'新增');
+  handleSetData({}, '新增');
 };
 // 编辑
 function handleEditRow(row: RowType) {
-  handleSetData(row,'编辑');
+  handleSetData(row, '编辑');
 }
 // 详情
 const handleViewRow = (row: RowType) => {
-  handleSetData(row,'详情');
+  handleSetData(row, '详情');
 };
 
 const handleSetData = (row: RowType, title: string) => {
   drawerApi
     .setData({
-      values: { ...row },
-    }).setState({
-      title
+      values: { ...row, title },
+    })
+    .setState({
+      title,
     })
     .open();
 };
 
 import { ElMessageBox } from 'element-plus';
 const handleDeleteRow = (row: RowType) => {
-  ElMessageBox.confirm(
-    '此操作将永久删除该条记录, 是否继续?',
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(() => {
-    
+  ElMessageBox.confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(() => {
     deleteProduct(row.id).then((res) => {
-      const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
-    if (index !== -1) {
-      dataList.value.splice(index, 1);
       ElMessage.success('删除成功');
-    }
-    })
-    
-  }).catch(() => {
-    ElMessage.info('已取消删除');
+      gridApi.reload();
+    });
   });
 };
-
-
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
@@ -186,21 +141,21 @@ const handleDeleteRow = (row: RowType) => {
       <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
     </template>
     <Grid>
-            <template #status="{ row }">
-              <ElTag :type="row.status ? 'success' : 'danger'">
-                {{ row.status ? '已启用' : '已禁用' }}
-              </ElTag>
-            </template>
-            <template #action="{ row }">
-              <ElButton type="primary" link @click="handleEditRow(row)">
-                编辑
-              </ElButton>
-              <ElButton type="danger" link @click="handleDeleteRow(row)">
-                删除
-              </ElButton>
-            </template>
-          </Grid>
+      <template #status="{ row }">
+        <ElTag :type="row.status ? 'success' : 'danger'">
+          {{ row.status ? '已启用' : '已禁用' }}
+        </ElTag>
+      </template>
+      <template #action="{ row }">
+        <ElButton type="primary" link @click="handleEditRow(row)">
+          编辑
+        </ElButton>
+        <ElButton type="danger" link @click="handleDeleteRow(row)">
+          删除
+        </ElButton>
+      </template>
+    </Grid>
 
-    <Drawer @productUpdated="handleProductUpdated"/>
+    <Drawer @productUpdated="handleProductUpdated" />
   </Page>
 </template>
