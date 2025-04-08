@@ -6,7 +6,7 @@ import { requestClient } from '#/api/request';
  * @returns
  */
 export function getInventoryList(params: any) {
-  return requestClient.get('/admin/bound/inventory', params);
+  return requestClient.get('/admin/bound/inventory', {params});
 }
 
 /**

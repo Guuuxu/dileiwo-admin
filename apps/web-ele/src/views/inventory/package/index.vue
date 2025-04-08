@@ -35,16 +35,12 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'detail_no', title: '包装编码' },
-    { field: 'limit_count', title: '总循环次数' },
-    { field: 'month_limit', title: '单月已用' },
+    { field: 'month_limit', title: '总循环次数' },
+    { field: 'limit_count', title: '单月已用' },
     { field: 'remain_count', title: '单月剩余用量' },
-    { field: 'status', title: '状态', slots: { 
-      default: ({ row }) => {
-        return row.status == '1' ? '出库' : '回收';
-      }
-     } },
+    { field: 'status', title: '状态', slots: { default: 'status' }},
     { field: 'rent_deadline', title: '租赁到期日' },
-    { field: 'client_name', title: '客户' },
+    { field: 'name', title: '客户' },
     { field: 'register_address', title: '收件人地址' },
     {
       field: 'action',
@@ -183,8 +179,13 @@ onMounted(() => {
       <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
     </template>
     <Grid>
+      <template #status="{ row }">
+        <span v-if="row.status == 0 || row.status == 1">回收</span>
+        <span v-else-if="row.status == 2">损坏</span>
+        <span v-else>出库</span>
+        </template>
       <template #action="{ row }">
-
+        
         <ElButton type="primary" link @click="handleExportRow(row)">
           导出
         </ElButton>
