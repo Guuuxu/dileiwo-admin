@@ -56,6 +56,8 @@ export function sendPhoneMessage(id: number) {
  * @param data - 包含导出条件的对象，类型为任意类型
  * @returns
  */
-export function exportData(data: any) {
-  return requestClient.post('/admin/bound/outbound/export', data);
+export function exportData(id: number) {
+  return requestClient.post(`/admin/bound/outbound/${id}/export`, {}, {
+    responseType: 'blob',
+  });
 }

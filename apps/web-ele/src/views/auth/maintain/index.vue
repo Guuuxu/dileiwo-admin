@@ -21,37 +21,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
 });
 
 const router = useRouter();
-const [Form, formApi] = useVbenForm({
-  commonConfig: {
-    // 所有表单项
-    componentProps: {
-      class: 'w-full',
-    },
-  },
-  layout: 'horizontal',
-  resetButtonOptions: { show: false },
-  submitButtonOptions: { show: false },
-  // 大屏一行显示3个，中屏一行显示2个，小屏一行显示1个
-  wrapperClass: 'grid-cols-1 md:grid-cols-3 lg:grid-cols-4',
-  handleSubmit: (values) => {
-    ElMessage.success(`表单数据：${JSON.stringify(values)}`);
-  },
-  schema: [
-    {
-      component: 'Input',
-      fieldName: 'name',
-      label: '项目名称',
-      componentProps: {},
-    },
-  ],
-});
-
-function handleSearch() {
-  formApi.getValues();
-}
-function handleReset() {
-  formApi.resetForm();
-}
 
 // 表格配置
 interface RowType {
@@ -67,7 +36,7 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'type_name', title: '型号' },
-    { field: 'detail_no', title: '编码范围' },
+    { field: 'detail_no', title: '编码' },
     { field: 'latest_user', title: '使用者（最近一次）' },
     { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
@@ -125,39 +94,11 @@ const formOptions: VbenFormProps = {
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        created_at: '2025-01-03',
-        category: `00002${i}`,
-        user: '张三',
-        codeRange: '1 - 10002',
-        remark: '备注一下',
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
-};
-
-// 新增
-const handleAdd = () => {
-  handleSetData({}, '新增');
-};
 // 编辑
 function handleEditRow(row: RowType) {
-  handleSetData(row, '编辑');
+  handleSetData(row, '扫码');
 }
-// 详情
-const handleViewRow = (row: RowType) => {
-  handleSetData(row, '详情');
-};
+
 
 const handleSetData = (row: RowType, title: string) => {
   drawerApi
@@ -189,16 +130,13 @@ const handleDeleteRow = (row: RowType) => {
     });
 };
 
-onMounted(() => {
-  // loadList(6);
-});
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
     <Grid>
       <template #action="{ row }">
         <ElButton type="primary" link @click="handleEditRow(row)">
-          编辑
+          扫码
         </ElButton>
       </template>
     </Grid>

@@ -16,7 +16,7 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'type_name',
       label: '型号',
-      rules: 'required',
+      rules: z.string().nonempty({ message: '型号不能为空' }),
     },
 
     {
@@ -27,7 +27,7 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'amount',
       label: '数量',
-      rules: z.string().refine(
+      rules: z.string().nonempty({ message: '数量不能为空' }).refine(
         (value) => {
           const num = parseFloat(value);
           return !isNaN(num) && num >= 0;
@@ -46,6 +46,7 @@ export function useSchema(): VbenFormSchema[] {
       label: '起始编号',
       rules: z
         .string()
+        .nonempty({ message: '起始编号不能为空' })
         .max(8, { message: '最多输入 8 位' })
         .refine(
           (value) => {
@@ -62,7 +63,7 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'month_limit',
       label: '每月数量',
-      rules: z.string().refine(
+      rules: z.string().nonempty({ message: '每月数量不能为空' }).refine(
         (value) => {
           const num = parseFloat(value);
           return !isNaN(num) && num >= 0;
@@ -79,6 +80,7 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'remark',
       label: '备注',
+      rules: z.string().optional(),
     },
   ];
 }
@@ -93,7 +95,7 @@ export function useSchemaEdit(): VbenFormSchema[] {
       },
       fieldName: 'type_name',
       label: '型号',
-      rules: 'required',
+      rules: z.string().nonempty({ message: '型号不能为空' }),
     },
 
     {
@@ -104,13 +106,18 @@ export function useSchemaEdit(): VbenFormSchema[] {
       },
       fieldName: 'amount',
       label: '数量',
-      rules: z.string().refine(
-        (value) => {
-          const num = parseFloat(value);
-          return !isNaN(num) && num >= 0;
-        },
-        { message: '每月数量不能为负数' },
-      ), // 限制最大长度为8位
+      rules: z
+      .preprocess(
+        (value) => (typeof value === 'number' ? value.toString() : value),
+        z.string().nonempty({ message: '数量不能为空' }),
+      )
+        .refine(
+          (value) => {
+            const num = parseFloat(value);
+            return !isNaN(num) && num >= 0;
+          },
+          { message: '每月数量不能为负数' },
+        ),
     },
     {
       component: 'Input',
@@ -123,6 +130,7 @@ export function useSchemaEdit(): VbenFormSchema[] {
       label: '起始编号',
       rules: z
         .string()
+        .nonempty({ message: '起始编号不能为空' })
         .max(8, { message: '最多输入 8 位' })
         .refine(
           (value) => {
@@ -130,7 +138,7 @@ export function useSchemaEdit(): VbenFormSchema[] {
             return !isNaN(num) && num >= 0;
           },
           { message: '起始编号不能为负数' },
-        ), // 限制最大长度为8位
+        ),
     },
     {
       component: 'Input',
@@ -139,13 +147,18 @@ export function useSchemaEdit(): VbenFormSchema[] {
       },
       fieldName: 'month_limit',
       label: '每月数量',
-      rules: z.string().refine(
-        (value) => {
-          const num = parseFloat(value);
-          return !isNaN(num) && num >= 0;
-        },
-        { message: '每月数量不能为负数' },
-      ), // 限制最大长度为8位
+      rules: z
+      .preprocess(
+        (value) => (typeof value === 'number' ? value.toString() : value),
+        z.string().nonempty({ message: '每月数量不能为空' }),
+      )
+        .refine(
+          (value) => {
+            const num = parseFloat(value);
+            return !isNaN(num) && num >= 0;
+          },
+          { message: '每月数量不能为负数' },
+        ),
     },
     {
       component: 'Input',

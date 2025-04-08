@@ -24,6 +24,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
         const params = await BaseFormApi.getValues();
         params.id = id.value;
         const res = await updateProduct(params);
+        ElMessage.success('操作成功');
+        // 触发自定义事件通知父组件
+        emits('productUpdated');
+        drawerApi.close();
       }
     } else {
       const { valid } = await EditFormApi.validate();
@@ -31,12 +35,12 @@ const [Drawer, drawerApi] = useVbenDrawer({
         const params = await EditFormApi.getValues();
         params.id = id.value;
         const res = await updateProduct(params);
+        ElMessage.success('操作成功');
+        // 触发自定义事件通知父组件
+        emits('productUpdated');
+        drawerApi.close();
       }
     }
-    ElMessage.success('操作成功');
-    // 触发自定义事件通知父组件
-    emits('productUpdated');
-    drawerApi.close();
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {

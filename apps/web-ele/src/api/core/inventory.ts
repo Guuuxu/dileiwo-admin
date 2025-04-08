@@ -5,8 +5,8 @@ import { requestClient } from '#/api/request';
  * @param data - 包含查询条件的对象，类型为任意类型
  * @returns
  */
-export function getInventoryList(data: any) {
-  return requestClient.get('/admin/bound/inventory', { params: data });
+export function getInventoryList(params: any) {
+  return requestClient.get('/admin/bound/inventory', params);
 }
 
 /**

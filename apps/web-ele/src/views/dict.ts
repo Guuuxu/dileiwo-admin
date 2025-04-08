@@ -20,3 +20,8 @@ export const roleOptions = [
   { label: '操作员', value: 2 },
   { label: '代工厂', value: 3 },
 ];
+export const outboundOrderStatusOptions = [
+  { label: '已创建', value: 0 },
+  { label: '发送手机', value: 1 },
+  { label: '客户收到', value: 2 },
+];
