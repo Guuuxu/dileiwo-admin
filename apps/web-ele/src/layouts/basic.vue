@@ -59,7 +59,7 @@ const { destroyWatermark, updateWatermark } = useWatermark();
 const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
-
+import { roleOptions } from '#/views/dict';
 const menus = computed(() => [
   // {
   //   handler: () => {
@@ -92,6 +92,13 @@ const menus = computed(() => [
 
 const avatar = computed(() => {
   return userStore.userInfo?.avatar ?? preferences.app.defaultAvatar;
+});
+
+const roleName = computed(() => {
+  return (
+    roleOptions.find((item) => item.value == userStore.userInfo?.type)?.label ??
+    '超级管理员'
+  );
 });
 
 async function handleLogout() {
@@ -129,7 +136,7 @@ watch(
         :avatar
         :menus
         :text="userStore.userInfo?.realName"
-        description="管理员"
+        :description="roleName"
         tag-text="Pro"
         @logout="handleLogout"
       />

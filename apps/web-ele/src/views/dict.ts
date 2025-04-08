@@ -14,3 +14,9 @@ export const damageReasons: any = [
   { label: '恶意涂鸦', value: 6 },
   { label: '其他', value: 7 },
 ];
+
+export const roleOptions = [
+  { label: '管理员', value: 1 },
+  { label: '操作员', value: 2 },
+  { label: '代工厂', value: 3 },
+];
