@@ -10,7 +10,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
 import { useSchema } from './data';
 import { getInventoryOutDetail,exportInventoryOut } from '#/api';
-import {outboundOrderStatusOptions} from '#/views/dict'
+import {outboundOrderDetailStatusOptions} from '#/views/dict'
 
 defineOptions({
   name: 'FormDrawer',
@@ -72,7 +72,7 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'status', title: '状态', cellRender:{
       name: 'CellSelectLabel',
       props:{
-        options: outboundOrderStatusOptions
+        options: outboundOrderDetailStatusOptions
       }
     } },
     { field: 'rent_deadline', title: '租赁到期日' },

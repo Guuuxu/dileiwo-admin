@@ -13,6 +13,7 @@ import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
 import { getRepairList, sendRepair } from '#/api';
+import { damageReportStatusOptions } from '#/views/dict'
 import Edit from './edit.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -41,7 +42,12 @@ const gridOptions: VxeGridProps<RowType> = {
     },
     { field: 'last_user', title: '使用者（最近一次）' },
     { field: 'reason', title: '备注' },
-    // { field: 'status', title: '状态', slots: { default: 'status' } },
+    { field: 'status', title: '状态', cellRender:{
+      name: 'CellSelectLabel',
+      props:{
+        options: damageReportStatusOptions
+      }
+    }},
     {
       field: 'action',
       fixed: 'right',

@@ -25,3 +25,19 @@ export const outboundOrderStatusOptions = [
   { label: '发送手机', value: 1 },
   { label: '客户收到', value: 2 },
 ];
+// 损坏上报状态
+export const damageReportStatusOptions = [
+  { label: '待验证', value: 0 },
+  { label: '已验证', value: 1 },
+  { label: '待维修', value: 2 },
+  { label: '已完成', value: 3 },
+]
+// 出库单明细状态
+export const outboundOrderDetailStatusOptions = [
+  { label: '已创建', value: 0 },
+  { label: '已回收', value: 1 },
+  { label: '已损坏', value: 2 },
+  { label: '出库-租赁', value: 3 },
+  { label: '出库-购买', value: 4 },
+  { label: '客户已认证', value: 5 },
+]
