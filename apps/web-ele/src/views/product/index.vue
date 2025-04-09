@@ -36,7 +36,15 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'type_name', title: '型号' },
     { field: 'amount', title: '数量' },
-    { field: 'start_no', title: '编码范围' },
+    {
+      field: 'start_no',
+      title: '编码范围',
+      slots: {
+        default: ({ row }) => {
+          return `${row.detail_no} - ${row.end_no}`;
+        },
+      },
+    },
     { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {

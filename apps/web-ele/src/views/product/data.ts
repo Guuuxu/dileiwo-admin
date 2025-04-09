@@ -27,7 +27,7 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'amount',
       label: '数量',
-      rules: z.string().refine(
+      rules: z.number().refine(
         (value) => {
           const num = parseFloat(value);
           return !isNaN(num) && num >= 0;
@@ -45,7 +45,7 @@ export function useSchema(): VbenFormSchema[] {
       fieldName: 'start_no',
       label: '起始编号',
       rules: z
-        .string()
+        .number()
         .max(8, { message: '最多输入 8 位' })
         .refine(
           (value) => {
@@ -104,7 +104,7 @@ export function useSchemaEdit(): VbenFormSchema[] {
       },
       fieldName: 'amount',
       label: '数量',
-      rules: z.string().refine(
+      rules: z.number().refine(
         (value) => {
           const num = parseFloat(value);
           return !isNaN(num) && num >= 0;
@@ -139,7 +139,7 @@ export function useSchemaEdit(): VbenFormSchema[] {
       },
       fieldName: 'month_limit',
       label: '每月数量',
-      rules: z.string().refine(
+      rules: z.number().refine(
         (value) => {
           const num = parseFloat(value);
           return !isNaN(num) && num >= 0;

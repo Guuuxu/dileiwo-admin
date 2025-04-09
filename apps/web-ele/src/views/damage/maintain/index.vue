@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { ElButton, ElCard, ElMessage, ElTag,ElMessageBox } from 'element-plus';
+import { ElButton, ElCard, ElMessage, ElTag, ElMessageBox } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -35,11 +35,15 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'order_no', title: '型号' },
-    { field: 'codeRange', title: '编码范围',slots:{
-      default: ({ row }) => {
-        return `${row.detail_no}`;
-      }
-    } },
+    {
+      field: 'codeRange',
+      title: '编码范围',
+      slots: {
+        default: ({ row }) => {
+          return `${row.detail_no} - ${row.end_no}`;
+        },
+      },
+    },
     { field: 'user', title: '使用者（最近一次）' },
     { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
@@ -95,7 +99,6 @@ const formOptions: VbenFormProps = {
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
-
 // 新增
 const handleAdd = () => {
   handleSetData({}, '新增');
@@ -121,13 +124,12 @@ const handleSendRow = (row: RowType) => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(async () => {
-    const ids = [row.id]
-    await sendRepair({ids})
+    const ids = [row.id];
+    await sendRepair({ ids });
     ElMessage.success('寄出成功');
-    gridApi.reload()
-  })
-}
-
+    gridApi.reload();
+  });
+};
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
