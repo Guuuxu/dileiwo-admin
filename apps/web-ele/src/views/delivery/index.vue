@@ -12,7 +12,7 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getOutboundList,deleteDelivery,exportData } from '#/api';
+import { getOutboundList,deleteDelivery,downloadExportedFile } from '#/api';
 import Edit from './edit.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -64,14 +64,12 @@ interface RowType {
 const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
-    // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'type_name', title: '型号' },
+    { field: 'order_no', title: '型号' },
     { field: 'amount', title: '数量' },
     { field: 'during', title: '租赁天数', },
-    { field: 'month_limit', title: '单月循环次数', },
+    // { field: 'month_limit', title: '单月循环次数', },
     { field: 'created_at', title: '出货日期', },
     { field: 'remark', title: '备注', },
-    // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
       fixed: 'right',
@@ -183,7 +181,7 @@ const handleDeleteRow = (row: RowType) => {
   });
 };
 const handleExport = async (row: RowType) => {
-  await exportData(row.id).then((res) => {
+  await downloadExportedFile(row.id).then((res) => {
     ElMessage.success('导出成功');
   })
 }

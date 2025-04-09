@@ -35,11 +35,11 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
-    { field: 'package', title: '包装' },
+    { field: 'order_no', title: '包装' },
     { field: 'created_at', title: '出货日期' },
     { field: 'name', title: '出货客户' },
     { field: 'link_person', title: '联络人' },
-    { field: 'register_address', title: '地址' },
+    { field: 'receive_address', title: '地址' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',

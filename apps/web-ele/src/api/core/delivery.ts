@@ -56,6 +56,27 @@ export function sendPhoneMessage(id: number) {
  * @param data - 包含导出条件的对象，类型为任意类型
  * @returns
  */
-export function exportData(data: any) {
-  return requestClient.post('/admin/bound/outbound/export', data);
+export function exportData(id: number) {
+  return requestClient.get(`/admin/bound/outbound/${id}/export`, {}, );
+}
+
+/**
+ * 下载导出的文件
+ * @param id - 导出的文件唯一标识符
+ * @returns
+ */
+export function downloadExportedFile(id: number) {
+  return requestClient.get(`/admin/bound/outbound/${id}/export`, {
+    responseType: 'blob', // 设置响应类型为 blob
+  }).then((response) => {
+    console.log(response);
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    console.log(url);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `exported_file_${id}.xlsx`); // 设置下载文件名
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  });
 }

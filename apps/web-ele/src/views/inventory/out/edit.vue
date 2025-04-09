@@ -10,6 +10,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
 import { useSchema } from './data';
 import { getInventoryOutDetail,exportInventoryOut } from '#/api';
+import {outboundOrderStatusOptions} from '#/views/dict'
 
 defineOptions({
   name: 'FormDrawer',
@@ -21,7 +22,7 @@ const [BaseForm, BaseFormApi] = useVbenForm({
 });
 
 const [Drawer, drawerApi] = useVbenDrawer({
-  class: 'w-[700px]',
+  class: 'w-[900px]',
   confirmText: '导出',
   onCancel() {
     drawerApi.close();
@@ -66,12 +67,17 @@ const gridOptions: VxeGridProps<RowType> = {
     // { field: 'category', title: '型号' },
     { field: 'detail_no', title: '包装编码' },
     { field: 'recycle_count', title: '总循环次数' },
-    { field: 'month_count', title: '单月已用' },
+    { field: 'month_count', title: '单月已用',width: 80},
     { field: 'remain_times', title: '单月剩余用量' },
-    { field: 'status', title: '状态', slots: { default: 'status' } },
+    { field: 'status', title: '状态', cellRender:{
+      name: 'CellSelectLabel',
+      props:{
+        options: outboundOrderStatusOptions
+      }
+    } },
     { field: 'rent_deadline', title: '租赁到期日' },
     { field: 'client_name', title: '客户' },
-    { field: 'address', title: '收件人地址' },
+    { field: 'client_address', title: '收件人地址' },
   ],
   data: dataList.value,
   height: 'auto',
@@ -100,7 +106,7 @@ const gridOptions: VxeGridProps<RowType> = {
 const [Grid, gridApi] = useVbenVxeGrid({ gridOptions });
 </script>
 <template>
-  <Drawer>
+  <Drawer >
     <Grid>
       <template #status="{ row }">
         <el-tag :type="row.status ? 'success' : 'danger'">

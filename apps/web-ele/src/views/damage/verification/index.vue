@@ -11,7 +11,7 @@ import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getRepairList,certifyRepair } from '#/api';
+import { getVerifyList,certifyRepair } from '#/api';
 
 import Edit from './edit.vue';
 
@@ -33,7 +33,7 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'order_no', title: '型号' },
+    { field: 'order_no', title: '编号' },
     { field: 'detail_no', title: '包装编码' },
     { field: 'last_inbound', title: '最新入库日期' },
     { field: 'user', title: '最新使用者' },
@@ -61,7 +61,7 @@ const gridOptions: VxeGridProps<RowType> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await getRepairList({
+        return await getVerifyList({
           page: page.currentPage,
           per_page: page.pageSize,
           ...formValues,
@@ -78,7 +78,7 @@ const formOptions: VbenFormProps = {
     {
       component: 'Input',
       fieldName: 'type_name',
-      label: '型号',
+      label: '编号',
     },
   ],
   // 控制表单是否显示折叠按钮
