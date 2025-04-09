@@ -11,7 +11,7 @@ import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getVerifyList,certifyRepair } from '#/api';
+import { getVerifyList, certifyRepair } from '#/api';
 
 import Edit from './edit.vue';
 
@@ -36,8 +36,7 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'order_no', title: '编号' },
     { field: 'detail_no', title: '包装编码' },
     { field: 'last_inbound', title: '最新入库日期' },
-    { field: 'user', title: '最新使用者' },
-    // { field: 'status', title: '状态', slots: { default: 'status' } },
+    { field: 'last_user', title: '最新使用者' },
     {
       field: 'action',
       fixed: 'right',
@@ -132,7 +131,6 @@ const handleDeleteRow = (row: RowType) => {
       ElMessage.info('已取消删除');
     });
 };
-
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">

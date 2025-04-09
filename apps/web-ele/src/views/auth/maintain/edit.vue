@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { ElTabs, ElTabPane, ElCard, ElRow, ElCol } from 'element-plus';
+import { ElTabs, ElTabPane, ElCard, ElMessage } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { handleScan } from '#/api';
 
@@ -12,7 +12,7 @@ defineOptions({
 
 const [BaseForm, BaseFormApi] = useVbenForm({
   schema: [
-  {
+    {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
@@ -31,16 +31,16 @@ const [BaseForm, BaseFormApi] = useVbenForm({
 const row = ref({});
 // 输入确认
 const handleEnterInput = async () => {
-  const formValues = await BaseFormApi.getValues()
-  console.log('handleEnterInput',formValues );
+  const formValues = await BaseFormApi.getValues();
+  console.log('handleEnterInput', formValues);
   const data = {
     id: row.value.id,
     type: 2,
     detail_no: formValues.detail_no,
   };
 
-  const res = await handleScan(data)
-    ElMessage.success('操作完成！')
+  const res = await handleScan(data);
+  ElMessage.success('操作完成！');
 };
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -61,8 +61,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   title: '详情',
 });
-
-
 </script>
 <template>
   <Drawer>

@@ -1,4 +1,4 @@
-import { requestClient } from '#/api/request';
+import { requestClient, requestClientExport } from '#/api/request';
 
 export function getOutboundList(params: Record<string, any>) {
   return requestClient.get(`/admin/bound/outbound`, { params });
@@ -57,7 +57,7 @@ export function sendPhoneMessage(id: number) {
  * @returns
  */
 export function exportData(id: number) {
-  return requestClient.get(`/admin/bound/outbound/${id}/export`, {}, );
+  return requestClient.get(`/admin/bound/outbound/${id}/export`, {});
 }
 
 /**
@@ -66,17 +66,7 @@ export function exportData(id: number) {
  * @returns
  */
 export function downloadExportedFile(id: number) {
-  return requestClient.get(`/admin/bound/outbound/${id}/export`, {
+  return requestClientExport.get(`/admin/bound/outbound/${id}/export`, {
     responseType: 'blob', // 设置响应类型为 blob
-  }).then((response) => {
-    console.log(response);
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    console.log(url);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `exported_file_${id}.xlsx`); // 设置下载文件名
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
   });
 }

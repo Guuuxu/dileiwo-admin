@@ -11,6 +11,7 @@ import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
+import { downloadBlob } from '#/utils';
 import { getInventoryOutList, exportInventoryOut } from '#/api';
 
 import Edit from './edit.vue';
@@ -105,28 +106,6 @@ const formOptions: VbenFormProps = {
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        created_at: '2025-01-03',
-        category: `00002${i}`,
-        package: 'DR200',
-        customer: '张三',
-        contact: '李四',
-        address: '江苏',
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
-};
-
 // 新增
 const handleAdd = () => {
   handleSetData({}, '新增');
@@ -136,8 +115,8 @@ function handleViewRow(row: RowType) {
   handleSetData(row, '明细');
 }
 async function handleExportRow(row: RowType) {
-  await exportInventory(row.id);
-  ElMessage.warning('功能待开发！');
+  const res = await exportInventoryOut(row.id);
+  downloadBlob(res.data, '出库单库存.xlsx');
 }
 
 const handleSetData = (row: RowType, title: string) => {
@@ -169,10 +148,6 @@ const handleDeleteRow = (row: RowType) => {
       ElMessage.info('已取消删除');
     });
 };
-
-onMounted(() => {
-  loadList(6);
-});
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">

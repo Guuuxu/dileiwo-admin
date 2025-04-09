@@ -16,6 +16,7 @@ export function useSchema(): VbenFormSchema[] {
         placeholder: '请输入',
         options: damageReasons,
         disabled: true,
+        multiple: true,
       },
       fieldName: 'broken_reason',
       label: '损坏原因',
@@ -25,9 +26,9 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName:'main_img',
+      fieldName: 'main_img',
       label: '损坏照片',
-    }
+    },
     // {
     //   component: 'Upload',
     //   componentProps: {

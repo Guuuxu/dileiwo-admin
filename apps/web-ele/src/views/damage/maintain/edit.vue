@@ -8,18 +8,49 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 
 import { useSchema, useSchemaReason } from './data';
-import { scanRepair, updateRepair } from '#/api'; // 定义自定义事件
+import { scanRepair, updateRepair, getRepairDetail } from '#/api'; // 定义自定义事件
 const emits = defineEmits(['onUpdated']);
 
 defineOptions({
   name: 'FormDrawer',
 });
 const step = ref('0');
+const row = ref({});
 const [BaseForm, BaseFormApi] = useVbenForm({
-  schema: useSchema(),
+  schema: [
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+        onKeyup(e: any) {
+          if (e.key === 'Enter') {
+            handleEnterInput();
+          }
+        },
+      },
+      fieldName: 'detail_no',
+      label: '请扫描损坏品包装编码',
+      labelWidth: 150, // 设置label宽度
+      rules: 'required',
+    },
+  ],
   layout: 'vertical',
   showDefaultActions: false,
 });
+const codeDetail = ref({});
+// 输入确认
+const handleEnterInput = async () => {
+  const formValues = await BaseFormApi.getValues();
+  console.log('handleEnterInput', formValues);
+  const detail_no = formValues.detail_no;
+  console.log('handleEnterInput', detail_no);
+  const res = await scanRepair(detail_no);
+  detail.value = res;
+  // emits('onUpdated');
+  gridApi.setGridOptions({ data: [res] });
+  step.value = '1';
+  // ElMessage.success('认证完成！');
+};
 
 const [BaseForm2, BaseFormApi2] = useVbenForm({
   schema: useSchemaReason(),
@@ -33,21 +64,20 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   onConfirm: async () => {
     if (step.value === '0') {
-      const { valid } = await BaseFormApi.validate();
-      if (valid) {
-        const values = await BaseFormApi.getValues();
-        const res = await scanRepair(values);
-        detail.value = res;
-      }
-
-      step.value = '1';
+      // const { valid } = await BaseFormApi.validate();
+      // if (valid) {
+      //   const values = await BaseFormApi.getValues();
+      //   const res = await scanRepair(values);
+      //   detail.value = res;
+      // }
+      // step.value = '1';
     } else {
       const values = await BaseFormApi2.getValues();
       console.log(values);
       const reasonArray = Object.values(values.reason).map(Number);
       await updateRepair({
         model_detail_id: detail.value.id,
-        broken_reason: Number(values.reason),
+        broken_reason: [Number(values.reason)],
         reason: values.remark,
       });
       ElMessage.success('提交成功');
@@ -59,10 +89,15 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       const { values } = drawerApi.getData<Record<string, any>>();
       if (values) {
+        row.value = values;
         BaseFormApi.setValues({
           ...values,
         });
       }
+    } else {
+      step.value = '0';
+      BaseFormApi.resetForm();
+      BaseFormApi2.resetForm();
     }
   },
   title: '详情',
@@ -71,18 +106,18 @@ const [Drawer, drawerApi] = useVbenDrawer({
 // 表格配置
 interface RowType {
   id: number;
-  created_at: string;
-  category: string;
+  verify_time: string;
+  detail_no: string;
   user: string;
-  codeRange: string;
+  type_name: string;
 }
 const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'category', title: '型号' },
-    { field: 'codeRange', title: '包装编码' },
-    { field: 'created_at', title: '最新入库日期' },
+    { field: 'type_name', title: '型号' },
+    { field: 'detail_no', title: '包装编码' },
+    { field: 'verify_time', title: '最新入库日期' },
     { field: 'user', title: '最新使用者' },
   ],
   data: dataList.value,
@@ -108,29 +143,6 @@ const gridOptions: VxeGridProps<RowType> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({ gridOptions });
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        created_at: '2025-01-03',
-        category: '100',
-        user: '张三',
-        codeRange: '1 - 10002',
-        remark: '备注一下',
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
-};
-onMounted(() => {
-  loadList(6);
-});
 </script>
 <template>
   <Drawer>

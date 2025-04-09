@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
+import { useAppConfig } from '@vben/hooks';
 import { useVbenDrawer } from '@vben/common-ui';
-
-import { ElTabs, ElTabPane,ElImage, ElCard, ElRow, ElCol } from 'element-plus';
+const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
+import { ElMessage, ElImage } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
-import {certifyRepair} from '#/api'
+import { certifyRepair } from '#/api';
 defineOptions({
   name: 'FormDrawer',
 });
@@ -15,7 +16,7 @@ const [BaseForm, BaseFormApi] = useVbenForm({
 });
 
 import { useSchema } from './data';
-const row = ref({})
+const row = ref({});
 const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
     drawerApi.close();
@@ -30,15 +31,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const { values } = drawerApi.getData<Record<string, any>>();
       console.log('values', values);
       if (values) {
-        row.value = values
+        row.value = values;
         BaseFormApi.setValues({
           ...values,
-          main_img: [
-            {
-              name: 'logo-custom.png',
-              url: 'https://egclub.nyc3.digitaloceanspaces.com/production/images/services/gift.png',
-            },
-          ],
+          main_img: [values.main_img, values.first_img, values.second_img],
         });
       }
     }
@@ -51,7 +47,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     <BaseForm>
       <template #main_img="{ field }">
         <ElImage
-          class="grid-content"
+          class="grid-content mr-1"
           v-for="(item, index) in field.value"
           :key="index"
           :src="item.url"

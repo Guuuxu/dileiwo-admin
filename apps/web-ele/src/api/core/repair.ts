@@ -55,7 +55,7 @@ export function certifyRepair(id: number) {
  * @param id - 损坏记录的唯一标识
  * @returns
  */
-export function sendRepair(data: {ids: string[]}) {
+export function sendRepair(data: { ids: string[] }) {
   return requestClient.post(`/admin/repair/send`, data);
 }
 
@@ -64,6 +64,6 @@ export function sendRepair(data: {ids: string[]}) {
  * @param code - 扫码的唯一标识码
  * @returns
  */
-export function scanRepair(data: { code: string }) {
-  return requestClient.post(`/admin/repair/scan`, data);
+export function scanRepair(detail_no: string) {
+  return requestClient.post(`/admin/repair/scan`, { detail_no });
 }

@@ -12,6 +12,7 @@ import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
 import { getInventoryList, exportInventory } from '#/api';
+import { downloadBlob } from '#/utils';
 
 import Edit from './edit.vue';
 
@@ -34,21 +35,21 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'detail_no', title: '包装编码' },
+    { field: 'detail_no', title: '包装编码', width: 150 },
     { field: 'month_limit', title: '总循环次数' },
     { field: 'limit_count', title: '单月已用' },
     { field: 'remain_count', title: '单月剩余用量' },
-    { field: 'status', title: '状态', slots: { default: 'status' }},
+    { field: 'status', title: '状态', slots: { default: 'status' } },
     { field: 'rent_deadline', title: '租赁到期日' },
     { field: 'name', title: '客户' },
-    { field: 'register_address', title: '收件人地址' },
-    {
-      field: 'action',
-      fixed: 'right',
-      slots: { default: 'action' },
-      title: '操作',
-      width: 150,
-    },
+    { field: 'receive_address', title: '收件人地址' },
+    // {
+    //   field: 'action',
+    //   fixed: 'right',
+    //   slots: { default: 'action' },
+    //   title: '操作',
+    //   width: 150,
+    // },
   ],
   data: dataList.value,
   height: 'auto',
@@ -106,36 +107,17 @@ const formOptions: VbenFormProps = {
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        created_at: '2025-01-03',
-        category: `00002${i}`,
-        package: 'DR200',
-        customer: '张三',
-        contact: '李四',
-        address: '江苏',
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
-};
-
 // 新增
 const handleAdd = () => {
   handleSetData({}, '新增');
 };
 
 async function handleExportRow(row: RowType) {
-  await exportInventory(row.id);
-  // ElMessage.warning('功能待开发！');
+  exportInventory().then((res) => {
+    console.log(res);
+    downloadBlob(res.data, '包装库存.xlsx');
+    // ElMessage.success('导出成功');
+  });
 }
 
 const handleSetData = (row: RowType, title: string) => {
@@ -167,15 +149,11 @@ const handleDeleteRow = (row: RowType) => {
       ElMessage.info('已取消删除');
     });
 };
-
-onMounted(() => {
-  loadList(6);
-});
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
     <template #extra>
-      <!-- <ElButton type="primary" @click="handleAdd()"> 新增 </ElButton> -->
+      <ElButton type="primary" link @click="handleExportRow()"> 导出 </ElButton>
       <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
     </template>
     <Grid>
@@ -183,13 +161,12 @@ onMounted(() => {
         <span v-if="row.status == 0 || row.status == 1">回收</span>
         <span v-else-if="row.status == 2">损坏</span>
         <span v-else>出库</span>
-        </template>
-      <template #action="{ row }">
-        
+      </template>
+      <!-- <template #action="{ row }">
         <ElButton type="primary" link @click="handleExportRow(row)">
           导出
         </ElButton>
-      </template>
+      </template> -->
     </Grid>
 
     <Drawer />

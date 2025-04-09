@@ -1,4 +1,4 @@
-import { requestClient } from '#/api/request';
+import { requestClient, requestClientExport } from '#/api/request';
 
 /**
  * 包装库存列表
@@ -6,22 +6,18 @@ import { requestClient } from '#/api/request';
  * @returns
  */
 export function getInventoryList(params: any) {
-  return requestClient.get('/admin/bound/inventory', {params});
+  return requestClient.get('/admin/bound/inventory', { params });
 }
 
 /**
- * 导出库存数据
+ * 导出包装库存数据
  * @param data
  * @returns
  */
-export function exportInventory(id: number) {
-  return requestClient.post(
-    `/admin/bound/inventory/${id}/export`,
-    {},
-    {
-      responseType: 'blob',
-    },
-  );
+export function exportInventory() {
+  return requestClientExport.get(`/admin/bound/inventory/export`, {
+    responseType: 'blob',
+  });
 }
 
 /**
@@ -38,8 +34,8 @@ export function getInventoryOutList(data: any) {
  * @param id - 库存项的唯一标识符
  * @returns
  */
-export function getInventoryOutDetail(id: number,params:any) {
-  return requestClient.get(`/admin/bound/inventoryOutbound/${id}`,{params});
+export function getInventoryOutDetail(id: number, params: any) {
+  return requestClient.get(`/admin/bound/inventoryOutbound/${id}`, { params });
 }
 
 /**
@@ -48,9 +44,8 @@ export function getInventoryOutDetail(id: number,params:any) {
  * @returns
  */
 export function exportInventoryOut(id: number) {
-  return requestClient.post(
+  return requestClientExport.get(
     `/admin/bound/inventoryOutbound/${id}/export`,
-    {},
     {
       responseType: 'blob',
     },

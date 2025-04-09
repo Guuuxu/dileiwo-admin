@@ -14,7 +14,6 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
 import { handleScan } from '#/api';
 
-
 const router = useRouter();
 const [Form, formApi] = useVbenForm({
   commonConfig: {
@@ -52,7 +51,7 @@ const handleEnterInput = async () => {
   const formValues = await formApi.getValues();
   console.log('handleEnterInput', formValues);
   const data = {
-    type: 1,
+    type: 3,
     detail_no: formValues.detail_no,
   };
   console.log('handleEnterInput', data);
@@ -75,10 +74,10 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'category', title: '型号' },
     { field: 'amount', title: '数量' },
-    { field: 'days', title: '租赁天数', },
-    { field: 'times', title: '单月循环次数', },
-    { field: 'created_at', title: '出货日期', },
-    { field: 'remark', title: '备注', },
+    { field: 'days', title: '租赁天数' },
+    { field: 'times', title: '单月循环次数' },
+    { field: 'created_at', title: '出货日期' },
+    { field: 'remark', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -130,14 +129,13 @@ const formOptions: VbenFormProps = {
       component: 'Select',
       fieldName: 'type',
       label: '出货类型',
-      componentProps:{
+      componentProps: {
         options: [
           { label: '租赁', value: '1' },
           { label: '购买', value: '2' },
         ],
-      }
+      },
     },
-
   ],
   // 控制表单是否显示折叠按钮
   showCollapseButton: true,
@@ -150,48 +148,44 @@ const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
 // 新增
 const handleAdd = () => {
-  handleSetData({},'新增');
+  handleSetData({}, '新增');
 };
 // 编辑
 function handleEditRow(row: RowType) {
-  ElMessage.warning('功能待开发！')
+  ElMessage.warning('功能待开发！');
 }
-
 
 const handleSetData = (row: RowType, title: string) => {
   drawerApi
     .setData({
       values: { ...row },
-    }).setState({
-      title
+    })
+    .setState({
+      title,
     })
     .open();
 };
 
 import { ElMessageBox } from 'element-plus';
 const handleDeleteRow = (row: RowType) => {
-  ElMessageBox.confirm(
-    '此操作将永久删除该条记录, 是否继续?',
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(() => {
-    // Perform delete operation here
-    // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
-    // if (index !== -1) {
-    //   dataList.value.splice(index, 1);
-    //   ElMessage.success('删除成功');
-    // }
-    ElMessage.success('删除成功');
-  }).catch(() => {
-    ElMessage.info('已取消删除');
-  });
+  ElMessageBox.confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      // Perform delete operation here
+      // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
+      // if (index !== -1) {
+      //   dataList.value.splice(index, 1);
+      //   ElMessage.success('删除成功');
+      // }
+      ElMessage.success('删除成功');
+    })
+    .catch(() => {
+      ElMessage.info('已取消删除');
+    });
 };
-
-
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">

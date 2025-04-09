@@ -41,7 +41,7 @@ const gridOptions: VxeGridProps<RowType> = {
       title: '编码范围',
       slots: {
         default: ({ row }) => {
-          return `${row.detail_no} - ${row.end_no}`;
+          return `${row.start_no} - ${row.end_no}`;
         },
       },
     },

@@ -12,7 +12,8 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getOutboundList,deleteDelivery,downloadExportedFile } from '#/api';
+import { downloadBlob } from '#/utils';
+import { getOutboundList, deleteDelivery, downloadExportedFile } from '#/api';
 import Edit from './edit.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -66,10 +67,10 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { field: 'order_no', title: '型号' },
     { field: 'amount', title: '数量' },
-    { field: 'during', title: '租赁天数', },
+    { field: 'during', title: '租赁天数' },
     // { field: 'month_limit', title: '单月循环次数', },
-    { field: 'created_at', title: '出货日期', },
-    { field: 'remark', title: '备注', },
+    { field: 'created_at', title: '出货日期' },
+    { field: 'remark', title: '备注' },
     {
       field: 'action',
       fixed: 'right',
@@ -92,7 +93,7 @@ const gridOptions: VxeGridProps<RowType> = {
   pagerConfig: {},
   proxyConfig: {
     ajax: {
-      query: async ({ page },formValues) => {
+      query: async ({ page }, formValues) => {
         return await getOutboundList({
           page: page.currentPage,
           per_page: page.pageSize,
@@ -121,14 +122,13 @@ const formOptions: VbenFormProps = {
       component: 'Select',
       fieldName: 'type_name',
       label: '出货类型',
-      componentProps:{
+      componentProps: {
         options: [
           { label: '租赁', value: '1' },
           { label: '购买', value: '2' },
         ],
-      }
+      },
     },
-
   ],
   // 控制表单是否显示折叠按钮
   showCollapseButton: true,
@@ -139,56 +139,53 @@ const formOptions: VbenFormProps = {
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
-
 // 新增
 const handleAdd = () => {
-  handleSetData({},'新增');
+  handleSetData({}, '新增');
 };
 // 编辑
 function handleEditRow(row: RowType) {
-  ElMessage.warning('功能待开发！')
+  ElMessage.warning('功能待开发！');
 }
-
 
 const handleSetData = (row: RowType, title: string) => {
   drawerApi
     .setData({
       values: { ...row },
-    }).setState({
-      title
+    })
+    .setState({
+      title,
     })
     .open();
 };
 
 import { ElMessageBox } from 'element-plus';
 const handleDeleteRow = (row: RowType) => {
-  ElMessageBox.confirm(
-    '此操作将永久删除该条记录, 是否继续?',
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(() => {
-    deleteDelivery(row.id).then((res) => {
-      ElMessage.success('删除成功');
-      gridApi.query();
+  ElMessageBox.confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      deleteDelivery(row.id).then((res) => {
+        ElMessage.success('删除成功');
+        gridApi.query();
+      });
     })
-    
-  }).catch(() => {
-    ElMessage.info('已取消删除');
-  });
+    .catch(() => {
+      ElMessage.info('已取消删除');
+    });
 };
 const handleExport = async (row: RowType) => {
-  await downloadExportedFile(row.id).then((res) => {
-    ElMessage.success('导出成功');
-  })
-}
-const handleUpdate = ()=>{
+  downloadExportedFile(row.id).then((res) => {
+    console.log(res);
+    downloadBlob(res.data, '包装出库.xlsx');
+    // ElMessage.success('导出成功');
+  });
+};
+const handleUpdate = () => {
   gridApi.reload();
-}
-
+};
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
@@ -197,21 +194,21 @@ const handleUpdate = ()=>{
       <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
     </template>
     <Grid>
-            <template #status="{ row }">
-              <ElTag :type="row.status ? 'success' : 'danger'">
-                {{ row.status ? '已启用' : '已禁用' }}
-              </ElTag>
-            </template>
-            <template #action="{ row }">
-              <ElButton type="primary" link @click="handleExport(row)">
-                下载
-              </ElButton>
-              <ElButton type="danger" link @click="handleDeleteRow(row)">
-                删除
-              </ElButton>
-            </template>
-          </Grid>
+      <template #status="{ row }">
+        <ElTag :type="row.status ? 'success' : 'danger'">
+          {{ row.status ? '已启用' : '已禁用' }}
+        </ElTag>
+      </template>
+      <template #action="{ row }">
+        <ElButton type="primary" link @click="handleExport(row)">
+          导出
+        </ElButton>
+        <ElButton type="danger" link @click="handleDeleteRow(row)">
+          删除
+        </ElButton>
+      </template>
+    </Grid>
 
-    <Drawer  @onUpdated="handleUpdate"/>
+    <Drawer @onUpdated="handleUpdate" />
   </Page>
 </template>

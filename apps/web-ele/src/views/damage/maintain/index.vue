@@ -34,18 +34,13 @@ const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
-    { field: 'order_no', title: '型号' },
+    { field: 'order_no', title: '编号' },
     {
-      field: 'codeRange',
-      title: '编码范围',
-      slots: {
-        default: ({ row }) => {
-          return `${row.detail_no} - ${row.end_no}`;
-        },
-      },
+      field: 'detail_no',
+      title: '编码',
     },
-    { field: 'user', title: '使用者（最近一次）' },
-    { field: 'remark', title: '备注' },
+    { field: 'last_user', title: '使用者（最近一次）' },
+    { field: 'reason', title: '备注' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
       field: 'action',
@@ -87,7 +82,7 @@ const formOptions: VbenFormProps = {
     {
       component: 'Input',
       fieldName: 'type_name',
-      label: '型号',
+      label: '编号',
     },
   ],
   // 控制表单是否显示折叠按钮
@@ -130,6 +125,9 @@ const handleSendRow = (row: RowType) => {
     gridApi.reload();
   });
 };
+const handleUpdate = () => {
+  gridApi.reload();
+};
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
@@ -145,6 +143,6 @@ const handleSendRow = (row: RowType) => {
       </template>
     </Grid>
 
-    <Drawer />
+    <Drawer @onUpdated="handleUpdate" />
   </Page>
 </template>
