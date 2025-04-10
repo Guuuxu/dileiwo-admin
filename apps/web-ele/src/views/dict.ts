@@ -6,6 +6,7 @@ export const packageType: any = {
   4: '连续包年',
 };
 export const damageReasons: any = [
+  { label: '疑品申报', value: 0 },
   { label: '外观破损', value: 1 },
   { label: '内层破损', value: 2 },
   { label: '表面割裂', value: 3 },

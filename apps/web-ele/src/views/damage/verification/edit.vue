@@ -46,14 +46,15 @@ const [Drawer, drawerApi] = useVbenDrawer({
   <Drawer>
     <BaseForm>
       <template #main_img="{ field }">
-        <ElImage
-          class="grid-content mr-1"
-          v-for="(item, index) in field.value"
-          :key="index"
-          :src="item.url"
-          :alt="item.name"
-          :preview-src-list="[item.url]"
-        />
+        <div v-for="(item, index) in field.value" :key="index">
+          <ElImage
+            class="grid-content mr-1"
+            v-if="item"
+            :src="item"
+            :alt="item"
+            :preview-src-list="[item]"
+          />
+        </div>
       </template>
     </BaseForm>
   </Drawer>
