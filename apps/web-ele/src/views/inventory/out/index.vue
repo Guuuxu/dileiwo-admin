@@ -41,7 +41,7 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'name', title: '出货客户' },
     { field: 'link_person', title: '联络人' },
     { field: 'receive_address', title: '地址' },
-    // { field: 'status', title: '状态', slots: { default: 'status' } },
+    { field: 'status', title: '类型', slots: { default: 'status' } },
     {
       field: 'action',
       fixed: 'right',
@@ -91,8 +91,8 @@ const formOptions: VbenFormProps = {
       componentProps: {
         clearable: true,
         options: [
-          { label: '租赁', value: '租赁' },
-          { label: '购买', value: '购买' },
+          { label: '租赁', value: '1' },
+          { label: '购买', value: '2' },
         ],
       },
     },
@@ -156,6 +156,10 @@ const handleDeleteRow = (row: RowType) => {
       <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
     </template>
     <Grid>
+      <template #status="{ row }">
+        <span v-if="row.type == 1">租赁</span>
+        <span v-else>购买</span>
+      </template>
       <template #action="{ row }">
         <ElButton type="primary" link @click="handleViewRow(row)">
           明细

@@ -8,6 +8,7 @@ const routes: RouteRecordRaw[] = [
       icon: 'ion:settings-outline',
       order: 7000,
       title: $t('page.system.title'),
+      authority: ['0', '1'],
     },
     name: 'System',
     path: '/system',
@@ -21,7 +22,6 @@ const routes: RouteRecordRaw[] = [
           title: $t('page.system.administrator'),
         },
       },
-      
     ],
   },
 ];

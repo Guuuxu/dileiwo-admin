@@ -6,7 +6,6 @@
     </template>
     <ElCard>
       <template #default>
-       
         <div class="vp-raw h-[500px] w-full">
           <Grid>
             <template #status="{ row }">
@@ -30,7 +29,7 @@
       </template>
     </ElCard>
 
-    <Drawer @onUpdated="handleUpdate"/>
+    <Drawer @onUpdated="handleUpdate" />
   </Page>
 </template>
 <script lang="ts" setup>
@@ -40,7 +39,7 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { VbenFormProps } from '#/adapter/form';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {getAdminUserListApi,deleteAdminUserApi} from '#/api'
+import { getAdminUserListApi, deleteAdminUserApi } from '#/api';
 
 import { Page, useVbenDrawer, VbenButton } from '@vben/common-ui';
 import Edit from './edit.vue';
@@ -48,14 +47,12 @@ const [Drawer, drawerApi] = useVbenDrawer({
   connectedComponent: Edit,
 });
 
-import { ElButton, ElCard, ElMessage, ElTag,ElMessageBox } from 'element-plus';
+import { ElButton, ElCard, ElMessage, ElTag, ElMessageBox } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { $t } from '#/locales';
 
 const router = useRouter();
-
-
 
 // 表格配置
 import type { AdminInfo } from '@vben/types';
@@ -73,16 +70,20 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     { field: 'id', title: 'ID' },
     { field: 'name', title: '姓名' },
-    { field: 'type', title: '角色', cellRender:{
-      name: 'CellSelectLabel',
-      props: {
-        options: [
-          { label: '管理员', value: 1 },
-          { label: '操作员', value: 2 },
-          { label: '代工厂', value: 3 },
-        ],
+    {
+      field: 'type',
+      title: '角色',
+      cellRender: {
+        name: 'CellSelectLabel',
+        props: {
+          options: [
+            { label: '管理员', value: 1 },
+            { label: '操作员', value: 2 },
+            { label: '代工厂', value: 3 },
+          ],
+        },
       },
-    } },
+    },
     { field: 'phone', title: '手机号' },
     // { field: 'status', title: '状态', slots: { default: 'status' } },
     {
@@ -107,11 +108,11 @@ const gridOptions: VxeGridProps<RowType> = {
   pagerConfig: {},
   proxyConfig: {
     ajax: {
-      query: async ({ page },formValues) => {
+      query: async ({ page }, formValues) => {
         return await getAdminUserListApi({
           page: page.currentPage,
           per_page: page.pageSize,
-          ...formValues
+          ...formValues,
         });
       },
     },
@@ -121,12 +122,12 @@ const formOptions: VbenFormProps = {
   // 默认展开
   collapsed: false,
   schema: [
-  {
+    {
       component: 'Input',
       fieldName: 'name',
       label: '用户',
       componentProps: {
-        placeholder: '请输入用户ID/昵称/手机号',
+        placeholder: '请输入用户ID/姓名/手机号',
       },
     },
     {
@@ -135,14 +136,12 @@ const formOptions: VbenFormProps = {
       label: '角色',
       componentProps: {
         options: [
-        { label: '管理员', value: 1 },
+          { label: '管理员', value: 1 },
           { label: '操作员', value: 2 },
           { label: '代工厂', value: 3 },
         ],
       },
     },
-    
-
   ],
   // 控制表单是否显示折叠按钮
   showCollapseButton: true,
@@ -151,7 +150,7 @@ const formOptions: VbenFormProps = {
   // 按下回车时是否提交表单
   submitOnEnter: false,
 };
-const [Grid, gridApi] = useVbenVxeGrid({ formOptions,gridOptions });
+const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
 // 新增
 const handleAdd = () => {
@@ -179,8 +178,10 @@ const handleSetData = (row: RowType, pageType: string) => {
   drawerApi
     .setData({
       values: { ...row, pageType },
-    }).setState({
-      title: pageType === 'add'? '新增' : pageType === 'edit'? '编辑' : '查看',
+    })
+    .setState({
+      title:
+        pageType === 'add' ? '新增' : pageType === 'edit' ? '编辑' : '查看',
     })
     .open();
 };
@@ -195,12 +196,10 @@ const handleDeleteRow = (row?: {}) => {
     await deleteAdminUserApi(row.id);
     gridApi.reload();
     ElMessage.success('删除成功');
-  })
+  });
 };
 
 const handleUpdate = () => {
   gridApi.reload();
 };
-
-
 </script>

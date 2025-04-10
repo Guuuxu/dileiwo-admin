@@ -86,7 +86,7 @@ const formOptions: VbenFormProps = {
       fieldName: 'customer',
       label: '客户',
       componentProps: {
-        placeholder: '请输入客户名称、客户编号',
+        placeholder: '请输入客户名称、登记注册号',
       },
     },
   ],

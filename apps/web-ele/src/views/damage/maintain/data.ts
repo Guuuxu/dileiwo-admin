@@ -24,20 +24,19 @@ export function useSchemaReason(): VbenFormSchema[] {
   return [
     {
       component: 'Select',
-      formItemClass: 'pb-0',
       componentProps: {
         placeholder: '请选择',
         options: damageReasons,
-        // multiple: true,
+        multiple: true,
       },
-      fieldName: 'reason',
+      fieldName: 'broken_reason',
       label: '请选择损坏原因',
       labelWidth: 150, // 设置label宽度
       rules: 'required',
     },
     {
       component: 'Input',
-      fieldName: 'remark',
+      fieldName: 'reason',
 
       componentProps: {
         type: 'textarea',
@@ -47,10 +46,11 @@ export function useSchemaReason(): VbenFormSchema[] {
       label: '',
       dependencies: {
         if(values) {
-          return values.reason == '7'; // 通过Dom控制销毁
+          console.log(values);
+          return values.broken_reason && values.broken_reason.includes(7); // 通过Dom控制销毁
         },
         // 只有指定的字段改变时，才会触发
-        triggerFields: ['reason'],
+        triggerFields: ['broken_reason'],
       },
     },
   ];

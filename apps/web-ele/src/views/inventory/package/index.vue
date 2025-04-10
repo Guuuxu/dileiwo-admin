@@ -39,7 +39,7 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'month_limit', title: '总循环次数' },
     { field: 'limit_count', title: '单月已用' },
     { field: 'remain_count', title: '单月剩余用量' },
-    { field: 'status', title: '状态', slots: { default: 'status' } },
+    { field: 'type', title: '类型', slots: { default: 'status' } },
     { field: 'rent_deadline', title: '租赁到期日' },
     { field: 'name', title: '客户' },
     { field: 'receive_address', title: '收件人地址' },
@@ -92,8 +92,9 @@ const formOptions: VbenFormProps = {
       componentProps: {
         clearable: true,
         options: [
-          { label: '出库', value: '出库' },
-          { label: '回收', value: '回收' },
+          { label: '出库', value: '1' },
+          { label: '回收', value: '2' },
+          { label: '损坏', value: '3' },
         ],
       },
     },
@@ -112,7 +113,7 @@ const handleAdd = () => {
   handleSetData({}, '新增');
 };
 
-async function handleExportRow(row: RowType) {
+async function handleExportRow() {
   exportInventory().then((res) => {
     console.log(res);
     downloadBlob(res.data, '包装库存.xlsx');
@@ -153,7 +154,7 @@ const handleDeleteRow = (row: RowType) => {
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
     <template #extra>
-      <ElButton type="primary" link @click="handleExportRow()"> 导出 </ElButton>
+      <ElButton type="primary" @click="handleExportRow()"> 导出 </ElButton>
       <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
     </template>
     <Grid>

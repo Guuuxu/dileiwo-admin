@@ -9,8 +9,8 @@ import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
 import { useSchema } from './data';
-import { getInventoryOutDetail,exportInventoryOut } from '#/api';
-import {outboundOrderDetailStatusOptions} from '#/views/dict'
+import { getInventoryOutDetail, exportInventoryOut } from '#/api';
+import { outboundOrderDetailStatusOptions } from '#/views/dict';
 
 defineOptions({
   name: 'FormDrawer',
@@ -66,15 +66,19 @@ const gridOptions: VxeGridProps<RowType> = {
     // { align: 'left', title: '', type: 'checkbox', width: 40 },
     // { field: 'category', title: '型号' },
     { field: 'detail_no', title: '包装编码' },
-    { field: 'recycle_count', title: '总循环次数' },
-    { field: 'month_count', title: '单月已用',width: 80},
+    { field: 'month_count', title: '总循环次数' },
+    { field: 'recycle_count', title: '单月已用', width: 80 },
     { field: 'remain_times', title: '单月剩余用量' },
-    { field: 'status', title: '状态', cellRender:{
-      name: 'CellSelectLabel',
-      props:{
-        options: outboundOrderDetailStatusOptions
-      }
-    } },
+    {
+      field: 'status',
+      title: '状态',
+      cellRender: {
+        name: 'CellSelectLabel',
+        props: {
+          options: outboundOrderDetailStatusOptions,
+        },
+      },
+    },
     { field: 'rent_deadline', title: '租赁到期日' },
     { field: 'client_name', title: '客户' },
     { field: 'client_address', title: '收件人地址' },
@@ -94,7 +98,7 @@ const gridOptions: VxeGridProps<RowType> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }) => {
-        return await getInventoryOutDetail(row.value.id,{
+        return await getInventoryOutDetail(row.value.id, {
           page: page.currentPage,
           per_page: page.pageSize,
         });
@@ -106,7 +110,7 @@ const gridOptions: VxeGridProps<RowType> = {
 const [Grid, gridApi] = useVbenVxeGrid({ gridOptions });
 </script>
 <template>
-  <Drawer >
+  <Drawer>
     <Grid>
       <template #status="{ row }">
         <el-tag :type="row.status ? 'success' : 'danger'">

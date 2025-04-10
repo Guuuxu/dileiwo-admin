@@ -59,6 +59,7 @@ const [BaseForm2, BaseFormApi2] = useVbenForm({
 });
 const detail = ref({});
 const [Drawer, drawerApi] = useVbenDrawer({
+  class: 'w-[600px]',
   onCancel() {
     drawerApi.close();
   },
@@ -77,7 +78,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const reasonArray = Object.values(values.reason).map(Number);
       await updateRepair({
         model_detail_id: detail.value.id,
-        broken_reason: [Number(values.reason)],
+        broken_reason: values.reason,
         reason: values.remark,
       });
       ElMessage.success('提交成功');

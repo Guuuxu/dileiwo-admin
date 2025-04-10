@@ -129,22 +129,10 @@ export function useSchemaEdit(): VbenFormSchema[] {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
-        type: 'number',
-        min: 0,
+        disabled: true,
       },
       fieldName: 'start_no',
       label: '起始编号',
-      rules: z
-        .string()
-        .nonempty({ message: '起始编号不能为空' })
-        .max(8, { message: '最多输入 8 位' })
-        .refine(
-          (value) => {
-            const num = parseFloat(value);
-            return !isNaN(num) && num >= 0;
-          },
-          { message: '起始编号不能为负数' },
-        ),
     },
     {
       component: 'Input',

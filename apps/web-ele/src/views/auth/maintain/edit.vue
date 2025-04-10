@@ -9,7 +9,8 @@ import { handleScan } from '#/api';
 defineOptions({
   name: 'FormDrawer',
 });
-
+// 定义自定义事件
+const emits = defineEmits(['onUpdate']);
 const [BaseForm, BaseFormApi] = useVbenForm({
   schema: [
     {
@@ -41,6 +42,7 @@ const handleEnterInput = async () => {
 
   const res = await handleScan(data);
   ElMessage.success('操作完成！');
+  emits('productUpdated');
 };
 
 const [Drawer, drawerApi] = useVbenDrawer({
