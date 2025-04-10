@@ -75,11 +75,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
     } else {
       const values = await BaseFormApi2.getValues();
       console.log(values);
-      const reasonArray = Object.values(values.reason).map(Number);
       await updateRepair({
         model_detail_id: detail.value.id,
-        broken_reason: values.reason,
-        reason: values.remark,
+        broken_reason: values.broken_reason,
+        reason: values.reason,
       });
       ElMessage.success('提交成功');
       emits('onUpdated');
