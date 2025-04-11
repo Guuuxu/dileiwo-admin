@@ -42,7 +42,7 @@ const handleEnterInput = async () => {
 
   const res = await handleScan(data);
   ElMessage.success('操作完成！');
-  emits('productUpdated');
+  emits('onUpdate');
 };
 
 const [Drawer, drawerApi] = useVbenDrawer({

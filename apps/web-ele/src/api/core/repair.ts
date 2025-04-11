@@ -47,7 +47,7 @@ export function getRepairDetail(id: string) {
  * @returns
  */
 export function certifyRepair(id: number) {
-  return requestClient.post(`/admin/repair/${id}/certify`);
+  return requestClient.post(`/admin/repair/${id}/verify`);
 }
 
 /**
