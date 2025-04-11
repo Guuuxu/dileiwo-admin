@@ -35,6 +35,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         BaseFormApi.setValues({
           ...values,
           main_img: [values.main_img, values.first_img, values.second_img],
+          broken_reason: values.broken_reason.map(Number)
         });
       }
     }
@@ -53,6 +54,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
             :src="item"
             :alt="item"
             :preview-src-list="[item]"
+            
+            fit='cover'
           />
         </div>
       </template>
