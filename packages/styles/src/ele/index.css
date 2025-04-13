@@ -42,3 +42,9 @@
 html .el-loading-mask {
   z-index: 1000;
 }
+
+/* 自定义文字提示框背景颜色和文字颜色 */
+.vxe-table--tooltip,.vxe-table--tooltip-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+}

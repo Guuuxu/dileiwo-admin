@@ -22,6 +22,24 @@ export function useSchema(): VbenFormSchema[] {
       label: '损坏原因',
     },
     {
+      component: 'Input',
+      fieldName: 'reason',
+
+      componentProps: {
+        type: 'textarea',
+        rows: '3',
+        disabled: true,
+      },
+      label: '',
+      dependencies: {
+        if(values) {
+          return values.broken_reason && values.broken_reason.includes(7); // 通过Dom控制销毁
+        },
+        // 只有指定的字段改变时，才会触发
+        triggerFields: ['broken_reason'],
+      },
+    },
+    {
       component: 'Image',
       componentProps: {
         placeholder: '请输入',

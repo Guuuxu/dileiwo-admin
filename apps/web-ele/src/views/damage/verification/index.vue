@@ -119,25 +119,11 @@ const handleSetData = (row: RowType, title: string) => {
     })
     .open();
 };
-const handleDeleteRow = (row: RowType) => {
-  ElMessageBox.confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning',
-  })
-    .then(() => {
-      // Perform delete operation here
-      // const index = dataList.value.findIndex((item: { id: number; }) => item.id === row.id);
-      // if (index !== -1) {
-      //   dataList.value.splice(index, 1);
-      //   ElMessage.success('删除成功');
-      // }
-      ElMessage.success('删除成功');
-    })
-    .catch(() => {
-      ElMessage.info('已取消删除');
-    });
+
+const handleUpdate = () => {
+  gridApi.reload();
 };
+
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
@@ -152,6 +138,6 @@ const handleDeleteRow = (row: RowType) => {
       </template>
     </Grid>
 
-    <Drawer />
+    <Drawer @onUpdated="handleUpdate" />
   </Page>
 </template>

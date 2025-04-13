@@ -9,6 +9,8 @@ import { certifyRepair } from '#/api';
 defineOptions({
   name: 'FormDrawer',
 });
+// 定义自定义事件
+const emits = defineEmits(['onUpdated']);
 
 const [BaseForm, BaseFormApi] = useVbenForm({
   schema: useSchema(),
@@ -24,6 +26,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onConfirm: async () => {
     await certifyRepair(row.value.id);
     ElMessage.success('验证成功');
+    emits('onUpdated')
     drawerApi.close();
   },
   onOpenChange(isOpen: boolean) {
