@@ -15,7 +15,8 @@ const authStore = useAuthStore();
 
 const loading = ref(false);
 const CODE_LENGTH = 6;
-
+// 定义表单引用
+const form = ref<InstanceType<typeof AuthenticationCodeLogin>>();
 const formSchema = computed((): VbenFormSchema[] => {
   return [
     {
@@ -25,7 +26,7 @@ const formSchema = computed((): VbenFormSchema[] => {
       },
       fieldName: 'phone',
       label: $t('authentication.mobile'),
-      defaultValue: '13800000000',
+      defaultValue: '',
       rules: z
         .string()
         .min(1, { message: $t('authentication.mobileTip') })
@@ -48,8 +49,8 @@ const formSchema = computed((): VbenFormSchema[] => {
           // 模拟发送验证码
           // Simulate sending verification code
           loading.value = true;
-          const phone = formSchema.value.find((item) => item.fieldName === 'phone')?.defaultValue;
-          console.log('Current phone number:', phone);
+          const values = getFormValues();
+          const phone = values.phone;
           try {
             await sendSmsApi(phone)
             ElMessage.success('已发送');
@@ -80,10 +81,21 @@ async function handleLogin(values: Recordable<any>) {
   console.log(values);
 
 }
+// 定义获取表单值的方法
+async function getFormValues() {
+  if (form.value) {
+    const formApi = form.value.getFormApi();
+    const values = await formApi.getValues();
+    console.log('Form values:', values);
+    return values;
+  }
+  return null;
+}
 </script>
 
 <template>
   <AuthenticationCodeLogin
+    ref="form"
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
     @submit="authStore.authLogin"
