@@ -39,8 +39,8 @@ export async function handleLogout() {
 /**
  * 发送短信验证码
  */
-export async function sendSmsApi(phone: string) {
-  return baseRequestClient.post<{ msg: string; code: number }>('/admin/sendSMS', { phone });
+export async function sendSmsApi(phone: string,code:string) {
+  return baseRequestClient.post<{ msg: string; code: number }>('/admin/sendSMS', { phone,code });
 }
 
 /**

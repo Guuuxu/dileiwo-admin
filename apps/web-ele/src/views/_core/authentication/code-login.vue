@@ -9,16 +9,29 @@ import { useAuthStore } from '#/store';
 import { sendSmsApi } from '#/api';
 import { $t } from '@vben/locales';
 import { ElMessage } from 'element-plus';
+import { countryCodeOptions } from '#/views/dict';
 
 defineOptions({ name: 'CodeLogin' });
 const authStore = useAuthStore();
 
 const loading = ref(false);
 const CODE_LENGTH = 6;
+// 默认选中的国际编码
+const selectedCountryCode = ref(countryCodeOptions?.[0]?.value || '');
 // 定义表单引用
 const form = ref<InstanceType<typeof AuthenticationCodeLogin>>();
+
 const formSchema = computed((): VbenFormSchema[] => {
   return [
+  {
+      component: 'VbenSelect',
+      componentProps: {
+        options: countryCodeOptions,
+      },
+      fieldName: 'countryCode',
+      label: '国际编码',
+      defaultValue: selectedCountryCode.value,
+    },
     {
       component: 'VbenInput',
       componentProps: {
@@ -30,9 +43,24 @@ const formSchema = computed((): VbenFormSchema[] => {
       rules: z
         .string()
         .min(1, { message: $t('authentication.mobileTip') })
-        .refine((v) => /^\d{11}$/.test(v), {
-          message: $t('authentication.mobileErrortip'),
-        }),
+        // 根据不同国际编码调整正则表达式，这里以中国为例
+        .refine(
+          async (v) => {
+            const values = await getFormValues();
+            console.log('Current phone number:', values);
+            const currentCountryCode = countryCodeOptions.find(
+              (item) => item.value === values?.countryCode,
+            );
+            console.log('currentCountryCode', currentCountryCode);
+            if (currentCountryCode) {
+              return currentCountryCode.regex.test(v);
+            }
+            return false;
+          },
+          {
+            message: $t('authentication.mobileErrortip'),
+          },
+        ),
     },
     {
       component: 'VbenPinInput',
@@ -46,21 +74,30 @@ const formSchema = computed((): VbenFormSchema[] => {
           return text;
         },
         handleSendCode: async () => {
-          // 模拟发送验证码
-          // Simulate sending verification code
           loading.value = true;
-          const values = getFormValues();
-          const phone = values.phone;
-          try {
-            await sendSmsApi(phone)
-            ElMessage.success('已发送');
-            loading.value = false;
-          }catch (error) {
-            loading.value = false;
-            console.error('Error sending verification code:', error);
+          const values = await getFormValues();
+          const phone = values?.phone;
+          // 验证手机号是否填写且格式正确
+          if (form.value) {
+            const formApi = form.value.getFormApi();
+            const values = await formApi.getValues();
+            await formApi.validateField('phone');
+            const isPhoneReady = await formApi.isFieldValid('phone');
+            if (!isPhoneReady) {
+              loading.value = false;
+              throw new Error('Phone number is not Ready');
+            }
+            try {
+              await sendSmsApi(phone, values?.countryCode);
+              ElMessage.success('已发送');
+              loading.value = false;
+            } catch (error) {
+              loading.value = false;
+              console.error('Error sending verification code:', error);
+            }
           }
         },
-        defaultValue: '123456',
+        defaultValue: '',
         placeholder: $t('authentication.code'),
       },
       fieldName: 'code',
@@ -95,7 +132,7 @@ async function getFormValues() {
 
 <template>
   <AuthenticationCodeLogin
-    ref="form"
+  ref="form"
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
     @submit="authStore.authLogin"
