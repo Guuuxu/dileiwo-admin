@@ -16,7 +16,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/inventory/package/index.vue'),
         meta: {
           icon: 'lucide:shopping-bag',
-          title: '包装库存',
+          title: '使⽤记录',
         },
       },
 

@@ -114,7 +114,7 @@ function handleEditRow(row: RowType) {
 }
 // 详情
 const handleViewRow = (row: RowType) => {
-  handleSetData(row, '详情');
+  handleSetData(row, '明细');
 };
 
 const handleSetData = (row: RowType, title: string) => {
@@ -155,6 +155,9 @@ const handleDeleteRow = (row: RowType) => {
         </ElTag>
       </template>
       <template #action="{ row }">
+        <ElButton type="primary" link @click="handleViewRow(row)">
+          明细
+        </ElButton>
         <ElButton type="primary" link @click="handleEditRow(row)">
           编辑
         </ElButton>

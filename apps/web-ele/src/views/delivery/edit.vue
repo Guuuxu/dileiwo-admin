@@ -112,7 +112,7 @@ const handleEnterInput = async () => {
   console.log('handleEnterInput', formValues);
 
   const res = await scanOutboundBarcode(boundData.value.id, formValues.code);
-  ElMessage.success('操作完成！');
+  ElMessage.success( formValues.code + '操作完成！');
   // 触发自定义事件通知父组件
   emits('onUpdated', params);
 };

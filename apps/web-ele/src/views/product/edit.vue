@@ -52,19 +52,51 @@ const [Drawer, drawerApi] = useVbenDrawer({
         EditFormApi.setValues({
           ...values,
         });
+        ViewFormApi.setValues({
+          ...values,
+        })
       }
     }
   },
   title: '详情',
 });
 
-import { useSchema, useSchemaEdit } from './data';
+import { useSchema, useSchemaEdit,useSchemaDetail } from './data';
 const [BaseForm, BaseFormApi] = useVbenForm({
+  commonConfig: {
+    // 在label后显示一个冒号
+    colon: true,
+    // 所有表单项
+    componentProps: {
+      class: 'w-full',
+    },
+  },
   schema: useSchema(),
   showDefaultActions: false,
 });
 const [BaseForm2, EditFormApi] = useVbenForm({
+  commonConfig: {
+    // 在label后显示一个冒号
+    colon: true,
+    // 所有表单项
+    componentProps: {
+      class: 'w-full',
+    },
+  },
   schema: useSchemaEdit(),
+  showDefaultActions: false,
+});
+
+const [ViewForm, ViewFormApi] = useVbenForm({
+  commonConfig: {
+    // 在label后显示一个冒号
+    colon: true,
+    // 所有表单项
+    componentProps: {
+      class: 'w-full',
+    },
+  },
+  schema: useSchemaDetail(),
   showDefaultActions: false,
 });
 
@@ -73,6 +105,7 @@ const id = ref('');
 <template>
   <Drawer>
     <BaseForm v-if="title === '新增'" />
+    <ViewForm v-else-if="title === '明细'" ></ViewForm> 
     <BaseForm2 v-else />
   </Drawer>
 </template>

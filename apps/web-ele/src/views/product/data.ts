@@ -167,8 +167,42 @@ export function useSchemaEdit(): VbenFormSchema[] {
   ];
 }
 
-/**
- * 获取表格列配置
- * @description 使用函数的形式返回列数据而不是直接export一个Array常量，是为了响应语言切换时重新翻译表头
- * @param onActionClick 表格操作按钮点击事件
- */
+export function useSchemaDetail(): VbenFormSchema[] {
+  return [
+    {
+      component: 'Span',
+      componentProps: {
+        placeholder: '请输入',
+        
+      },
+      fieldName: 'type_name',
+      label: '型号',
+    },
+
+    {
+      component: 'Span',
+      fieldName: 'amount',
+      label: '数量',
+    },
+    {
+      component: 'Span',
+      fieldName: 'start_no',
+      label: '起始编号',
+    },
+    {
+      component: 'Span',
+      fieldName: 'end_no',
+      label: '结束编号',
+    },
+    {
+      component: 'Span',
+      fieldName: 'month_limit',
+      label: '每月数量',
+    },
+    {
+      component: 'Span',
+      fieldName: 'remark',
+      label: '备注',
+    },
+  ];
+}
