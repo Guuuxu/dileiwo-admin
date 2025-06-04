@@ -81,7 +81,7 @@ const formOptions: VbenFormProps = {
   schema: [
     {
       component: 'Input',
-      fieldName: 'category',
+      fieldName: 'type_name',
       label: '型号',
     },
   ],
