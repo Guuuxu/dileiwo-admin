@@ -183,6 +183,9 @@ const handleExport = async (row: RowType) => {
     // ElMessage.success('导出成功');
   });
 };
+const handleImport = () => {
+  ElMessage.warning('功能待开发！');
+}
 const handleUpdate = () => {
   gridApi.reload();
 };
@@ -191,7 +194,7 @@ const handleUpdate = () => {
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
     <template #extra>
       <ElButton type="primary" @click="handleAdd()"> 新增 </ElButton>
-      <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
+      <ElButton type="primary" @click="handleImport()"> 导入 </ElButton>
     </template>
     <Grid>
       <template #status="{ row }">
