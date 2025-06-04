@@ -38,6 +38,7 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'detail_no', title: '包装编码' },
     { field: 'last_inbound', title: '最新入库日期' },
     { field: 'last_user', title: '最新使用者' },
+    { field: 'delivery_no', title: '运输单号' },
     { field: 'status', title: '状态', cellRender:{
       name: 'CellSelectLabel',
       props:{
