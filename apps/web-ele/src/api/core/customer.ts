@@ -38,6 +38,6 @@ export function getCustomerMetrics(customerId: number | string) {
  * @data {object} data - 导出的查询参数
  * @returns
  */
-export function exportCustomerData(data: Record<string, any>) {
-  return requestClient.post('/admin/client/export', data);
+export function exportCustomerData(id: number) {
+  return requestClient.get(`/admin/client/${id}/export`);
 }

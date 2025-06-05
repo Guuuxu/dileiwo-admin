@@ -13,7 +13,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
 import { getInventoryList, exportInventory } from '#/api';
 import { downloadBlob } from '#/utils';
-import { inventoryUseType } from '#/views/dict'
+import { inventoryUseType, authStatus } from '#/views/dict';
 
 import Edit from './edit.vue';
 
@@ -42,7 +42,17 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'limit_count', title: '单月已用' },
     { field: 'remain_count', title: '单月剩余用量' },
     { field: 'type', title: '类型', slots: { default: 'status' } },
-    { field: 'rent_deadline', title: '最后使⽤⽇' },
+    {
+      field: 'is_verified',
+      title: '是否认证',
+      cellRender: {
+        name: 'CellSelectLabel',
+        props: {
+          options: authStatus,
+        },
+      },
+    },
+    { field: 'last_use', title: '最后使⽤⽇' },
     { field: 'name', title: '客户' },
     { field: 'receive_address', title: '收件人地址' },
     // {
@@ -94,11 +104,20 @@ const formOptions: VbenFormProps = {
     },
     {
       component: 'Select',
-      fieldName: 'type',
+      fieldName: 'status',
       label: '类型',
       componentProps: {
         clearable: true,
-        options: inventoryUseType
+        options: inventoryUseType,
+      },
+    },
+    {
+      component: 'Select',
+      fieldName: 'is_verified',
+      label: '是否认证',
+      componentProps: {
+        clearable: true,
+        options: authStatus,
       },
     },
   ],

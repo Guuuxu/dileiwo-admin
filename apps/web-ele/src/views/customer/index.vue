@@ -11,7 +11,7 @@ import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getCustomerList, deleteCustomer } from '#/api';
+import { getCustomerList, deleteCustomer, exportCustomerData } from '#/api';
 import { $t } from '#/locales';
 
 import Edit from './edit.vue';
@@ -137,7 +137,7 @@ const handleEditRow = (row: RowType) => {
 };
 
 function handleExportRow(row: RowType) {
-  ElMessage.warning('功能待开发！');
+  exportCustomerData(row.id).then((res) => {});
 }
 
 const handleSetData = (row: RowType, title: string) => {
@@ -201,9 +201,9 @@ const handleUpdate = () => {
         <ElButton type="primary" link @click="handleMetricRow(row)">
           指标
         </ElButton>
-        <ElButton type="primary" link @click="handleExportRow(row)">
+        <!-- <ElButton type="primary" link @click="handleExportRow(row)">
           导出
-        </ElButton>
+        </ElButton> -->
         <ElButton type="danger" link @click="handleDeleteRow(row)">
           删除
         </ElButton>
