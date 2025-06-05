@@ -32,6 +32,8 @@ interface RowType {
   contact: string;
   address: string;
 }
+// 获取路由参数中的 type_name
+const routeTypeName = router.currentRoute.value.query.type_name as string;
 const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
@@ -82,6 +84,7 @@ const gridOptions: VxeGridProps<RowType> = {
           page: page.currentPage,
           per_page: page.pageSize,
           ...formValues,
+          type_name: routeTypeName || formValues.type_name,
         });
       },
     },
@@ -96,6 +99,7 @@ const formOptions: VbenFormProps = {
       component: 'Input',
       fieldName: 'type_name',
       label: '型号',
+      defaultValue: routeTypeName || '', // 在单个字段上设置默认值
     },
     {
       component: 'Input',
