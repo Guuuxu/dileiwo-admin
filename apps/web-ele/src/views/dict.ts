@@ -79,6 +79,6 @@ export const inventoryUseType = [
  * 认证状态
  */
 export const authStatus = [
-  { label: '未认证', value: '0' },
-  { label: '已认证', value: '1' },
+  { label: '未认证', value: 0 },
+  { label: '已认证', value: 1 },
 ];
