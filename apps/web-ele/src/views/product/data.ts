@@ -35,7 +35,7 @@ export function useSchema(): VbenFormSchema[] {
             const num = parseFloat(value);
             return !isNaN(num) && num >= 0;
           },
-          { message: '每月数量不能为负数' },
+          { message: '数量不能为负数' },
         ), // 限制最大长度为8位
     },
     {
@@ -57,24 +57,6 @@ export function useSchema(): VbenFormSchema[] {
             return !isNaN(num) && num >= 0;
           },
           { message: '起始编号不能为负数' },
-        ), // 限制最大长度为8位
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
-      fieldName: 'month_limit',
-      label: '每月数量',
-      rules: z
-        .string()
-        .nonempty({ message: '每月数量不能为空' })
-        .refine(
-          (value) => {
-            const num = parseFloat(value);
-            return !isNaN(num) && num >= 0;
-          },
-          { message: '每月数量不能为负数' },
         ), // 限制最大长度为8位
     },
     {
@@ -122,7 +104,7 @@ export function useSchemaEdit(): VbenFormSchema[] {
             const num = parseFloat(value);
             return !isNaN(num) && num >= 0;
           },
-          { message: '每月数量不能为负数' },
+          { message: '数量不能为负数' },
         ),
     },
     {
@@ -133,26 +115,6 @@ export function useSchemaEdit(): VbenFormSchema[] {
       },
       fieldName: 'start_no',
       label: '起始编号',
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
-      fieldName: 'month_limit',
-      label: '每月数量',
-      rules: z
-        .preprocess(
-          (value) => (typeof value === 'number' ? value.toString() : value),
-          z.string().nonempty({ message: '每月数量不能为空' }),
-        )
-        .refine(
-          (value) => {
-            const num = parseFloat(value);
-            return !isNaN(num) && num >= 0;
-          },
-          { message: '每月数量不能为负数' },
-        ),
     },
     {
       component: 'Input',
@@ -173,7 +135,6 @@ export function useSchemaDetail(): VbenFormSchema[] {
       component: 'Span',
       componentProps: {
         placeholder: '请输入',
-        
       },
       fieldName: 'type_name',
       label: '型号',
@@ -193,11 +154,6 @@ export function useSchemaDetail(): VbenFormSchema[] {
       component: 'Span',
       fieldName: 'end_no',
       label: '结束编号',
-    },
-    {
-      component: 'Span',
-      fieldName: 'month_limit',
-      label: '每月数量',
     },
     {
       component: 'Span',

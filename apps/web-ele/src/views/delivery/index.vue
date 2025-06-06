@@ -67,8 +67,8 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { field: 'order_no', title: '型号' },
     { field: 'amount', title: '数量' },
+    // { field: 'month_limit', title: '每月数量' },
     { field: 'during', title: '租赁天数' },
-    // { field: 'month_limit', title: '单月循环次数', },
     { field: 'created_at', title: '出货日期' },
     { field: 'remark', title: '备注' },
     {
@@ -185,7 +185,7 @@ const handleExport = async (row: RowType) => {
 };
 const handleImport = () => {
   ElMessage.warning('功能待开发！');
-}
+};
 const handleUpdate = () => {
   gridApi.reload();
 };

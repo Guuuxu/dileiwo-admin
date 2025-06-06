@@ -1,10 +1,9 @@
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 
 import type { VbenFormSchema } from '#/adapter/form';
-
+import { z } from '#/adapter/form';
 import { $t } from '#/locales';
-import {getCustomerList} from '#/api'
-
+import { getCustomerList } from '#/api';
 
 /**
  * 获取编辑表单的字段配置。如果没有使用多语言，可以直接export一个数组常量
@@ -16,8 +15,8 @@ export function useSchema(): VbenFormSchema[] {
       // 对应组件的参数
       componentProps: {
         // 客户接口转options格式
-        afterFetch: (data: { list: any[]; }) => {
-          console.log(data)
+        afterFetch: (data: { list: any[] }) => {
+          console.log(data);
           return data.list.map((item: any) => ({
             label: item.name,
             value: item.id,
@@ -30,7 +29,7 @@ export function useSchema(): VbenFormSchema[] {
       label: '客户',
       rules: 'required',
     },
-    
+
     {
       component: 'Select',
       componentProps: {
@@ -48,17 +47,43 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       componentProps: {
         placeholder: '请输入',
-        type: 'number'
+        type: 'number',
       },
       fieldName: 'during',
       rules: 'required',
       label: '租赁天数',
-      dependencies:{
+      dependencies: {
         show(values) {
           return values.type == '1';
         },
         triggerFields: ['type'],
-      }
+      },
+    },
+
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+        type: 'number',
+      },
+      fieldName: 'month_limit',
+      label: '每月数量',
+      rules: z
+        .string()
+        .nonempty({ message: '数量不能为空' })
+        .refine(
+          (value) => {
+            const num = parseFloat(value);
+            return !isNaN(num) && num >= 0;
+          },
+          { message: '每月数量不能为负数' },
+        ), // 限制最大长度为8位
+      dependencies: {
+        show(values) {
+          return values.type == '1';
+        },
+        triggerFields: ['type'],
+      },
     },
     {
       component: 'Input',
@@ -67,7 +92,7 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'remark',
       label: '备注',
-    }
+    },
   ];
 }
 
