@@ -57,7 +57,10 @@ export function sendPhoneMessage(id: number) {
  * @returns
  */
 export function exportData(id: number) {
-  return requestClient.get(`/admin/bound/outbound/${id}/export`, {});
+  return requestClient.get(`/admin/bound/outbound/${id}/export`, {
+    responseType: 'blob',
+    timeout: 60000,
+  });
 }
 
 /**

@@ -201,9 +201,6 @@ const handleUpdate = () => {
         <ElButton type="primary" link @click="handleMetricRow(row)">
           指标
         </ElButton>
-        <!-- <ElButton type="primary" link @click="handleExportRow(row)">
-          导出
-        </ElButton> -->
         <ElButton type="danger" link @click="handleDeleteRow(row)">
           删除
         </ElButton>

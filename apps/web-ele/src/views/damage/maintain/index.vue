@@ -43,12 +43,13 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'last_user', title: '使用者（最近一次）' },
     { field: 'reason', title: '备注' },
     { field: 'transfer_no', title: '运输单号' },
-    { field: 'status', title: '状态', cellRender:{
-      name: 'CellSelectLabel',
-      props:{
-        options: damageReportStatusOptions
-      }
-    }},
+    { field: 'status', title: '状态',
+      cellRender:{
+        name: 'CellSelectLabel',
+        props:{
+          options: damageReportStatusOptions
+        }
+      }},
     {
       field: 'action',
       fixed: 'right',

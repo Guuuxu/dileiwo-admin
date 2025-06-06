@@ -39,5 +39,8 @@ export function getCustomerMetrics(customerId: number | string) {
  * @returns
  */
 export function exportCustomerData(id: number) {
-  return requestClient.get(`/admin/client/${id}/export`);
+  return requestClient.get(`/admin/client/${id}/export`, {
+    responseType: 'blob',
+    timeout: 60000
+  });
 }

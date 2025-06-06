@@ -43,14 +43,13 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'month_limit', title: '总循环次数' },
     { field: 'limit_count', title: '单月已用' },
     { field: 'remain_count', title: '单月剩余用量' },
-    { field: 'type', title: '类型', slots: { default: 'status' } },
     {
-      field: 'is_verified',
-      title: '是否认证',
+      field: 'status',
+      title: '状态',
       cellRender: {
         name: 'CellSelectLabel',
         props: {
-          options: authStatus,
+          options: inventoryUseType,
         },
       },
     },
@@ -103,25 +102,21 @@ const formOptions: VbenFormProps = {
     },
     {
       component: 'Input',
+      fieldName: 'detail_no',
+      label: '包装编码',
+    },
+    {
+      component: 'Input',
       fieldName: 'client',
       label: '客户',
     },
     {
       component: 'Select',
       fieldName: 'status',
-      label: '类型',
+      label: '状态',
       componentProps: {
         clearable: true,
         options: inventoryUseType,
-      },
-    },
-    {
-      component: 'Select',
-      fieldName: 'is_verified',
-      label: '是否认证',
-      componentProps: {
-        clearable: true,
-        options: authStatus,
       },
     },
   ],
@@ -139,10 +134,13 @@ const handleAdd = () => {
   handleSetData({}, '新增');
 };
 
+const loading = ref(false);
 async function handleExportRow() {
+  loading.value = true;
   exportInventory().then((res) => {
     console.log(res);
     downloadBlob(res.data, '包装库存.xlsx');
+    loading.value = false;
     // ElMessage.success('导出成功');
   });
 }
@@ -180,15 +178,10 @@ const handleDeleteRow = (row: RowType) => {
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
     <template #extra>
-      <ElButton type="primary" @click="handleExportRow()"> 导出 </ElButton>
+      <ElButton type="primary" @click="handleExportRow()" :loading="loading"> 导出 </ElButton>
       <!-- <ElButton type="primary" @click="handleToDetail()"> 导入 </ElButton> -->
     </template>
     <Grid>
-      <template #status="{ row }">
-        <span v-if="row.status == 0 || row.status == 1">回收</span>
-        <span v-else-if="row.status == 2">损坏</span>
-        <span v-else>出库</span>
-      </template>
       <!-- <template #action="{ row }">
         <ElButton type="primary" link @click="handleExportRow(row)">
           导出

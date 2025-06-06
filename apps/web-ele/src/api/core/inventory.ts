@@ -17,6 +17,7 @@ export function getInventoryList(params: any) {
 export function exportInventory() {
   return requestClientExport.get(`/admin/bound/inventory/export`, {
     responseType: 'blob',
+    timeout: 60000,
   });
 }
 
@@ -48,6 +49,7 @@ export function exportInventoryOut(id: number) {
     `/admin/bound/inventoryOutbound/${id}/export`,
     {
       responseType: 'blob',
+      timeout: 60000,
     },
   );
 }

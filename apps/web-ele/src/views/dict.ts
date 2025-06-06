@@ -70,9 +70,11 @@ export const countryCodeOptions = [
  * 库存使用类型
  */
 export const inventoryUseType = [
-  { label: '出库', value: '1' },
-  { label: '回收', value: '2' },
-  { label: '损坏', value: '3' },
+  { label: '未认证', value: 0 },
+  { label: '出库', value: 1 },
+  { label: '回收', value: 2 },
+  { label: '损坏', value: 3 },
+  { label: '已认证', value: 4 },
 ];
 
 /**

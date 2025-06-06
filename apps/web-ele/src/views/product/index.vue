@@ -162,7 +162,7 @@ const handleDeleteRow = (row: RowType) => {
       </template>
       <template #action="{ row }">
         <ElButton type="primary" link @click="handleViewRow(row)">
-          详情
+          明细
         </ElButton>
         <ElButton type="primary" link @click="handleEditRow(row)">
           编辑
