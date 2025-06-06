@@ -24,11 +24,11 @@ const router = useRouter();
 // 表格配置
 interface RowType {
   id: number;
-  creatTime: string;
-  name: string;
-  itemIcon: string;
+  created_at: string;
+  start_no: string;
+  type_name: string;
   status: number;
-  order: string;
+  amount: number;
 }
 const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
@@ -114,7 +114,13 @@ function handleEditRow(row: RowType) {
 }
 // 详情
 const handleViewRow = (row: RowType) => {
-  handleSetData(row, '明细');
+  // handleSetData(row, '详情');
+  router.push({
+    name: 'inventory.package',
+    query: {
+      type_name: row.type_name,
+    },
+  });
 };
 
 const handleSetData = (row: RowType, title: string) => {
@@ -156,7 +162,7 @@ const handleDeleteRow = (row: RowType) => {
       </template>
       <template #action="{ row }">
         <ElButton type="primary" link @click="handleViewRow(row)">
-          明细
+          详情
         </ElButton>
         <ElButton type="primary" link @click="handleEditRow(row)">
           编辑
