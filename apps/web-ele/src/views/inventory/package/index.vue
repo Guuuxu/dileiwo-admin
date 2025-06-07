@@ -14,11 +14,12 @@ import {
   ElForm,
   ElFormItem,
   ElInput,
+  ElUpload
 } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
-import { getInventoryList, exportInventory } from '#/api';
+import { getInventoryList, exportInventory,importData } from '#/api';
 import { downloadBlob } from '#/utils';
 import { inventoryUseType } from '#/views/dict';
 
@@ -60,7 +61,7 @@ const gridOptions: VxeGridProps<RowType> = {
         },
       },
     },
-    { field: 'last_use', title: '最后使⽤⽇' },
+    { field: 'last_use', title: '最后使⽤⽇', width: 160 },
     { field: 'name', title: '客户' },
     { field: 'receive_address', title: '收件人地址' },
     // {
@@ -216,10 +217,56 @@ const handleDeleteRow = (row: RowType) => {
       ElMessage.info('已取消删除');
     });
 };
+
+// 导入
+// 在导出模态框代码之后添加导入相关代码
+const [ImportModal, importModalApi] = useVbenModal({
+  draggable: true,
+  onCancel() {
+    importFormData.value.file = null;
+    importModalApi.close();
+  },
+  onClosed() {
+    importFormData.value.file = null;
+  },
+  onConfirm: async () => {
+    if (!importFormData.value.file) {
+      ElMessage.warning('请选择要上传的文件');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', importFormData.value.file);
+
+    try {
+      loading.value = true;
+      // 假设已有导入API，需要替换为实际接口
+      await importData(formData);
+      ElMessage.success('导入成功');
+      gridApi.query();
+      importModalApi.close();
+    } catch (error) {
+      ElMessage.error('导入失败');
+    } finally {
+      loading.value = false;
+    }
+  },
+  title: '导入',
+});
+
+const importFormData = ref({
+  file: null as File | null
+});
+
+// 修改原有的handleImport方法
+const handleImport = () => {
+  importModalApi.open();
+};
 </script>
 <template>
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
     <template #extra>
+      <ElButton type="primary" @click="handleImport()"> 导入 </ElButton>
       <ElButton type="primary" @click="handleExportRow()" :loading="loading">
         导出
       </ElButton>
@@ -243,5 +290,27 @@ const handleDeleteRow = (row: RowType) => {
         </el-form>
       </template>
     </Modal>
+
+    <ImportModal>
+      <template #default>
+        <el-upload
+          class="upload-demo"
+          :auto-upload="false"
+          :show-file-list="false"
+          :on-change="(file) => importFormData.file = file.raw"
+          accept=".xlsx,.xls"
+        >
+          <el-button type="primary">选择文件</el-button>
+          <template #tip>
+            <div class="el-upload__tip">
+              支持.xlsx,.xls格式，大小不超过10MB
+            </div>
+          </template>
+        </el-upload>
+        <div v-if="importFormData.file" style="margin-top: 10px;">
+          已选择文件：{{ importFormData.file.name }}
+        </div>
+      </template>
+    </ImportModal>
   </Page>
 </template>

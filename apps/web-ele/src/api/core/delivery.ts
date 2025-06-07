@@ -80,3 +80,17 @@ export function downloadExportedFile(id: number,email:string) {
     }
   });
 }
+
+/**
+ * 导入数据接口
+ * @param data - 包含导入数据的对象，类型为任意类型
+ * @returns
+ */
+
+export function importData(data: any) {
+  return requestClient.post(`/admin/bound/modelImport`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+}

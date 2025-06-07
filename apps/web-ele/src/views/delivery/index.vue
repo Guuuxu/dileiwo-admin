@@ -9,14 +9,14 @@ import { Page, useVbenDrawer,useVbenModal } from '@vben/common-ui';
 
 import { ElButton, ElCard, ElMessage, ElTag, ElForm,
   ElFormItem,
-  ElInput, } from 'element-plus';
+  ElInput,  } from 'element-plus';
   import type { FormInstance, FormRules } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
 import { downloadBlob } from '#/utils';
-import { getOutboundList, deleteDelivery, downloadExportedFile } from '#/api';
+import { getOutboundList, deleteDelivery,downloadExportedFile, importData } from '#/api';
 import Edit from './edit.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -196,9 +196,8 @@ const handleExport = async (row: RowType) => {
   currentRow.value = row;
   modalApi.open();
 };
-const handleImport = () => {
-  ElMessage.warning('功能待开发！');
-};
+
+
 const handleUpdate = () => {
   gridApi.reload();
 };
@@ -207,7 +206,7 @@ const handleUpdate = () => {
   <Page auto-content-height :title="$t(router.currentRoute.value.meta.title)">
     <template #extra>
       <ElButton type="primary" @click="handleAdd()"> 新增 </ElButton>
-      <ElButton type="primary" @click="handleImport()"> 导入 </ElButton>
+
     </template>
     <Grid>
       <template #status="{ row }">
@@ -241,5 +240,7 @@ const handleUpdate = () => {
         </el-form>
       </template>
     </Modal>
+
   </Page>
 </template>
+
