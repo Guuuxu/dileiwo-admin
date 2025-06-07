@@ -56,10 +56,13 @@ export function sendPhoneMessage(id: number) {
  * @param data - 包含导出条件的对象，类型为任意类型
  * @returns
  */
-export function exportData(id: number) {
+export function exportData(id: number,email:string) {
   return requestClient.get(`/admin/bound/outbound/${id}/export`, {
     responseType: 'blob',
     timeout: 60000,
+    params:{
+      email
+    }
   });
 }
 
@@ -68,8 +71,12 @@ export function exportData(id: number) {
  * @param id - 导出的文件唯一标识符
  * @returns
  */
-export function downloadExportedFile(id: number) {
+export function downloadExportedFile(id: number,email:string) {
   return requestClientExport.get(`/admin/bound/outbound/${id}/export`, {
     responseType: 'blob', // 设置响应类型为 blob
+    timeout: 60000, // 设置超时时间为 60 秒
+    params:{
+      email
+    }
   });
 }

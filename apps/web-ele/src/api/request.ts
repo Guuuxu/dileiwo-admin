@@ -109,12 +109,12 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
         accessStore.setAccessToken(null);
         // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
         const loginExpiredMode = preferences.app.loginExpiredMode;
-        
+
           updatePreferences({ app: { loginExpiredMode: 'page' } });
           // await getMockStatusApi('401');
           updatePreferences({ app: { loginExpiredMode } });
-          // router.replace({ path: '/auth/code-login', query: { redirect: router.currentRoute.value.fullPath } });
-          router.replace({ path: '/auth/login' });
+          router.replace({ path: '/auth/code-login' });
+          // router.replace({ path: '/auth/login' });
         }
     }),
   );

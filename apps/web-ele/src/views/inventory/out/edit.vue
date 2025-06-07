@@ -10,7 +10,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
 import { useSchema } from './data';
 import { getInventoryOutDetail, exportInventoryOut } from '#/api';
-import { outboundOrderDetailStatusOptions } from '#/views/dict';
+import { inventoryUseType } from '#/views/dict';
 
 defineOptions({
   name: 'FormDrawer',
@@ -28,7 +28,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     drawerApi.close();
   },
   onConfirm: async () => {
-    await exportInventoryOut(row.value.id);
+    // await exportInventoryOut(row.value.id);
     drawerApi.close();
   },
   async onOpenChange(isOpen: boolean) {
@@ -75,7 +75,7 @@ const gridOptions: VxeGridProps<RowType> = {
       cellRender: {
         name: 'CellSelectLabel',
         props: {
-          options: outboundOrderDetailStatusOptions,
+          options: inventoryUseType,
         },
       },
     },

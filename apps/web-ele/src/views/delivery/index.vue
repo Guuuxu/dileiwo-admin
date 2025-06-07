@@ -5,9 +5,12 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { Page, useVbenDrawer } from '@vben/common-ui';
+import { Page, useVbenDrawer,useVbenModal } from '@vben/common-ui';
 
-import { ElButton, ElCard, ElMessage, ElTag } from 'element-plus';
+import { ElButton, ElCard, ElMessage, ElTag, ElForm,
+  ElFormItem,
+  ElInput, } from 'element-plus';
+  import type { FormInstance, FormRules } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -21,37 +24,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
 });
 
 const router = useRouter();
-const [Form, formApi] = useVbenForm({
-  commonConfig: {
-    // 所有表单项
-    componentProps: {
-      class: 'w-full',
-    },
-  },
-  layout: 'horizontal',
-  resetButtonOptions: { show: false },
-  submitButtonOptions: { show: false },
-  // 大屏一行显示3个，中屏一行显示2个，小屏一行显示1个
-  wrapperClass: 'grid-cols-1 md:grid-cols-3 lg:grid-cols-4',
-  handleSubmit: (values) => {
-    ElMessage.success(`表单数据：${JSON.stringify(values)}`);
-  },
-  schema: [
-    {
-      component: 'Input',
-      fieldName: 'name',
-      label: '项目名称',
-      componentProps: {},
-    },
-  ],
-});
-
-function handleSearch() {
-  formApi.getValues();
-}
-function handleReset() {
-  formApi.resetForm();
-}
 
 // 表格配置
 interface RowType {
@@ -176,12 +148,53 @@ const handleDeleteRow = (row: RowType) => {
       ElMessage.info('已取消删除');
     });
 };
+
+// 导出 填写表单邮箱
+const [Modal, modalApi] = useVbenModal({
+  draggable: true,
+  onCancel() {
+    formData.value.email = '';
+    FormRef.value?.clearValidate();
+    modalApi.close();
+  },
+  // 关闭动画播放完毕时触发
+  onClosed() {
+    formData.value.email = '';
+    FormRef.value?.clearValidate();
+    modalApi.close();
+  },
+  onConfirm: async () => {
+    FormRef.value?.validate((valid) => {
+      if (valid) {
+        loading.value = true;
+        downloadExportedFile(currentRow.value.id,formData.value.email).then((res) => {
+          console.log(res);
+          // downloadBlob(res.data, '包装库存.xlsx');
+          loading.value = false;
+
+          ElMessage.success('提交成功');
+          modalApi.close();
+        });
+      }
+    });
+  },
+  title: '导出',
+});
+const FormRef = ref<FormInstance>();
+const formData = ref({
+  email: '',
+});
+const rules = ref<FormRules>({
+  email: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱', trigger: 'blur' },
+  ],
+});
+const loading = ref(false);
+const currentRow = ref<RowType>({} as RowType);
 const handleExport = async (row: RowType) => {
-  downloadExportedFile(row.id).then((res) => {
-    console.log(res);
-    downloadBlob(res.data, '包装出库.xlsx');
-    // ElMessage.success('导出成功');
-  });
+  currentRow.value = row;
+  modalApi.open();
 };
 const handleImport = () => {
   ElMessage.warning('功能待开发！');
@@ -213,5 +226,20 @@ const handleUpdate = () => {
     </Grid>
 
     <Drawer @onUpdated="handleUpdate" />
+    <Modal>
+      <template #default>
+        <el-form
+          ref="FormRef"
+          :model="formData"
+          :rules="rules"
+          label-width="100px"
+          :inline="true"
+        >
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="formData.email" />
+          </el-form-item>
+        </el-form>
+      </template>
+    </Modal>
   </Page>
 </template>

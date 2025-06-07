@@ -5,9 +5,17 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { Page, useVbenDrawer } from '@vben/common-ui';
+import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 
-import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
+import {
+  ElButton,
+  ElMessage,
+  ElMessageBox,
+  ElForm,
+  ElFormItem,
+  ElInput,
+} from 'element-plus';
+import type { FormInstance, FormRules } from 'element-plus';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
@@ -114,9 +122,59 @@ const handleAdd = () => {
 function handleViewRow(row: RowType) {
   handleSetData(row, '明细');
 }
+
+// 导出 填写表单邮箱
+const [Modal, modalApi] = useVbenModal({
+  draggable: true,
+  onCancel() {
+    formData.value.email = '';
+    modalApi.close();
+    FormRef.value?.clearValidate();
+  },
+  // 关闭动画播放完毕时触发
+  onClosed() {
+    // emit('update:modelValue', {});
+    formData.value.email = '';
+    FormRef.value?.clearValidate();
+    modalApi.close();
+  },
+  onConfirm: async () => {
+    FormRef.value?.validate((valid) => {
+      if (valid) {
+        loading.value = true;
+        exportInventoryOut(currentRow.value.id, formData.value.email).then(
+          (res) => {
+            console.log(res);
+            // downloadBlob(res.data, '包装库存.xlsx');
+            loading.value = false;
+
+            ElMessage.success('提交成功');
+            modalApi.close();
+          },
+        );
+      }
+    });
+  },
+  title: '导出',
+});
+const FormRef = ref<FormInstance>();
+const formData = ref({
+  email: '',
+});
+const rules = ref<FormRules>({
+  email: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱', trigger: 'blur' },
+  ],
+});
+const loading = ref(false);
+
+const currentRow = ref<RowType>({} as RowType);
 async function handleExportRow(row: RowType) {
-  const res = await exportInventoryOut(row.id);
-  downloadBlob(res.data, '出库单库存.xlsx');
+  currentRow.value = row;
+  modalApi.open();
+  // const res = await exportInventoryOut(row.id);
+  // downloadBlob(res.data, '出库单库存.xlsx');
 }
 
 const handleSetData = (row: RowType, title: string) => {
@@ -171,5 +229,20 @@ const handleDeleteRow = (row: RowType) => {
     </Grid>
 
     <Drawer />
+    <Modal>
+      <template #default>
+        <el-form
+          ref="FormRef"
+          :model="formData"
+          :rules="rules"
+          label-width="100px"
+          :inline="true"
+        >
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="formData.email" />
+          </el-form-item>
+        </el-form>
+      </template>
+    </Modal>
   </Page>
 </template>

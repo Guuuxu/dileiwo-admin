@@ -14,10 +14,13 @@ export function getInventoryList(params: any) {
  * @param data
  * @returns
  */
-export function exportInventory() {
+export function exportInventory(email: string) {
   return requestClientExport.get(`/admin/bound/inventory/export`, {
     responseType: 'blob',
     timeout: 60000,
+    params: {
+      email,
+    }
   });
 }
 
@@ -44,12 +47,15 @@ export function getInventoryOutDetail(id: number, params: any) {
  * @param data
  * @returns
  */
-export function exportInventoryOut(id: number) {
+export function exportInventoryOut(id: number,email: string) {
   return requestClientExport.get(
     `/admin/bound/inventoryOutbound/${id}/export`,
     {
       responseType: 'blob',
       timeout: 60000,
+      params: {
+        email,
+      }
     },
   );
 }
