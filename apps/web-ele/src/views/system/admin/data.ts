@@ -3,7 +3,7 @@ import { ElMessage } from 'element-plus';
 import type { VbenFormSchema } from '#/adapter/form';
 import { globalShareState } from '@vben/common-ui';
 
-import { $t } from '#/locales';
+import { roleOptions } from '#/views/dict';
 
 /**
  * 获取编辑表单的字段配置。如果没有使用多语言，可以直接export一个数组常量
@@ -23,11 +23,7 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Select',
       componentProps: {
         placeholder: '请选择',
-        options: [
-          { label: '管理员', value: 1 },
-          { label: '操作员', value: 2 },
-          { label: '代工厂', value: 3 },
-        ],
+        options: roleOptions,
       },
       fieldName: 'type',
       label: '角色',

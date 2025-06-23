@@ -7,6 +7,7 @@ import { $t } from '@vben/locales';
 import { ElInput, ElMessage } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { addAdminUserApi, sendSmsApi } from '#/api';
+import { roleOptions } from '#/views/dict.js'
 // 定义自定义事件
 const emits = defineEmits(['onUpdated']);
 defineOptions({
@@ -28,10 +29,7 @@ const [BaseForm, BaseFormApi] = useVbenForm({
       component: 'Select',
       componentProps: {
         placeholder: '请选择',
-        options: [
-          { label: '管理员', value: 1 },
-          { label: '操作员', value: 2 },
-        ],
+        options: roleOptions,
       },
       fieldName: 'type',
       label: '角色',
