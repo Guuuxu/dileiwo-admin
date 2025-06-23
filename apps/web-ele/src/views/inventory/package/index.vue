@@ -42,6 +42,7 @@ interface RowType {
 }
 // 获取路由参数中的 type_name
 const routeTypeName = router.currentRoute.value.query.type_name as string;
+
 const dataList: any = ref([]);
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
@@ -91,7 +92,6 @@ const gridOptions: VxeGridProps<RowType> = {
           page: page.currentPage,
           per_page: page.pageSize,
           ...formValues,
-          type_name: routeTypeName || formValues.type_name,
         });
       },
     },

@@ -82,6 +82,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
         console.log(res);
         gridApi.setGridOptions({ data: res });
       }
+    } else {
+      gridApi.setGridOptions({ data: [] });
     }
   },
   title: '详情',
