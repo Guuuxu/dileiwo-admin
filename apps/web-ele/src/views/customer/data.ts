@@ -42,7 +42,7 @@ export function useSchema(): VbenFormSchema[] {
         placeholder: '请输入',
       },
       fieldName: 'phone',
-      label: '公司电话',
+      label: '法人电话',
     },
     {
       component: 'Input',
