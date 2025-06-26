@@ -43,6 +43,7 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'phone',
       label: '法人电话',
+      rules: 'required',
     },
     {
       component: 'Input',

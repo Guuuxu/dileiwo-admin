@@ -1,11 +1,18 @@
 import { requestClient } from '#/api/request';
 
-interface data {
-  order_no: string;
+interface pageParams {
+  page: number;
+  per_page: number;
 }
 
-export function getCustomerList(params: Record<string, any>) {
-  return requestClient.get('/admin/client', { params });
+export function getCustomerList(params: pageParams) {
+  return requestClient.get('/admin/client', {
+    params: {
+      ...params,
+      page: params.page || 1,
+      per_page: params.per_page || 100,
+    },
+  });
 }
 
 export function getCustomerDetails(customerId: number) {
@@ -41,6 +48,6 @@ export function getCustomerMetrics(customerId: number | string) {
 export function exportCustomerData(id: number) {
   return requestClient.get(`/admin/client/${id}/export`, {
     responseType: 'blob',
-    timeout: 60000
+    timeout: 60000,
   });
 }

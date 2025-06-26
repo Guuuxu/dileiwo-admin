@@ -79,11 +79,10 @@ const gridOptions: VxeGridProps<RowType> = {
 const formOptions: VbenFormProps = {
   // 默认展开
   collapsed: false,
-  fieldMappingTime: [['date', ['start', 'end']]],
   schema: [
     {
       component: 'Input',
-      fieldName: 'customer',
+      fieldName: 'client',
       label: '客户',
       componentProps: {
         placeholder: '请输入客户名称、登记注册号',
@@ -98,34 +97,6 @@ const formOptions: VbenFormProps = {
   submitOnEnter: false,
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
-
-// 模拟行数据
-const loadList = (size = 200) => {
-  try {
-    // const dataList: RowType[] = [];
-    for (let i = 0; i < size; i++) {
-      dataList.value.push({
-        id: 10_000 + i,
-        created_at: '2025-01-03',
-        customer: '长吉有限公司',
-        code: '00002' + i,
-        tel: '020-99290029',
-        phone: '13500000000',
-        contact: '张三',
-        person: '李四',
-        address: '江苏',
-        contactAddress: '中山路1号',
-        consignee: '刘京东',
-        consigneePhone: '13899999999',
-        consigneeAddress: '钟楼',
-      });
-    }
-    // gridApi.setGridOptions({ data: dataList });
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    // Implement user-friendly error handling
-  }
-};
 
 // 新增
 const handleAdd = () => {
