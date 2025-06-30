@@ -16,12 +16,16 @@ import { $t } from '#/locales';
 
 import Edit from './edit.vue';
 import metric from './metric.vue';
+import Import from './import.vue';
 
 const [Drawer, drawerApi] = useVbenDrawer({
   connectedComponent: Edit,
 });
 const [Metric, metricApi] = useVbenDrawer({
   connectedComponent: metric,
+});
+const [ImportDrawer, importDrawerApi] = useVbenDrawer({
+  connectedComponent: Import,
 });
 
 const router = useRouter();
@@ -149,6 +153,16 @@ const handleMetricRow = (row: RowType) => {
     })
     .open();
 };
+const handleImportRow = (row: RowType) => {
+  importDrawerApi
+    .setData({
+      values: { ...row },
+    })
+    .setState({
+      title: '导入',
+    })
+    .open();
+};
 const handleUpdate = () => {
   gridApi.reload();
 };
@@ -172,6 +186,9 @@ const handleUpdate = () => {
         <ElButton type="primary" link @click="handleMetricRow(row)">
           指标
         </ElButton>
+        <ElButton type="primary" link @click="handleImportRow(row)">
+          导入
+        </ElButton>
         <ElButton type="danger" link @click="handleDeleteRow(row)">
           删除
         </ElButton>
@@ -180,5 +197,6 @@ const handleUpdate = () => {
 
     <Drawer @onUpdated="handleUpdate" />
     <Metric />
+    <ImportDrawer @onUpdated="handleUpdate" />
   </Page>
 </template>
