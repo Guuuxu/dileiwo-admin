@@ -51,3 +51,12 @@ export function exportCustomerData(id: number) {
     timeout: 60000,
   });
 }
+
+/**
+ * 导入客户数据
+ * @data {object} data - 导入的请求参数
+ * @returns
+ */
+export function importCustomerData(id: number, data: any) {
+  return requestClient.post(`/admin/client/${id}/import`, data);
+}

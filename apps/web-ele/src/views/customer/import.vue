@@ -4,19 +4,19 @@ import { useVbenDrawer } from '@vben/common-ui';
 
 import { ElTabs, ElTabPane, ElCard, ElRow, ElCol,ElMessage } from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
-import { updateCustomer } from '#/api';
+import { importCustomerData } from '#/api';
 // 定义自定义事件
 const emits = defineEmits(['onUpdated']);
 defineOptions({
   name: 'FormDrawer',
 });
-const id = ref('')
+const id = ref(null)
 const [BaseForm, BaseFormApi] = useVbenForm({
-  schema: useSchema(),
+  schema: useimportSchema(),
   showDefaultActions: false,
 });
 
-import { useSchema } from './data';
+import { useimportSchema } from './data';
 
 const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
@@ -30,10 +30,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
         id: id.value,
         ...values,
       };
-      const res = await updateCustomer(params);
+      const res = await importCustomerData(Number(id.value), values);
       ElMessage.success('操作成功');
       // 触发自定义事件通知父组件
-            emits('onUpdated', params);
+      emits('onUpdated', params);
       drawerApi.close();
     }
   },
