@@ -25,8 +25,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
         params.id = id.value;
         const res = await updateProduct(params);
         ElMessage.success('操作成功');
-        // 触发自定义事件通知父组件
-        emits('productUpdated');
+        setTimeout(() => {
+          // 触发自定义事件通知父组件
+          emits('productUpdated', params);
+        }, 3000);
         drawerApi.close();
       }
     } else {
@@ -54,14 +56,14 @@ const [Drawer, drawerApi] = useVbenDrawer({
         });
         ViewFormApi.setValues({
           ...values,
-        })
+        });
       }
     }
   },
   title: '详情',
 });
 
-import { useSchema, useSchemaEdit,useSchemaDetail } from './data';
+import { useSchema, useSchemaEdit, useSchemaDetail } from './data';
 const [BaseForm, BaseFormApi] = useVbenForm({
   commonConfig: {
     // 在label后显示一个冒号
@@ -105,7 +107,7 @@ const id = ref('');
 <template>
   <Drawer>
     <BaseForm v-if="title === '新增'" />
-    <ViewForm v-else-if="title === '明细'" ></ViewForm> 
+    <ViewForm v-else-if="title === '明细'"></ViewForm>
     <BaseForm2 v-else />
   </Drawer>
 </template>

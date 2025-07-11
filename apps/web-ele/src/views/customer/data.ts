@@ -160,7 +160,7 @@ export function useimportSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入',
       },
-      fieldName: 'type_name',
+      fieldName: 'model_type',
       label: '型号',
       rules: z.string().nonempty({ message: '型号不能为空' }),
     },
@@ -206,60 +206,60 @@ export function useimportSchema(): VbenFormSchema[] {
         ), // 限制最大长度为8位
     },
     {
-          component: 'Select',
-          componentProps: {
-            placeholder: '请选择',
-            options: [
-              { label: '租赁', value: '1' },
-              { label: '购买', value: '2' },
-            ],
-          },
-          fieldName: 'type',
-          label: '出货类型',
-          rules: 'required',
+      component: 'Select',
+      componentProps: {
+        placeholder: '请选择',
+        options: [
+          { label: '租赁', value: '1' },
+          { label: '购买', value: '2' },
+        ],
+      },
+      fieldName: 'type',
+      label: '出货类型',
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+        type: 'number',
+      },
+      fieldName: 'during',
+      rules: 'required',
+      label: '租赁天数',
+      dependencies: {
+        show(values) {
+          return values.type == '1';
         },
-        {
-          component: 'Input',
-          componentProps: {
-            placeholder: '请输入',
-            type: 'number',
+        triggerFields: ['type'],
+      },
+    },
+
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入',
+        type: 'number',
+      },
+      fieldName: 'month_limit',
+      label: '每月数量',
+      rules: z
+        .string()
+        .nonempty({ message: '数量不能为空' })
+        .refine(
+          (value) => {
+            const num = parseFloat(value);
+            return !isNaN(num) && num >= 0;
           },
-          fieldName: 'during',
-          rules: 'required',
-          label: '租赁天数',
-          dependencies: {
-            show(values) {
-              return values.type == '1';
-            },
-            triggerFields: ['type'],
-          },
+          { message: '每月数量不能为负数' },
+        ), // 限制最大长度为8位
+      dependencies: {
+        show(values) {
+          return values.type == '1';
         },
-    
-        {
-          component: 'Input',
-          componentProps: {
-            placeholder: '请输入',
-            type: 'number',
-          },
-          fieldName: 'month_limit',
-          label: '每月数量',
-          rules: z
-            .string()
-            .nonempty({ message: '数量不能为空' })
-            .refine(
-              (value) => {
-                const num = parseFloat(value);
-                return !isNaN(num) && num >= 0;
-              },
-              { message: '每月数量不能为负数' },
-            ), // 限制最大长度为8位
-          dependencies: {
-            show(values) {
-              return values.type == '1';
-            },
-            triggerFields: ['type'],
-          },
-        },
+        triggerFields: ['type'],
+      },
+    },
   ];
 }
 

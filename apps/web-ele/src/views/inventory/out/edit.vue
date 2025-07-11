@@ -79,7 +79,7 @@ const gridOptions: VxeGridProps<RowType> = {
         },
       },
     },
-    { field: 'rent_deadline', title: '租赁到期日' },
+    { field: 'last_use', title: '最后使用日' },
     { field: 'client_name', title: '客户' },
     { field: 'client_address', title: '收件人地址' },
   ],

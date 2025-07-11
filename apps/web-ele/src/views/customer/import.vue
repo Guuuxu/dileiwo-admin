@@ -2,7 +2,14 @@
 import { ref, onMounted } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { ElTabs, ElTabPane, ElCard, ElRow, ElCol,ElMessage } from 'element-plus';
+import {
+  ElTabs,
+  ElTabPane,
+  ElCard,
+  ElRow,
+  ElCol,
+  ElMessage,
+} from 'element-plus';
 import { useVbenForm } from '#/adapter/form';
 import { importCustomerData } from '#/api';
 // 定义自定义事件
@@ -10,7 +17,7 @@ const emits = defineEmits(['onUpdated']);
 defineOptions({
   name: 'FormDrawer',
 });
-const id = ref(null)
+const id = ref(null);
 const [BaseForm, BaseFormApi] = useVbenForm({
   schema: useimportSchema(),
   showDefaultActions: false,
@@ -23,18 +30,20 @@ const [Drawer, drawerApi] = useVbenDrawer({
     drawerApi.close();
   },
   onConfirm: async () => {
-    const {valid} = await BaseFormApi.validate();
+    const { valid } = await BaseFormApi.validate();
     if (valid) {
-      const values= await BaseFormApi.getValues();
+      const values = await BaseFormApi.getValues();
       const params = {
         id: id.value,
         ...values,
       };
       const res = await importCustomerData(Number(id.value), values);
       ElMessage.success('操作成功');
-      // 触发自定义事件通知父组件
-      emits('onUpdated', params);
       drawerApi.close();
+      setTimeout(() => {
+        // 触发自定义事件通知父组件
+        emits('onUpdated', params);
+      }, 3000);
     }
   },
   onOpenChange(isOpen: boolean) {
@@ -44,7 +53,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
         id.value = values.id;
         BaseFormApi.setValues({
           ...values,
-
         });
       }
     }
