@@ -17,7 +17,6 @@ export function useSchema(): VbenFormSchema[] {
         filterable: true,
         // 客户接口转options格式
         afterFetch: (data: { list: any[] }) => {
-          console.log(data);
           return data.list.map((item: any) => ({
             label: item.name,
             value: item.id,
