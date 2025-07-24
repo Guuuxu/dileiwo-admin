@@ -68,6 +68,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       console.log('request config', config);
       config.headers.Authorization = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
+      config.headers['device'] = 'web';
       return config;
     },
   });
